@@ -1,0 +1,2507 @@
+% *** TREAT Reactor ***
+
+set title "TREAT Core Load 1471"
+
+% Original model built by J. R. Parry September 2017.
+% Modified by A.S. Chipman September-October 2017.
+% Checked against BATMAN report and cited original drawings in it.
+% Corrected surfaces to nominal values.
+% Differentiated between standard and modified Access Hole Assemblies.
+% Removed continuous energy thermal scattering cross sections, S(a,b).
+% Added path to hpc-common data libraries.
+% Added material specifications from MCNP model.
+% Added several detectors with 19x19x24 mesh grid.
+% Added mesh plots of detectors.
+
+% **********************************************************************
+% *** Surfaces ***
+% **********************************************************************
+% Henri Facility 
+surf 5000 cyl  0.0 0.0 2.500 % air gap
+surf 5001 cyl  0.0 0.0 2.045 % inner HENRI Surface 
+surf 5002 cyl  0.0 0.0 2.405  %outer HENRI Surface 
+
+% Fuel Meat
+surf    1   octa    0.0     0.0     4.826     6.0473                % fuel radial boundary
+surf    2   pz     60.48375                                         % fuel upper boundary
+surf    3   pz    -60.48375                                         % fuel lower boundary
+
+% Can
+surf   11   octa    0.0     0.0     4.9657    6.2551                % inner can surface ????
+surf   12   octa    0.0     0.0     5.0292    6.3186                % outer can surface
+surf   13   pz     61.11875                                         % top inside fuel can
+surf   14   pz    -61.11875                                         % bottom inside fuel can
+surf   15   pz     61.356875                                        % top outside fuel can
+surf   16   pz    -61.356875                                        % bottom outside fuel can
+surf   17   octa    0.0     0.0     4.727575  6.0170                % inner thick endcap surface
+surf   18   pz     62.70625                                         % top endcap top
+surf   19   pz    -62.70625                                         % bottom endcap bottom
+
+% Reflector
+surf   21   sqc     0.0     0.0     4.1656                          % square end of graphite reflector
+surf   22   pz     70.246875                                        % square end of graphite top
+surf   23   pz    -70.246875                                        % square end of graphite bottom
+surf   24   octa    0.0     0.0     4.8006    6.02073               % octagonal end of graphite reflector
+surf   25   cyl     0.0     0.0     0.9525                          % upper reflector hole for vacuume tube
+surf   26   pz     83.423125                                        % top of hole for vacuume tube
+
+% Reflector Can
+surf   31   octa    0.0     0.0     4.9022  6.19162                 % inner reflector can surface
+
+% Control Element Surfaces
+surf   51   cyl     0.0     0.0     2.54                            % zirc liner IR
+surf   52   cyl     0.0     0.0     2.8575                          % zirc liner OR
+surf   53   cyl     0.0     0.0     2.9591                          % control fuel IR
+surf   54   cyl     0.0     0.0     2.87734                         % lower control reflector IR
+surf   55   cyl     0.0     0.0     3.25755                         % upper control reflector IR
+surf   56   cyl     3.1431  3.1431  0.6350                          % upper reflector hole for evacuation tube
+surf   57   pz      71.834375                                       % top of evaucation hole
+
+% Evacuation Tube Surfaces
+surf   61   pz     67.706875                                        % top of evacuation tube
+surf   62   cyl     0.0     0.0     0.36195                         % evacuation tube IR
+surf   63   cyl     0.0     0.0     0.47625                         % evacuation tube OR
+surf   64   pz     71.516875                                        % top of CR evacuation tube
+surf   65   cyl     3.1431  3.1431  0.36195                         % evacuation tube IR
+surf   66   cyl     3.1431  3.1431  0.47625                         % evacuation tube OR
+
+% Spacers
+% Bottom Spacer
+surf  141   cuboid  -4.841875   4.841875                            % Bottom spacer part 1
+                    -3.571875  -1.349375
+                   -61.11875  -60.80125
+
+surf  142   cuboid  -4.841875   4.841875                            % Bottom spacer part 2
+                     1.349375   3.571875
+                   -61.11875  -60.80125
+
+surf  143   cuboid  -3.571875  -1.349375                            % Bottom spacer part 3
+                    -4.841875   4.841875
+                   -60.80125  -60.48375
+
+surf  144   cuboid   1.349375   3.571875                            % Bottom spacer part 4
+                    -4.841875   4.841875
+                   -60.80125  -60.48375
+% Top Spacer
+surf  145   cuboid  -4.841875   4.841875                            % top spacer part 1
+                    -3.571875  -1.349375
+                    60.80125   61.11875
+
+surf  146   cuboid  -4.841875   4.841875                            % top spacer part 2
+                     1.349375   3.571875
+                    60.80125   61.11875
+
+surf  147   cuboid  -3.571875  -1.349375                            % top spacer part 3
+                    -4.841875   4.841875
+                    60.48375   60.80125
+
+surf  148   cuboid   1.349375   3.571875                            % top spacer part 4
+                    -4.841875   4.841875
+                    60.48375   60.80125
+
+% Spacer Hole for Control Rod
+surf  149   cyl      0.0        0.0     2.8971875                   % spacer hole for control rod
+
+
+
+% 48" Hodoscope Assembly Planes
+surf  101   pz     60.9600                                          % window top
+surf  102   pz    -60.9600                                          % window bottom
+surf  103   px      3.4925                                          % window positive x-plane
+surf  104   px     -3.4925                                          % window negative x-plane
+surf  105   pz    118.8085                                          % top lead bottom
+surf  106   pz   -114.6970                                          % bottom lead top
+surf  113   pz     62.2300                                          % top inside fuel can
+surf  114   pz    -62.2300                                          % bottom inside fuel can
+surf  115   pz     62.2935                                          % top outside fuel can
+surf  116   pz    -62.2935                                          % bottom outside fuel can
+surf  117   octa    0.0     0.0     4.9022  6.1916                  % inner thick endcap surface
+surf  118   pz     63.8175                                          % top endcap top
+surf  119   pz    -63.8175                                          % bottom endcap bottom
+surf  121   octa    7.1101  0.0     3.3509  3.3509                  % inner east stiffener surface
+surf  122   octa    7.1101  0.0     3.4144  3.4144                  % outer east stiffener surface
+surf  123   octa   -7.1101  0.0     3.3509  3.3509                  % inner west stiffener surface
+surf  124   octa   -7.1101  0.0     3.4144  3.4144                  % outer west stiffener surface
+surf  125   py      3.4925                                          % north end of stiffener
+surf  126   py     -3.4925                                          % south end of stiffener
+surf  127   px      4.9022                                          % east stiffener foot
+surf  128   px     -4.9022                                          % west stiffener foot
+surf  129   octa    0.0     0.0     4.9022  6.1916                  % stiffener foot inner surface
+surf  131   sqc     4.9657  4.9657  1.07061                         % northeast corner stiffener IR
+surf  132   sqc     4.9657  4.9657  1.13411                         % northeast corner stiffener OR
+surf  133   sqc     4.9657 -4.9657  1.07061                         % southeast corner stiffener IR
+surf  134   sqc     4.9657 -4.9657  1.13411                         % southeast corner stiffener OR
+surf  135   sqc    -4.9657 -4.9657  1.07061                         % southwest corner stiffener IR
+surf  136   sqc    -4.9657 -4.9657  1.13411                         % southwest corner stiffener OR
+surf  137   sqc    -4.9657  4.9657  1.07061                         % northwest corner stiffener IR
+surf  138   sqc    -4.9657  4.9657  1.13411                         % northwest corner stiffener OR
+
+% 48" 1/2 Hodoscope Assembly Planes
+surf  107   py      0.3302                                          % half assembly inner edge
+surf  108   py      0.2667                                          % half assembly outer edge
+surf  109   px      3.56865                                         % half assembly Stiffener positive x-plane
+surf  110   px     -3.56865                                         % half assembly Stiffener negative x-plane
+surf  153   pz     63.65875                                         % top inside stiffener
+surf  154   pz    -63.65875                                         % bottom inside stiffener
+surf  155   pz     63.72225                                         % top outside stiffener
+surf  156   pz    -63.72225                                         % bottom outside stiffener
+surf  161   pz     99.77628                                         % top of top graphite
+surf  162   pz    -79.45374                                         % bottom of bottom graphite
+surf  163   pz    120.09628                                         % top of top lead
+surf  164   pz   -120.09374                                         % bottom of bottom lead
+surf  165   pz    122.00128                                         % top of top extension
+surf  166   pz   -121.99874                                         % bottom of bottom extension
+surf  167   pz     63.5                                             % window top
+surf  168   pz    -63.5                                             % window bottom
+
+% 48" 1/2 Reflector Assembly Planes
+surf  170   py     -0.2667                                          % half assembly outer edge
+surf  171   py     -0.3302                                          % half assembly inner edge
+surf  172   pz    -79.45374                                         % bottom of bottom graphite
+surf  173   pz    120.09628                                         % top of top graphite
+surf  174   pz   -120.09374                                         % bottom of bottom lead
+surf  175   pz    122.00128                                         % top of top extension
+surf  176   pz   -121.99874                                         % bottom of bottom extension
+
+% Control Rods
+
+% Radial Surfaces
+surf  201   cyl     0.0     0.0     0.79375                         % grapple OR
+surf  202   cyl     0.0     0.0     1.90500                         % tubing IR
+surf  203   cyl     0.0     0.0     2.22250                         % tubing OR
+
+% Axial Position Comp and Control at Zero
+surf  211   pz     86.77275                                         % CR Top of  Grapple
+surf  213   pz     78.51775                                         % CR Top of Poison Tube
+surf  215   pz     72.48525                                         % CR Top of Poison
+surf  217   pz    -70.07225                                         % CR Bottom of Poison
+surf  219   pz    -73.88225                                         % CR Bottom of Poison Tube
+surf  221   pz    -79.91475                                         % CR Top of Graphite
+surf  223   pz   -220.24975                                         % CR Bottom of Graphite
+surf  225   pz   -226.28225                                         % CR Bottom of ZR Tube
+surf  227   pz   -244.06225                                         % CR Top of Graphite
+surf  229   pz   -281.20975                                         % CR Bottom of Graphite
+surf  231   pz   -287.24225                                         % CR Bottom of Upper Follower
+surf  233   pz   -291.05225                                         % CR Top of Graphite
+surf  235   pz   -429.95723                                         % CR Bottom of Graphite
+surf  237   pz   -438.84723                                         % CR Bototm of Lower Follower
+
+% Axial Position Transient at Zero
+surf  241   pz    120.74525                                         % TR Top of  Grapple
+surf  243   pz    112.49025                                         % TR Top of Poison Tube
+surf  245   pz    106.45775                                         % TR Top of Poison
+surf  247   pz    -36.09975                                         % TR Bottom of Poison
+surf  249   pz    -39.90975                                         % TR Bottom of Poison Tube
+surf  251   pz    -45.94225                                         % TR Top of Graphite
+surf  253   pz   -186.27725                                         % TR Bottom of Graphite
+surf  255   pz   -192.30975                                         % TR Bottom of ZR Tube
+surf  257   pz   -210.08975                                         % TR Top of Graphite
+surf  259   pz   -232.94975                                         % TR Bottom of Graphite
+surf  261   pz   -238.98225                                         % TR Bottom of Upper Follower
+surf  263   pz   -242.79225                                         % TR Top of Graphite
+surf  265   pz   -381.69723                                         % TR Bottom of Graphite
+surf  267   pz   -390.58723                                         % TR Bototm of Lower Follower
+
+% Permament Structure
+surf 9000   cuboid    -5.08       5.08                              % 4x8 experiment location
+                     -10.16      10.16
+                    -121.99874  124.06325
+surf 9001   cuboid   -96.52      96.52                              % outer array boundary
+                     -96.52      96.52
+                    -121.99874  124.06325
+surf 9002   cuboid  -100.965    100.965                             % perm reflector 1/8" Al cover
+                    -100.965    100.965
+                    -121.99874  124.06325
+surf 9003   cuboid  -101.2825   101.2825                            % inside permanent reflector
+                    -101.2825   101.2825
+                    -121.99874  124.06325
+surf 9004   cuboid  -162.2425   162.2425                            % outside permanent reflector
+                    -162.2425   162.2425
+                    -121.99874  124.06325
+surf 9005   cuboid   -18.0975    18.0975                            % north outside slot
+                     141.2875   162.3925
+                     -40.64      40.64
+surf 9006   cuboid    -7.381875   7.381875                          % north middle slot
+                     121.285    141.2875
+                     -40.64      40.64
+surf 9007   cuboid    -5.23875    5.23875                           % north inner slot
+                     101.2825   121.285
+                     -40.64      40.64
+surf 9008   cuboid    -5.23875    5.23875                           % south outer slot
+                    -162.3925  -141.2875
+                     -30.48      30.48
+surf 9012   cuboid    -5.23875    5.23875                           % south middle slot
+                    -141.2875  -121.285
+                     -30.48      30.48
+surf 9009   cuboid    -7.381875   7.381875                          % south inner slot
+                    -121.285   -101.2825
+                     -30.48      30.48
+surf 9010   cuboid  -162.3925  -141.2875                            % west outer slot
+                      -5.23875    5.23875
+                     -30.48      30.48
+surf 9013   cuboid  -141.2875  -121.285                             % west middle slot
+                      -5.23875    5.23875
+                     -30.48      30.48
+surf 9011   cuboid  -121.285   -101.2825                            % west inner slot
+                      -7.381875   7.381875
+                     -30.48      30.48
+surf 9021   cyly    -60.96  30.48   8.89 -162.3925 -101.2825        % south top instrument thimble
+surf 9022   cyly    -60.96 -30.48   8.89 -162.3925 -101.2825        % south bottom instrument thimble
+surf 9023   cyly     60.96  30.48   8.89  101.2825  162.3925        % north top instrument thimble
+surf 9024   cyly     60.96 -30.48   8.89  101.2825  162.3925        % north bottom instrument thimble
+surf 9025   cylx     60.96  30.48   8.89 -162.3925 -101.2825        % west top instrument thimble
+surf 9026   cylx     60.96 -30.48   8.89 -162.3925 -101.2825        % west bottom instrument thimble
+surf 9031   cuboid -162.3925   162.3925                             % outside permanent reflector steel liner
+                   -162.3925   162.3925
+                   -121.99874  124.06325
+surf 9032   cuboid  162.2425   162.3925                             % thermal column opening steel liner
+                    -76.20      76.20
+                    -76.20      76.20
+
+% Bioshield
+surf 9041   cuboid -167.64    167.64                                % inside of biological shield
+                   -167.64    167.64
+                   -121.99874  124.06325
+surf 9042   octa    0.0     0.0     241.935 309.842                 % outside of biological shield
+surf 9043   octa    0.0     0.0     320.04  387.947                 % outside of biological shield
+surf 9044   cuboid -321       321                                   % air around biological shield
+                   -321       321
+                   -121.99874  124.06325
+
+% Bioshield 6-inch Diameter Thimbles
+surf 9051   cyly    0.0     30.48   7.70255                         % NE-SW corner 6-inch diameter top instrument thimble IR
+surf 9052   cylx    0.0     30.48   7.70255                         % NW-SE corner 6-inch diameter top instrument thimble IR
+surf 9053   cyly    0.0    -30.48   7.70255                         % NE-SW corner 6-inch diameter bottom instrument thimble IR
+surf 9054   cylx    0.0    -30.48   7.70255                         % NW-SE corner 6-inch diameter bottom instrument thimble IR
+surf 9055   cyly    0.0     30.48   8.41375                         % NE-SW corner 6-inch diameter top instrument thimble OR
+surf 9056   cylx    0.0     30.48   8.41375                         % NW-SE corner 6-inch diameter top instrument thimble OR
+surf 9057   cyly    0.0    -30.48   8.41375                         % NE-SW corner 6-inch diameter bottom instrument thimble OR
+surf 9058   cylx    0.0    -30.48   8.41375                         % NW-SE corner 6-inch diameter bottom instrument thimble OR
+
+% Bioshield 8-inch Diameter Thimbles
+surf 9061   cyly    0.0     30.48  10.13587                         % NE-SW corner 8-inch diameter top instrument thimble IR
+surf 9062   cylx    0.0     30.48  10.13587                         % NW-SE corner 8-inch diameter top instrument thimble IR
+surf 9063   cyly    0.0    -30.48  10.13587                         % NE-SW corner 8-inch diameter bottom instrument thimble IR
+surf 9064   cylx    0.0    -30.48  10.13587                         % NW-SE corner 8-inch diameter bottom instrument thimble IR
+surf 9065   cyly    0.0     30.48  10.95375                         % NE-SW corner 8-inch diameter top instrument thimble OR
+surf 9066   cylx    0.0     30.48  10.95375                         % NW-SE corner 8-inch diameter top instrument thimble OR
+surf 9067   cyly    0.0    -30.48  10.95375                         % NE-SW corner 8-inch diameter bottom instrument thimble OR
+surf 9068   cylx    0.0    -30.48  10.95375                         % NW-SE corner 8-inch diameter bottom instrument thimble OR
+
+% Bioshield 6-inch Diameter Thimbles on Faces
+surf 9071   cyly    -60.96  30.48  7.70255 -241.935 -167.64         % south top instrument thimble IR
+surf 9072   cyly    -60.96 -30.48  7.70255 -241.935 -167.64         % south bottom instrument thimble IR
+surf 9073   cyly     60.96  30.48  7.70255  167.64  241.935         % north top instrument thimble IR
+surf 9074   cyly     60.96 -30.48  7.70255  167.64  241.935         % north bottom instrument thimble IR
+surf 9075   cylx     60.96  30.48  7.70255 -241.935 -167.64         % west top instrument thimble IR
+surf 9076   cylx     60.96 -30.48  7.70255 -241.935 -167.64         % west bottom instrument thimble IR
+
+% Bioshield 6-inch Diameter Thimbles on Faces
+surf 9081   cyly    -60.96  30.48  8.41375 -241.935 -167.64         % south top instrument thimble OR
+surf 9082   cyly    -60.96 -30.48  8.41375 -241.935 -167.64         % south bottom instrument thimble OR
+surf 9083   cyly     60.96  30.48  8.41375  167.64  241.935         % north top instrument thimble OR
+surf 9084   cyly     60.96 -30.48  8.41375  167.64  241.935         % north bottom instrument thimble OR
+surf 9085   cylx     60.96  30.48  8.41375 -241.935 -167.64         % west top instrument thimble OR
+surf 9086   cylx     60.96 -30.48  8.41375 -241.935 -167.64         % west bottom instrument thimble OR
+
+% Bioshield 8-inch Diameter Thimbles on Faces
+surf 9091   cyly    -60.96  30.48 10.13587 -320.04 -241.935         % south top instrument thimble IR
+surf 9092   cyly    -60.96 -30.48 10.13587 -320.04 -241.935         % south bottom instrument thimble IR
+surf 9093   cyly     60.96  30.48 10.13587  241.935  320.04         % north top instrument thimble IR
+surf 9094   cyly     60.96 -30.48 10.13587  241.935  320.04         % north bottom instrument thimble IR
+surf 9095   cylx     60.96  30.48 10.13587 -320.04 -241.935         % west top instrument thimble IR
+surf 9096   cylx     60.96 -30.48 10.13587 -320.04 -241.935         % west bottom instrument thimble IR
+
+% Bioshield 8-inch Diameter Thimbles on Faces
+surf 9101   cyly    -60.96  30.48 10.95375 -320.04 -241.935         % south top instrument thimble OR
+surf 9102   cyly    -60.96 -30.48 10.95375 -320.04 -241.935         % south bottom instrument thimble OR
+surf 9103   cyly     60.96  30.48 10.95375  241.935  320.04         % north top instrument thimble OR
+surf 9104   cyly     60.96 -30.48 10.95375  241.935  320.04         % north bottom instrument thimble OR
+surf 9105   cylx     60.96  30.48 10.95375 -320.04 -241.935         % west top instrument thimble OR
+surf 9106   cylx     60.96 -30.48 10.95375 -320.04 -241.935         % west bottom instrument thimble OR
+
+% Thermal Column
+surf 9111   cuboid  167.64 241.935 -76.20  76.20 -76.20 76.20       % inner thermal column opening
+surf 9112   cuboid  241.935 320.04 -86.36  86.36 -86.36 86.36       % inner thermal column opening
+
+% South Side Verticle Pipes
+surf 9121   cyl     -27.94 -195.58 10.13587                         % south top instrument thimble IR
+surf 9122   cyl     -27.94 -195.58 10.95375                         % south top instrument thimble OR
+surf 9123   cyl      27.94 -195.58 10.13587                         % south top instrument thimble IR
+surf 9124   cyl      27.94 -195.58 10.95375                         % south top instrument thimble OR
+
+
+% ----- M8Cal Experiment -----
+
+% Secondary Containment
+surf 1001   py      5.08                                            % center of positive octagon
+surf 1002   py     -5.08                                            % center of negative octagon
+surf 1003   px      4.9276                                          % inner positive X plane of can
+surf 1004   px     -4.9276                                          % inner negative X plane of can
+surf 1005   px      5.0546                                          % outer positive X plane of can
+surf 1006   px     -5.0546                                          % outer negative X plane of can
+surf 1011   octa    0.0     5.08    4.9276   6.09519                % inner can surface ????
+surf 1012   octa    0.0     5.08    5.0546   6.22219                % outer can surface
+surf 1013   octa    0.0    -5.08    4.9276   6.09519                % inner can surface ????
+surf 1014   octa    0.0    -5.08    5.0546   6.22219                % outer can surface
+
+% Cal-Loop Hardware
+% Test Section Module
+surf 1020   cyl     0.0   5.08  1.63703                             % test section module IR
+surf 1021   cyl     0.0   5.08  2.56921                             % test section moduel OR
+surf 1022   cyl     0.0   5.08  2.5781                              % test section half shell aluminum IR
+surf 1023   cyl     0.0   5.08  2.7051                              % test section half shell aluminum OR
+surf 1024   cyl     0.0   5.08  2.86258                             % test section half shell ss OR
+surf 1025   cyl     0.0   5.08  2.91338                             % test section dummy heater IR
+surf 1026   cyl     0.0   5.08  3.03022                             % test section dummy heater OR
+% Spool Piece
+surf 1031   cyl     0.0  -5.08  1.03505                             % spool piece IR
+surf 1032   cyl     0.0  -5.08  1.67005                             % spool piece OR
+
+% Dysprosium Shaping Collar
+surf 1041   cyl     0.0   5.08  2.86766                             % Dy 2 mil filter OR
+surf 1042   cyl     0.0   5.08  2.90576                             % Dy 15 (17) mil filter OR
+surf 1051   pz     74.93                                            % Dy top 20 mil filter top
+surf 1052   pz     30.48                                            % Dy top 15 (17) mil filter top
+surf 1053   pz     17.145                                           % Dy top 2 mil filter top
+surf 1054   pz     10.16                                            % Dy top 2 mil filter bottom
+surf 1055   pz     -8.89                                            % Dy bottom 2 mil filter top
+surf 1056   pz    -17.145                                           % Dy bottom 2 mil filter top
+surf 1057   pz    -30.48                                            % Dy bottom 15 (17) mil filter top
+surf 1058   pz    -76.2                                             % Dy bottom 20 mil filter bottom
+surf 1059   pz   -106.68                                            % bottom of filter assembly
+
+% Calibration Test Train
+surf 1101   cyl    0.0   5.08  1.42875                              % calibration test train IR
+surf 1102   cyl    0.0   5.08  1.5875                               % calibration test train OR
+
+% **********************************************************************
+% *** Cells
+% **********************************************************************
+
+% Standard Assembly
+
+% Fuel Section
+cell    stdfuel     1   fuel1  -1 -2  3                             % fuel meat
+cell    void1       1   void    1 -11  -2  3                        % vacuum gap
+cell    can1        1   zr3    11 -12 -13 14                        % Zr can
+cell    air2        1   air1   12                                   % cooling channel air
+cell    Bspace1     1   zr3  -141                                   % bottom spacer 1
+cell    Bspace2     1   zr3  -142                                   % bottom spacer 2
+cell    Bspace3     1   zr3  -143                                   % bottom spacer 3
+cell    Bspace4     1   zr3  -144                                   % bottom spacer 4
+cell    Bvoid       1   void  -11 -3  141  142  143  144  14        % bottom void
+cell    canbot      1   zr3   -12 -14  16                           % Zr can bottom
+cell    thkbot      1   zr3   -12  17  19 -16                       % bottom endcap wall
+cell    Tspace1     1   zr3  -145                                   % top spacer 1
+cell    Tspace2     1   zr3  -146                                   % top spacer 2
+cell    Tspace3     1   zr3  -147                                   % top spacer 3
+cell    Tspace4     1   zr3  -148                                   % top spacer 4
+cell    Tvoid       1   void  -11  2  145  146  147  148 -13        % top void
+cell    cantop      1   zr3   -12  13 -15  63                       % Zr can top
+cell    thktop      1   zr3   -12  17  15 -18                       % top endcap wall
+cell    evactb      1   zr3   -63  62  13 -61                       % evacuation tube
+cell    evactbvd    1   void  -62  13 -61                           % void in evacuation tube
+% Bottom Reflector
+cell    tprfcan     1   alum2  -12  31 -19                          % bottom reflector can
+cell    sqgrbot     1   graph1 -21  23 -16                          % bottom graph refl square end
+cell    octfrbot    1   graph1 -24 -23                              % bottom octagonal reflector
+cell    rfvd1       1   air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    rfvd2       1   air1   -31  21 -19  23                      % air around bottom square refl
+cell    rfvd3       1   air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    btrfcan     1   alum2  -12  31  18                          % top reflector can
+cell    sqgrtop     1   graph1 -21  15 -22  25                      % top graph refl square end
+cell    loctrftop   1   graph1 -24  22  25 -26                      % top octagonal reflector
+cell    octrftop    1   graph1 -24  26                              % top octagonal reflector
+cell    rfvd4       1   air1   -17  21 -18  15                      % air inside top thick wall
+cell    rfvd5       1   air1   -31  21 -22  18                      % air around top square refl
+cell    rfvd6       1   air1   -31  24  22                          % air around top octagonal reflector
+cell    rfvd7       1   air1   -25  15 -26  63                      % air in square reflector vacuum tube region
+cell    rfvd8       1   air1   -63  61 -26                          % air in octagon reflector vacuum tube region
+
+% Zirconium Reflector Assembly
+
+% Fuel Section
+cell    Zrstdfuel   2   graph1 -1 -2  3                             % fuel meat
+cell    Zrvoid1     2   void    1 -11  -2  3                        % vacuum gap
+cell    Zrcan1      2   zr3    11 -12 -13 14                        % Zr can
+cell    Zrair2      2   air1   12                                   % cooling channel air
+cell    ZrBspace1   2   zr3  -141                                   % bottom spacer 1
+cell    ZrBspace2   2   zr3  -142                                   % bottom spacer 2
+cell    ZrBspace3   2   zr3  -143                                   % bottom spacer 3
+cell    ZrBspace4   2   zr3  -144                                   % bottom spacer 4
+cell    ZrBvoid     2   void  -11 -3  141  142  143  144  14        % bottom void
+cell    Zrcanbot    2   zr3   -12 -14  16                           % Zr can bottom
+cell    Zrthkbot    2   zr3   -12  17  19 -16                       % bottom endcap wall
+cell    ZrTspace1   2   zr3  -145                                   % top spacer 1
+cell    ZrTspace2   2   zr3  -146                                   % top spacer 2
+cell    ZrTspace3   2   zr3  -147                                   % top spacer 3
+cell    ZrTspace4   2   zr3  -148                                   % top spacer 4
+cell    ZrTvoid     2   void  -11  2  145  146  147  148 -13        % top void
+cell    Zrcantop    2   zr3   -12  13 -15                           % Zr can top
+cell    Zrthktop    2   zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    Zrtprfcan   2   alum2  -12  31 -19                          % bottom reflector can
+cell    Zrsqgrbot   2   graph1 -21  23 -16                          % bottom graph refl square end
+cell    Zroctfrbot  2   graph1 -24 -23                              % bottom octagonal reflector
+cell    Zrrfvd1     2   air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    Zrrfvd2     2   air1   -31  21 -19  23                      % air around bottom square refl
+cell    Zrrfvd3     2   air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    Zrbtrfcan   2   alum2  -12  31  18                          % top reflector can
+cell    Zrsqgrtop   2   graph1 -21  15 -22                          % top graph refl square end
+cell    Zrloctrftop 2   graph1 -24  22 -26                          % top octagonal reflector
+cell    Zruoctrftop 2   graph1 -24  26                              % top octagonal reflector
+cell    Zrrfvd4     2   air1   -17  21 -18  15                      % air inside top thick wall
+cell    Zrrfvd5     2   air1   -31  21 -22  18                      % air around top square refl
+cell    Zrrfvd6     2   air1   -31  24  22                          % air around top octagonal reflector
+
+% 48" Access Hole Assembly (Hodoscope)
+
+% Fuel Section
+cell    Hdvoid1     3   air1  -11   125 -113  114                   % air filled can
+cell    Hdvoid2     3   air1  -11  -126 -113  114                   % air filled can
+cell    Hdvoid3     3   air1   122  124 -127  128 -125  126         % air filled can
+                              -113  114
+cell    Hdcan1      3   zr3    11 -12 -113  101                     % Zr can top octagon
+cell    Hdcan2      3   zr3    11 -12 -101  102  103                % Zr can window positive x
+cell    Hdwinair1   3   air1   11 -12 -101  102 -103  104           % air replacing Zr in window
+cell    Hdcan3      3   zr3    11 -12 -101  102 -104                % Zr can window negative x
+cell    Hdcan4      3   zr3    11 -12 -102  114                     % Zr can bottom octagon
+cell    Hdair2      3   air1   12                                   % cooling channel air
+cell    Hdcanbot    3   zr3   -12 -114  116                         % Zr can bottom
+cell    Hdthkbot    3   zr3    117 -12  119 -116                    % bottom endcap wall
+cell    Hdcantop    3   zr3   -12  113 -115                         % Zr can top
+cell    Hdthktop    3   zr3    117 -12  115 -118                    % top endcap wall
+cell    Hdestiff    3   zr3   -11  121 -122 -113  114               % east stiffener
+cell    Hdestiffair 3   air1  -11 -121 -113  114                    % east stiff air
+cell    Hdwstiff    3   zr3   -11  123 -124 -113  114               % west stiffener
+cell    Hdwstiffair 3   air1  -11 -123 -113  114                    % west stiff air
+cell    Hdestifft   3   zr3   -11  127  122 -125  126               % east stiffener feet
+                               114 -113
+cell    Hdwstifft   3   zr3   -11 -128  124 -125  126               % west stiffener feet
+                               114 -113
+% Bottom Reflector
+cell    Hdtprfcan   3   alum2  -12  31 -119                         % bottom reflector can
+cell    Hdsqgrbot   3   graph1 -21  23 -116                         % bottom graph refl square end
+cell    Hdoctrfbot  3   graph1 -24 -23  106                         % bottom octagonal reflector
+cell    HdPbbot     3   lead   -24 -106                             % bottom lead shield
+cell    Hdrfvd1     3   air1   -117  21 -116  119                   % air inside bottom thick wall
+cell    Hdrfvd2     3   air1   -31  21 -119  23                     % air around bottom square refl
+cell    Hdrfvd3     3   air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    Hdbtrfcan   3   alum2  -12  31  118                         % top reflector can
+cell    Hdsqgrtop   3   graph1 -21  115 -22                         % top graph refl square end
+cell    Hdoctrftop  3   graph1 -24  22 -105                         % top octagonal reflector
+cell    HdPbtop     3   lead   -24  105                             % top lead shield
+cell    Hdrfvd4     3   air1   -117  21 -118  115                   % air inside top thick wall
+cell    Hdrfvd5     3   air1   -31  21 -22  118                     % air around top square refl
+cell    Hdrfvd6     3   air1   -31  24  22                          % air around top octagonal reflector
+
+% 48" Access Hole Assembly Modified (Hodoscope)
+
+% Fuel Section
+cell    Hdmvoid1     6   air1  -129 -113  114  122  124              % air filled can
+                               132  134  136  138
+cell    Hdmvoid2     6   air1  -11  129 -113 101  104 -103           % air filled can
+cell    Hdmvoid3     6   air1  -11  129 -102 114  104 -103           % air filled can
+cell    Hdmcan1      6   zr3    11 -12 -113  101                     % Zr can top octagon
+cell    Hdmcan2      6   zr3    11 -12 -101  102  103                % Zr can window positive x
+cell    Hdmwinair1   6   air1  129 -12 -101  102 -103  104           % air replacing Zr in window
+cell    Hdmcan3      6   zr3    11 -12 -101  102 -104                % Zr can window negative x
+cell    Hdmcan4      6   zr3    11 -12 -102  114                     % Zr can bottom octagon
+cell    Hdmair2      6   air1   12                                   % cooling channel air
+cell    Hdmcanbot    6   zr3   -12 -114  116                         % Zr can bottom
+cell    Hdmthkbot    6   zr3    117 -12  119 -116                    % bottom endcap wall
+cell    Hdmcantop    6   zr3   -12  113 -115                         % Zr can top
+cell    Hdmthktop    6   zr3    117 -12  115 -118                    % top endcap wall
+cell    Hdmestiff    6   zr3   -11  121 -122 -113  114               % east stiffener
+cell    Hdmestiffair 6   air1  -11 -121 -113  114                    % east stiff air
+cell    Hdmwstiff    6   zr3   -11  123 -124 -113  114               % west stiffener
+cell    Hdmwstiffair 6   air1  -11 -123 -113  114                    % west stiff air
+cell    Hdmnestiff   6   zr3   -11 -132  131 -113  114               % northeast stiffener
+cell    Hdmnestiffar 6   air1  -11 -131 -113  114                    % northeast stiffener air
+cell    Hdmsestiff   6   zr3   -11 -134  133 -113  114               % southeast stiffener
+cell    Hdmsestiffar 6   air1  -11 -133 -113  114                    % northeast stiffener air
+cell    Hdmswstiff   6   zr3   -11 -136  135 -113  114               % southwest stiffener
+cell    Hdmswstiffar 6   air1  -11 -135 -113  114                    % northeast stiffener air
+cell    Hdmnwstiff   6   zr3   -11 -138  137 -113  114               % northwest stiffener
+cell    Hdmnwstiffar 6   air1  -11 -137 -113  114                    % northeast stiffener air
+cell    Hdmestifft   6   zr3   -11  129  122  124  132  134  103     % east stiffener feet
+                               114 -113
+cell    Hdmwstifft   6   zr3   -11  129  122  124  136  138 -104     % west stiffener feet
+                               114 -113
+
+% Bottom Reflector
+cell    Hdmtprfcan   6   alum2  -12  31 -119                         % bottom reflector can
+cell    Hdmsqgrbot   6   graph1 -21  23 -116                         % bottom graph refl square end
+cell    Hdmoctrfbot  6   graph1 -24 -23  106                         % bottom octagonal reflector
+cell    HdmPbbot     6   lead   -24 -106                             % bottom lead shield
+cell    Hdmrfvd1     6   air1   -117  21 -116  119                   % air inside bottom thick wall
+cell    Hdmrfvd2     6   air1   -31  21 -119  23                     % air around bottom square refl
+cell    Hdmrfvd3     6   air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    Hdmbtrfcan   6   alum2  -12  31  118                         % top reflector can
+cell    Hdmsqgrtop   6   graph1 -21  115 -22                         % top graph refl square end
+cell    Hdmoctrftop  6   graph1 -24  22 -105                         % top octagonal reflector
+cell    HdmPbtop     6   lead   -24  105                             % top lead shield
+cell    Hdmrfvd4     6   air1   -117  21 -118  115                   % air inside top thick wall
+cell    Hdmrfvd5     6   air1   -31  21 -22  118                     % air around top square refl
+cell    Hdmrfvd6     6   air1   -31  24  22                          % air around top octagonal reflector
+
+% 48" 1/2 Reflector Assembly (Hodoscope)
+
+% Fuel Section
+cell    rfhvoid     4   air1  -12  170                              % air behind half element
+cell    rfhair      4   air1   12                                   % cooling channel air
+cell    rfhcan1     4   zr3    11 -12 -170                          % Zr can octagon
+cell    rfhcan2     4   zr3   -11 -170  171                         % Zr can half back
+cell    rfhoctrf    4   graph1 -11 -171  172 -173                   % octagonal reflector
+cell    rfhPbbot    4   lead   -11 -171  174 -172                   % bottom lead shield
+cell    rfhextbot   4   alum2  -11 -171 -174                        % bottom extension
+cell    rfhexttop   4   alum2  -11 -171  173                        % top extension
+
+% 48" 1/2 Access Hole Assembly (Hodoscope)
+
+% Fuel Section
+cell    Hdhvoid1    5   air1  -11  107  104 -103 -153  154          % air filled can
+cell    Hdhvoid2    5   air1  -11  107  109 -153  154               % air filled can north
+cell    Hdhvoid3    5   air1  -11  107 -110 -153  154               % air filled can south
+cell    Hdhvoid4    5   air1  -12 -108                              % air behind half element
+cell    Hdhair2     5   air1   12                                   % cooling channel air
+cell    Hdhcan1     5   zr3    11 -12  167  108                     % Zr can top octagon
+cell    Hdhcan2     5   zr3    11 -12 -167  168  103  108           % Zr can window positive x
+cell    Hdhwinair1  5   air1   11 -12 -167  168 -103  104  108      % air replacing Zr in window
+cell    Hdhcan3     5   zr3    11 -12 -167  168 -104  108           % Zr can window negative x
+cell    Hdhcan4     5   zr3    11 -12 -168  108                     % Zr can bottom octagon
+cell    Hdhcan5     5   zr3   -11 108 -107  167                     % Zr can top half back
+cell    Hdhcan6     5   zr3   108 -107 -11  103 -167  168           % zr can half wall positive x
+cell    Hdhcan7     5   zr3   -11 108 -107 -168                     % Zr can bottom half back
+cell    Hdhcan8     5   zr3   108 -107 -11 -104 -167  168           % zr can half wall negative x
+cell    Hdhstifn    5   zr3   -11  107  103 -109 -153 154           % zr can north stiffener
+cell    Hdhstifs    5   zr3   -11  107  110 -104 -153 154           % zr can south stiffener
+cell    Hdhwinair2  5   air1  108 -107 -167  168 -103  104          % air replacing Zr in half window
+cell    Hdhcanbot   5   zr3   -11 -154  156  107                    % Zr can bottom
+cell    Hdhcantop   5   zr3   -11  153 -155  107                    % Zr can top
+% Bottom Reflector
+cell    Hdhoctrfbot 5   graph1 -11  107  162 -156                   % bottom octagonal reflector
+cell    HdhPbbot    5   lead   -11  107  164 -162                   % bottom lead shield
+cell    Hdhextbot   5   alum2  -11  107 -164                        % bottom extension
+% Top Reflector
+cell    Hdhoctrftop 5   graph1 -11  107  155 -161                   % top octagonal reflector
+cell    HdhPbtop    5   lead   -11  107  161 -163                   % top lead shield
+cell    Hdhexttop   5   alum2  -11  107  163                        % top extension
+
+% Aluminum Dummy Reflector Assembly
+
+cell    AlD         7   graph1 -24                                  % graphite in aluminum
+cell    AlDair1     7   air1    24 -31                              % air gap
+cell    AlDcan1     7   alum2  -12  31                              % Al can
+cell    AlDair2     7   air1    12                                  % cooling channel air
+
+% Compensation Rod Assemblies
+
+% Compensation Assembly #1 (Northeast)
+cell    cmp1rod1    11  fill  101 -51                               % air inside Zr liner
+cell    cmp1ZrLiner 11  zr2    51 -52                               % Zr2 liner
+cell    cmp1void1   11  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    cmp1fuel    11  fuel1  53  -1  -2  3                        % fuel meat
+cell    cmp1void2   11  void    1 -11  -2  3                        % vacuum gap
+cell    cmp1can1    11  zr3    11 -12 -13  14                       % Zr can
+cell    cmp1air2    11  air1   12                                   % cooling channel air
+cell    cmp1Bspace1 11  zr3  -141  149                              % bottom spacer 1
+cell    cmp1Bspace2 11  zr3  -142  149                              % bottom spacer 2
+cell    cmp1Bspace3 11  zr3  -143  149                              % bottom spacer 3
+cell    cmp1Bspace4 11  zr3  -144  149                              % bottom spacer 4
+cell    cmp1Bvoid1  11  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    cmp1Bvoid2  11  void   -3 -149   52  14                     % bottom void
+cell    cmp1canbot  11  zr3   -12 -14  16  52                       % Zr can bottom
+cell    cmp1thkbot  11  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    cmp1Tspace1 11  zr3  -145  149                              % top spacer 1
+cell    cmp1Tspace2 11  zr3  -146  149                              % top spacer 2
+cell    cmp1Tspace3 11  zr3  -147  149                              % top spacer 3
+cell    cmp1Tspace4 11  zr3  -148  149                              % top spacer 4
+cell    cmp1Tvoid1  11  void  -11  2  145  146  147  148  149 -13   % top void
+cell    cmp1Tvoid2  11  void    2 -149   52 -13                     % top void
+cell    cmp1cantop  11  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    cmp1evactb  11  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    cmp1vactbvd 11  void  -65  13 -64                           % void in evacuation tube ??????
+cell    cmp1thktop  11  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    cmp1tprfcan 11  alum2  -12  31 -19                          % bottom reflector can
+cell    cmp1sqgrbot 11  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    cmp1octfrbt 11  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    cmp1rfvd1   11  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    cmp1rfvd2   11  air1   -31  21 -19  23                      % air around bottom square refl
+cell    cmp1rfvd3   11  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    cmp1rfvd4   11  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    cmp1btrfcan 11  alum2  -12  31  18                          % top reflector can
+cell    cmp1sqgrtop 11  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    cmp1octfrtp 11  graph1 -24  22  55  56                      % top octagonal reflector
+cell    cmp1vctbgr  11  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    cmp1rfvd5   11  air1   -17  21 -18  15                      % air inside top thick wall
+cell    cmp1rfvd6   11  air1   -31  21 -22  18                      % air around top square refl
+cell    cmp1rfvd7   11  air1   -31  24  22                          % air around top octagonal reflector
+cell    cmp1rfvd8   11  air1   -55  52  15                          % air inside top reflector block
+cell    cmp1rfvd9   11  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    cmp1rfvd10  11  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Compensation Assembly #2 (Southeast)
+cell    cmp2rod1    12  fill  102 -51                               % air inside Zr liner
+cell    cmp2ZrLiner 12  zr2    51 -52                               % Zr2 liner
+cell    cmp2void1   12  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    cmp2fuel    12  fuel1  53  -1  -2  3                        % fuel meat
+cell    cmp2void2   12  void    1 -11  -2  3                        % vacuum gap
+cell    cmp2can1    12  zr3    11 -12 -13  14                       % Zr can
+cell    cmp2air2    12  air1   12                                   % cooling channel air
+cell    cmp2Bspace1 12  zr3  -141  149                              % bottom spacer 1
+cell    cmp2Bspace2 12  zr3  -142  149                              % bottom spacer 2
+cell    cmp2Bspace3 12  zr3  -143  149                              % bottom spacer 3
+cell    cmp2Bspace4 12  zr3  -144  149                              % bottom spacer 4
+cell    cmp2Bvoid1  12  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    cmp2Bvoid2  12  void   -3 -149   52  14                     % bottom void
+cell    cmp2canbot  12  zr3   -12 -14  16  52                       % Zr can bottom
+cell    cmp2thkbot  12  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    cmp2Tspace1 12  zr3  -145  149                              % top spacer 1
+cell    cmp2Tspace2 12  zr3  -146  149                              % top spacer 2
+cell    cmp2Tspace3 12  zr3  -147  149                              % top spacer 3
+cell    cmp2Tspace4 12  zr3  -148  149                              % top spacer 4
+cell    cmp2Tvoid1  12  void  -11  2  145  146  147  148  149 -13   % top void
+cell    cmp2Tvoid2  12  void    2 -149   52 -13                     % top void
+cell    cmp2cantop  12  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    cmp2evactb  12  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    cmp2vactbvd 12  void  -65  13 -64                           % void in evacuation tube ??????
+cell    cmp2thktop  12  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    cmp2tprfcan 12  alum2  -12  31 -19                          % bottom reflector can
+cell    cmp2sqgrbot 12  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    cmp2octfrbt 12  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    cmp2rfvd1   12  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    cmp2rfvd2   12  air1   -31  21 -19  23                      % air around bottom square refl
+cell    cmp2rfvd3   12  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    cmp2rfvd4   12  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    cmp2btrfcan 12  alum2  -12  31  18                          % top reflector can
+cell    cmp2sqgrtop 12  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    cmp2octfrtp 12  graph1 -24  22  55  56                      % top octagonal reflector
+cell    cmp2vctbgr  12  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    cmp2rfvd5   12  air1   -17  21 -18  15                      % air inside top thick wall
+cell    cmp2rfvd6   12  air1   -31  21 -22  18                      % air around top square refl
+cell    cmp2rfvd7   12  air1   -31  24  22                          % air around top octagonal reflector
+cell    cmp2rfvd8   12  air1   -55  52  15                          % air inside top reflector block
+cell    cmp2rfvd9   12  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    cmp2rfvd10  12  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Compensation Assembly #3 (Southwest)
+cell    cmp3rod1    13  fill  103 -51                               % air inside Zr liner
+cell    cmp3ZrLiner 13  zr2    51 -52                               % Zr2 liner
+cell    cmp3void1   13  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    cmp3fuel    13  fuel1  53  -1  -2  3                        % fuel meat
+cell    cmp3void2   13  void    1 -11  -2  3                        % vacuum gap
+cell    cmp3can1    13  zr3    11 -12 -13  14                       % Zr can
+cell    cmp3air2    13  air1   12                                   % cooling channel air
+cell    cmp3Bspace1 13  zr3  -141  149                              % bottom spacer 1
+cell    cmp3Bspace2 13  zr3  -142  149                              % bottom spacer 2
+cell    cmp3Bspace3 13  zr3  -143  149                              % bottom spacer 3
+cell    cmp3Bspace4 13  zr3  -144  149                              % bottom spacer 4
+cell    cmp3Bvoid1  13  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    cmp3Bvoid2  13  void   -3 -149   52  14                     % bottom void
+cell    cmp3canbot  13  zr3   -12 -14  16  52                       % Zr can bottom
+cell    cmp3thkbot  13  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    cmp3Tspace1 13  zr3  -145  149                              % top spacer 1
+cell    cmp3Tspace2 13  zr3  -146  149                              % top spacer 2
+cell    cmp3Tspace3 13  zr3  -147  149                              % top spacer 3
+cell    cmp3Tspace4 13  zr3  -148  149                              % top spacer 4
+cell    cmp3Tvoid1  13  void  -11  2  145  146  147  148  149 -13   % top void
+cell    cmp3Tvoid2  13  void    2 -149   52 -13                     % top void
+cell    cmp3cantop  13  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    cmp3evactb  13  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    cmp3vactbvd 13  void  -65  13 -64                           % void in evacuation tube ??????
+cell    cmp3thktop  13  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    cmp3tprfcan 13  alum2  -12  31 -19                          % bottom reflector can
+cell    cmp3sqgrbot 13  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    cmp3octfrbt 13  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    cmp3rfvd1   13  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    cmp3rfvd2   13  air1   -31  21 -19  23                      % air around bottom square refl
+cell    cmp3rfvd3   13  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    cmp3rfvd4   13  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    cmp3btrfcan 13  alum2  -12  31  18                          % top reflector can
+cell    cmp3sqgrtop 13  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    cmp3octfrtp 13  graph1 -24  22  55  56                      % top octagonal reflector
+cell    cmp3vctbgr  13  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    cmp3rfvd5   13  air1   -17  21 -18  15                      % air inside top thick wall
+cell    cmp3rfvd6   13  air1   -31  21 -22  18                      % air around top square refl
+cell    cmp3rfvd7   13  air1   -31  24  22                          % air around top octagonal reflector
+cell    cmp3rfvd8   13  air1   -55  52  15                          % air inside top reflector block
+cell    cmp3rfvd9   13  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    cmp3rfvd10  13  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Compensation Assembly #4 (Northwest)
+cell    cmp4rod1    14  fill  104 -51                               % air inside Zr liner
+cell    cmp4ZrLiner 14  zr2    51 -52                               % Zr2 liner
+cell    cmp4void1   14  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    cmp4fuel    14  fuel1  53  -1  -2  3                        % fuel meat
+cell    cmp4void2   14  void    1 -11  -2  3                        % vacuum gap
+cell    cmp4can1    14  zr3    11 -12 -13  14                       % Zr can
+cell    cmp4air2    14  air1   12                                   % cooling channel air
+cell    cmp4Bspace1 14  zr3  -141  149                              % bottom spacer 1
+cell    cmp4Bspace2 14  zr3  -142  149                              % bottom spacer 2
+cell    cmp4Bspace3 14  zr3  -143  149                              % bottom spacer 3
+cell    cmp4Bspace4 14  zr3  -144  149                              % bottom spacer 4
+cell    cmp4Bvoid1  14  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    cmp4Bvoid2  14  void   -3 -149   52  14                     % bottom void
+cell    cmp4canbot  14  zr3   -12 -14  16  52                       % Zr can bottom
+cell    cmp4thkbot  14  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    cmp4Tspace1 14  zr3  -145  149                              % top spacer 1
+cell    cmp4Tspace2 14  zr3  -146  149                              % top spacer 2
+cell    cmp4Tspace3 14  zr3  -147  149                              % top spacer 3
+cell    cmp4Tspace4 14  zr3  -148  149                              % top spacer 4
+cell    cmp4Tvoid1  14  void  -11  2  145  146  147  148  149 -13   % top void
+cell    cmp4Tvoid2  14  void    2 -149   52 -13                     % top void
+cell    cmp4cantop  14  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    cmp4evactb  14  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    cmp4vactbvd 14  void  -65  13 -64                           % void in evacuation tube ??????
+cell    cmp4thktop  14  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    cmp4tprfcan 14  alum2  -12  31 -19                          % bottom reflector can
+cell    cmp4sqgrbot 14  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    cmp4octfrbt 14  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    cmp4rfvd1   14  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    cmp4rfvd2   14  air1   -31  21 -19  23                      % air around bottom square refl
+cell    cmp4rfvd3   14  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    cmp4rfvd4   14  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    cmp4btrfcan 14  alum2  -12  31  18                          % top reflector can
+cell    cmp4sqgrtop 14  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    cmp4octfrtp 14  graph1 -24  22  55  56                      % top octagonal reflector
+cell    cmp4vctbgr  14  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    cmp4rfvd5   14  air1   -17  21 -18  15                      % air inside top thick wall
+cell    cmp4rfvd6   14  air1   -31  21 -22  18                      % air around top square refl
+cell    cmp4rfvd7   14  air1   -31  24  22                          % air around top octagonal reflector
+cell    cmp4rfvd8   14  air1   -55  52  15                          % air inside top reflector block
+cell    cmp4rfvd9   14  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    cmp4rfvd10  14  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Control Rod Assemblies
+
+% Control Assembly #1 (Northeast)
+cell    ctr1rod1    21  fill  111 -51                               % air inside Zr liner
+cell    ctr1ZrLiner 21  zr2    51 -52                               % Zr2 liner
+cell    ctr1void1   21  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    ctr1fuel    21  fuel1  53  -1  -2  3                        % fuel meat
+cell    ctr1void2   21  void    1 -11  -2  3                        % vacuum gap
+cell    ctr1can1    21  zr3    11 -12 -13  14                       % Zr can
+cell    ctr1air2    21  air1   12                                   % cooling channel air
+cell    ctr1Bspace1 21  zr3  -141  149                              % bottom spacer 1
+cell    ctr1Bspace2 21  zr3  -142  149                              % bottom spacer 2
+cell    ctr1Bspace3 21  zr3  -143  149                              % bottom spacer 3
+cell    ctr1Bspace4 21  zr3  -144  149                              % bottom spacer 4
+cell    ctr1Bvoid1  21  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    ctr1Bvoid2  21  void   -3 -149   52  14                     % bottom void
+cell    ctr1canbot  21  zr3   -12 -14  16  52                       % Zr can bottom
+cell    ctr1thkbot  21  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    ctr1Tspace1 21  zr3  -145  149                              % top spacer 1
+cell    ctr1Tspace2 21  zr3  -146  149                              % top spacer 2
+cell    ctr1Tspace3 21  zr3  -147  149                              % top spacer 3
+cell    ctr1Tspace4 21  zr3  -148  149                              % top spacer 4
+cell    ctr1Tvoid1  21  void  -11  2  145  146  147  148  149 -13   % top void
+cell    ctr1Tvoid2  21  void    2 -149   52 -13                     % top void
+cell    ctr1cantop  21  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    ctr1evactb  21  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    ctr1vactbvd 21  void  -65  13 -64                           % void in evacuation tube ??????
+cell    ctr1thktop  21  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    ctr1tprfcan 21  alum2  -12  31 -19                          % bottom reflector can
+cell    ctr1sqgrbot 21  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    ctr1octfrbt 21  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    ctr1rfvd1   21  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    ctr1rfvd2   21  air1   -31  21 -19  23                      % air around bottom square refl
+cell    ctr1rfvd3   21  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    ctr1rfvd4   21  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    ctr1btrfcan 21  alum2  -12  31  18                          % top reflector can
+cell    ctr1sqgrtop 21  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    ctr1octfrtp 21  graph1 -24  22  55  56                      % top octagonal reflector
+cell    ctr1vctbgr  21  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    ctr1rfvd5   21  air1   -17  21 -18  15                      % air inside top thick wall
+cell    ctr1rfvd6   21  air1   -31  21 -22  18                      % air around top square refl
+cell    ctr1rfvd7   21  air1   -31  24  22                          % air around top octagonal reflector
+cell    ctr1rfvd8   21  air1   -55  52  15                          % air inside top reflector block
+cell    ctr1rfvd9   21  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    ctr1rfvd10  21  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Control Assembly %2 (Southeast)
+cell    ctr2rod1    22  fill  112 -51                               % air inside Zr liner
+cell    ctr2ZrLiner 22  zr2    51 -52                               % Zr2 liner
+cell    ctr2void1   22  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    ctr2fuel    22  fuel1  53  -1  -2  3                        % fuel meat
+cell    ctr2void2   22  void    1 -11  -2  3                        % vacuum gap
+cell    ctr2can1    22  zr3    11 -12 -13  14                       % Zr can
+cell    ctr2air2    22  air1   12                                   % cooling channel air
+cell    ctr2Bspace1 22  zr3  -141  149                              % bottom spacer 1
+cell    ctr2Bspace2 22  zr3  -142  149                              % bottom spacer 2
+cell    ctr2Bspace3 22  zr3  -143  149                              % bottom spacer 3
+cell    ctr2Bspace4 22  zr3  -144  149                              % bottom spacer 4
+cell    ctr2Bvoid1  22  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    ctr2Bvoid2  22  void   -3 -149   52  14                     % bottom void
+cell    ctr2canbot  22  zr3   -12 -14  16  52                       % Zr can bottom
+cell    ctr2thkbot  22  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    ctr2Tspace1 22  zr3  -145  149                              % top spacer 1
+cell    ctr2Tspace2 22  zr3  -146  149                              % top spacer 2
+cell    ctr2Tspace3 22  zr3  -147  149                              % top spacer 3
+cell    ctr2Tspace4 22  zr3  -148  149                              % top spacer 4
+cell    ctr2Tvoid1  22  void  -11  2  145  146  147  148  149 -13   % top void
+cell    ctr2Tvoid2  22  void    2 -149   52 -13                     % top void
+cell    ctr2cantop  22  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    ctr2evactb  22  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    ctr2vactbvd 22  void  -65  13 -64                           % void in evacuation tube ??????
+cell    ctr2thktop  22  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    ctr2tprfcan 22  alum2  -12  31 -19                          % bottom reflector can
+cell    ctr2sqgrbot 22  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    ctr2octfrbt 22  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    ctr2rfvd1   22  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    ctr2rfvd2   22  air1   -31  21 -19  23                      % air around bottom square refl
+cell    ctr2rfvd3   22  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    ctr2rfvd4   22  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    ctr2btrfcan 22  alum2  -12  31  18                          % top reflector can
+cell    ctr2sqgrtop 22  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    ctr2octfrtp 22  graph1 -24  22  55  56                      % top octagonal reflector
+cell    ctr2vctbgr  22  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    ctr2rfvd5   22  air1   -17  21 -18  15                      % air inside top thick wall
+cell    ctr2rfvd6   22  air1   -31  21 -22  18                      % air around top square refl
+cell    ctr2rfvd7   22  air1   -31  24  22                          % air around top octagonal reflector
+cell    ctr2rfvd8   22  air1   -55  52  15                          % air inside top reflector block
+cell    ctr2rfvd9   22  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    ctr2rfvd10  22  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Control Assembly #3 (Southwest)
+cell    ctr3rod1    23  fill  113 -51                               % air inside Zr liner
+cell    ctr3ZrLiner 23  zr2    51 -52                               % Zr2 liner
+cell    ctr3void1   23  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    ctr3fuel    23  fuel1  53  -1  -2  3                        % fuel meat
+cell    ctr3void2   23  void    1 -11  -2  3                        % vacuum gap
+cell    ctr3can1    23  zr3    11 -12 -13  14                       % Zr can
+cell    ctr3air2    23  air1   12                                   % cooling channel air
+cell    ctr3Bspace1 23  zr3  -141  149                              % bottom spacer 1
+cell    ctr3Bspace2 23  zr3  -142  149                              % bottom spacer 2
+cell    ctr3Bspace3 23  zr3  -143  149                              % bottom spacer 3
+cell    ctr3Bspace4 23  zr3  -144  149                              % bottom spacer 4
+cell    ctr3Bvoid1  23  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    ctr3Bvoid2  23  void   -3 -149   52  14                     % bottom void
+cell    ctr3canbot  23  zr3   -12 -14  16  52                       % Zr can bottom
+cell    ctr3thkbot  23  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    ctr3Tspace1 23  zr3  -145  149                              % top spacer 1
+cell    ctr3Tspace2 23  zr3  -146  149                              % top spacer 2
+cell    ctr3Tspace3 23  zr3  -147  149                              % top spacer 3
+cell    ctr3Tspace4 23  zr3  -148  149                              % top spacer 4
+cell    ctr3Tvoid1  23  void  -11  2  145  146  147  148  149 -13   % top void
+cell    ctr3Tvoid2  23  void    2 -149   52 -13                     % top void
+cell    ctr3cantop  23  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    ctr3evactb  23  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    ctr3vactbvd 23  void  -65  13 -64                           % void in evacuation tube ??????
+cell    ctr3thktop  23  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    ctr3tprfcan 23  alum2  -12  31 -19                          % bottom reflector can
+cell    ctr3sqgrbot 23  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    ctr3octfrbt 23  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    ctr3rfvd1   23  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    ctr3rfvd2   23  air1   -31  21 -19  23                      % air around bottom square refl
+cell    ctr3rfvd3   23  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    ctr3rfvd4   23  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    ctr3btrfcan 23  alum2  -12  31  18                          % top reflector can
+cell    ctr3sqgrtop 23  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    ctr3octfrtp 23  graph1 -24  22  55  56                      % top octagonal reflector
+cell    ctr3vctbgr  23  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    ctr3rfvd5   23  air1   -17  21 -18  15                      % air inside top thick wall
+cell    ctr3rfvd6   23  air1   -31  21 -22  18                      % air around top square refl
+cell    ctr3rfvd7   23  air1   -31  24  22                          % air around top octagonal reflector
+cell    ctr3rfvd8   23  air1   -55  52  15                          % air inside top reflector block
+cell    ctr3rfvd9   23  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    ctr3rfvd10  23  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Control Assembly #4 (Northwest)
+cell    ctr4rod1    24  fill  114 -51                               % air inside Zr liner
+cell    ctr4ZrLiner 24  zr2    51 -52                               % Zr2 liner
+cell    ctr4void1   24  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    ctr4fuel    24  fuel1  53  -1  -2  3                        % fuel meat
+cell    ctr4void2   24  void    1 -11  -2  3                        % vacuum gap
+cell    ctr4can1    24  zr3    11 -12 -13  14                       % Zr can
+cell    ctr4air2    24  air1   12                                   % cooling channel air
+cell    ctr4Bspace1 24  zr3  -141  149                              % bottom spacer 1
+cell    ctr4Bspace2 24  zr3  -142  149                              % bottom spacer 2
+cell    ctr4Bspace3 24  zr3  -143  149                              % bottom spacer 3
+cell    ctr4Bspace4 24  zr3  -144  149                              % bottom spacer 4
+cell    ctr4Bvoid1  24  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    ctr4Bvoid2  24  void   -3 -149   52  14                     % bottom void
+cell    ctr4canbot  24  zr3   -12 -14  16  52                       % Zr can bottom
+cell    ctr4thkbot  24  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    ctr4Tspace1 24  zr3  -145  149                              % top spacer 1
+cell    ctr4Tspace2 24  zr3  -146  149                              % top spacer 2
+cell    ctr4Tspace3 24  zr3  -147  149                              % top spacer 3
+cell    ctr4Tspace4 24  zr3  -148  149                              % top spacer 4
+cell    ctr4Tvoid1  24  void  -11  2  145  146  147  148  149 -13   % top void
+cell    ctr4Tvoid2  24  void    2 -149   52 -13                     % top void
+cell    ctr4cantop  24  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    ctr4evactb  24  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    ctr4vactbvd 24  void  -65  13 -64                           % void in evacuation tube ??????
+cell    ctr4thktop  24  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    ctr4tprfcan 24  alum2  -12  31 -19                          % bottom reflector can
+cell    ctr4sqgrbot 24  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    ctr4octfrbt 24  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    ctr4rfvd1   24  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    ctr4rfvd2   24  air1   -31  21 -19  23                      % air around bottom square refl
+cell    ctr4rfvd3   24  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    ctr4rfvd4   24  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    ctr4btrfcan 24  alum2  -12  31  18                          % top reflector can
+cell    ctr4sqgrtop 24  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    ctr4octfrtp 24  graph1 -24  22  55  56                      % top octagonal reflector
+cell    ctr4vctbgr  24  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    ctr4rfvd5   24  air1   -17  21 -18  15                      % air inside top thick wall
+cell    ctr4rfvd6   24  air1   -31  21 -22  18                      % air around top square refl
+cell    ctr4rfvd7   24  air1   -31  24  22                          % air around top octagonal reflector
+cell    ctr4rfvd8   24  air1   -55  52  15                          % air inside top reflector block
+cell    ctr4rfvd9   24  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    ctr4rfvd10  24  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Transient Rod Assemblies
+
+% Transient Assembly #1 (Northeast)
+cell    trn1rod1    31  fill  121 -51                               % air inside Zr liner
+cell    trn1ZrLiner 31  zr2    51 -52                               % Zr2 liner
+cell    trn1void1   31  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    trn1fuel    31  fuel1  53  -1  -2  3                        % fuel meat
+cell    trn1void2   31  void    1 -11  -2  3                        % vacuum gap
+cell    trn1can1    31  zr3    11 -12 -13  14                       % Zr can
+cell    trn1air2    31  air1   12                                   % cooling channel air
+cell    trn1Bspace1 31  zr3  -141  149                              % bottom spacer 1
+cell    trn1Bspace2 31  zr3  -142  149                              % bottom spacer 2
+cell    trn1Bspace3 31  zr3  -143  149                              % bottom spacer 3
+cell    trn1Bspace4 31  zr3  -144  149                              % bottom spacer 4
+cell    trn1Bvoid1  31  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    trn1Bvoid2  31  void   -3 -149   52  14                     % bottom void
+cell    trn1canbot  31  zr3   -12 -14  16  52                       % Zr can bottom
+cell    trn1thkbot  31  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    trn1Tspace1 31  zr3  -145  149                              % top spacer 1
+cell    trn1Tspace2 31  zr3  -146  149                              % top spacer 2
+cell    trn1Tspace3 31  zr3  -147  149                              % top spacer 3
+cell    trn1Tspace4 31  zr3  -148  149                              % top spacer 4
+cell    trn1Tvoid1  31  void  -11  2  145  146  147  148  149 -13   % top void
+cell    trn1Tvoid2  31  void    2 -149   52 -13                     % top void
+cell    trn1cantop  31  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    trn1evactb  31  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    trn1vactbvd 31  void  -65  13 -64                           % void in evacuation tube ??????
+cell    trn1thktop  31  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    trn1tprfcan 31  alum2  -12  31 -19                          % bottom reflector can
+cell    trn1sqgrbot 31  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    trn1octfrbt 31  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    trn1rfvd1   31  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    trn1rfvd2   31  air1   -31  21 -19  23                      % air around bottom square refl
+cell    trn1rfvd3   31  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    trn1rfvd4   31  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    trn1btrfcan 31  alum2  -12  31  18                          % top reflector can
+cell    trn1sqgrtop 31  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    trn1octfrtp 31  graph1 -24  22  55  56                      % top octagonal reflector
+cell    trn1vctbgr  31  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    trn1rfvd5   31  air1   -17  21 -18  15                      % air inside top thick wall
+cell    trn1rfvd6   31  air1   -31  21 -22  18                      % air around top square refl
+cell    trn1rfvd7   31  air1   -31  24  22                          % air around top octagonal reflector
+cell    trn1rfvd8   31  air1   -55  52  15                          % air inside top reflector block
+cell    trn1rfvd9   31  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    trn1rfvd10  31  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Transient Assembly #2 (Southeast)
+cell    trn2rod1    32  fill  122 -51                               % air inside Zr liner
+cell    trn2ZrLiner 32  zr2    51 -52                               % Zr2 liner
+cell    trn2void1   32  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    trn2fuel    32  fuel1  53  -1  -2  3                        % fuel meat
+cell    trn2void2   32  void    1 -11  -2  3                        % vacuum gap
+cell    trn2can1    32  zr3    11 -12 -13  14                       % Zr can
+cell    trn2air2    32  air1   12                                   % cooling channel air
+cell    trn2Bspace1 32  zr3  -141  149                              % bottom spacer 1
+cell    trn2Bspace2 32  zr3  -142  149                              % bottom spacer 2
+cell    trn2Bspace3 32  zr3  -143  149                              % bottom spacer 3
+cell    trn2Bspace4 32  zr3  -144  149                              % bottom spacer 4
+cell    trn2Bvoid1  32  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    trn2Bvoid2  32  void   -3 -149   52  14                     % bottom void
+cell    trn2canbot  32  zr3   -12 -14  16  52                       % Zr can bottom
+cell    trn2thkbot  32  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    trn2Tspace1 32  zr3  -145  149                              % top spacer 1
+cell    trn2Tspace2 32  zr3  -146  149                              % top spacer 2
+cell    trn2Tspace3 32  zr3  -147  149                              % top spacer 3
+cell    trn2Tspace4 32  zr3  -148  149                              % top spacer 4
+cell    trn2Tvoid1  32  void  -11  2  145  146  147  148  149 -13   % top void
+cell    trn2Tvoid2  32  void    2 -149   52 -13                     % top void
+cell    trn2cantop  32  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    trn2evactb  32  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    trn2vactbvd 32  void  -65  13 -64                           % void in evacuation tube ??????
+cell    trn2thktop  32  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    trn2tprfcan 32  alum2  -12  31 -19                          % bottom reflector can
+cell    trn2sqgrbot 32  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    trn2octfrbt 32  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    trn2rfvd1   32  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    trn2rfvd2   32  air1   -31  21 -19  23                      % air around bottom square refl
+cell    trn2rfvd3   32  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    trn2rfvd4   32  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    trn2btrfcan 32  alum2  -12  31  18                          % top reflector can
+cell    trn2sqgrtop 32  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    trn2octfrtp 32  graph1 -24  22  55  56                      % top octagonal reflector
+cell    trn2vctbgr  32  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    trn2rfvd5   32  air1   -17  21 -18  15                      % air inside top thick wall
+cell    trn2rfvd6   32  air1   -31  21 -22  18                      % air around top square refl
+cell    trn2rfvd7   32  air1   -31  24  22                          % air around top octagonal reflector
+cell    trn2rfvd8   32  air1   -55  52  15                          % air inside top reflector block
+cell    trn2rfvd9   32  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    trn2rfvd10  32  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Transient Assembly #3 (Southwest)
+cell    trn3rod1    33  fill  123 -51                               % air inside Zr liner
+cell    trn3ZrLiner 33  zr2    51 -52                               % Zr2 liner
+cell    trn3void1   33  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    trn3fuel    33  fuel1  53  -1  -2  3                        % fuel meat
+cell    trn3void2   33  void    1 -11  -2  3                        % vacuum gap
+cell    trn3can1    33  zr3    11 -12 -13  14                       % Zr can
+cell    trn3air2    33  air1   12                                   % cooling channel air
+cell    trn3Bspace1 33  zr3  -141  149                              % bottom spacer 1
+cell    trn3Bspace2 33  zr3  -142  149                              % bottom spacer 2
+cell    trn3Bspace3 33  zr3  -143  149                              % bottom spacer 3
+cell    trn3Bspace4 33  zr3  -144  149                              % bottom spacer 4
+cell    trn3Bvoid1  33  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    trn3Bvoid2  33  void   -3 -149   52  14                     % bottom void
+cell    trn3canbot  33  zr3   -12 -14  16  52                       % Zr can bottom
+cell    trn3thkbot  33  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    trn3Tspace1 33  zr3  -145  149                              % top spacer 1
+cell    trn3Tspace2 33  zr3  -146  149                              % top spacer 2
+cell    trn3Tspace3 33  zr3  -147  149                              % top spacer 3
+cell    trn3Tspace4 33  zr3  -148  149                              % top spacer 4
+cell    trn3Tvoid1  33  void  -11  2  145  146  147  148  149 -13   % top void
+cell    trn3Tvoid2  33  void    2 -149   52 -13                     % top void
+cell    trn3cantop  33  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    trn3evactb  33  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    trn3vactbvd 33  void  -65  13 -64                           % void in evacuation tube ??????
+cell    trn3thktop  33  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    trn3tprfcan 33  alum2  -12  31 -19                          % bottom reflector can
+cell    trn3sqgrbot 33  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    trn3octfrbt 33  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    trn3rfvd1   33  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    trn3rfvd2   33  air1   -31  21 -19  23                      % air around bottom square refl
+cell    trn3rfvd3   33  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    trn3rfvd4   33  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    trn3btrfcan 33  alum2  -12  31  18                          % top reflector can
+cell    trn3sqgrtop 33  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    trn3octfrtp 33  graph1 -24  22  55  56                      % top octagonal reflector
+cell    trn3vctbgr  33  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    trn3rfvd5   33  air1   -17  21 -18  15                      % air inside top thick wall
+cell    trn3rfvd6   33  air1   -31  21 -22  18                      % air around top square refl
+cell    trn3rfvd7   33  air1   -31  24  22                          % air around top octagonal reflector
+cell    trn3rfvd8   33  air1   -55  52  15                          % air inside top reflector block
+cell    trn3rfvd9   33  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    trn3rfvd10  33  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Transient Assembly #4 (Northwest)
+cell    trn4rod1    34  fill  124 -51                               % air inside Zr liner
+cell    trn4ZrLiner 34  zr2    51 -52                               % Zr2 liner
+cell    trn4void1   34  void   52 -53  -2  3                        % vacuum between liner and fuel
+cell    trn4fuel    34  fuel1  53  -1  -2  3                        % fuel meat
+cell    trn4void2   34  void    1 -11  -2  3                        % vacuum gap
+cell    trn4can1    34  zr3    11 -12 -13  14                       % Zr can
+cell    trn4air2    34  air1   12                                   % cooling channel air
+cell    trn4Bspace1 34  zr3  -141  149                              % bottom spacer 1
+cell    trn4Bspace2 34  zr3  -142  149                              % bottom spacer 2
+cell    trn4Bspace3 34  zr3  -143  149                              % bottom spacer 3
+cell    trn4Bspace4 34  zr3  -144  149                              % bottom spacer 4
+cell    trn4Bvoid1  34  void  -11 -3  141  142  143  144  149  14   % bottom void
+cell    trn4Bvoid2  34  void   -3 -149   52  14                     % bottom void
+cell    trn4canbot  34  zr3   -12 -14  16  52                       % Zr can bottom
+cell    trn4thkbot  34  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    trn4Tspace1 34  zr3  -145  149                              % top spacer 1
+cell    trn4Tspace2 34  zr3  -146  149                              % top spacer 2
+cell    trn4Tspace3 34  zr3  -147  149                              % top spacer 3
+cell    trn4Tspace4 34  zr3  -148  149                              % top spacer 4
+cell    trn4Tvoid1  34  void  -11  2  145  146  147  148  149 -13   % top void
+cell    trn4Tvoid2  34  void    2 -149   52 -13                     % top void
+cell    trn4cantop  34  zr3   -12  13 -15  52  66                   % Zr can top ??????
+cell    trn4evactb  34  zr3   -66  65  13 -64                       % evacuation tube ??????
+cell    trn4vactbvd 34  void  -65  13 -64                           % void in evacuation tube ??????
+cell    trn4thktop  34  zr3   -12  17  15 -18                       % top endcap wall
+% Bottom Reflector
+cell    trn4tprfcan 34  alum2  -12  31 -19                          % bottom reflector can
+cell    trn4sqgrbot 34  graph1 -21  23 -16  54                      % bottom graph refl square end
+cell    trn4octfrbt 34  graph1 -24 -23  54                          % bottom octagonal reflector
+cell    trn4rfvd1   34  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    trn4rfvd2   34  air1   -31  21 -19  23                      % air around bottom square refl
+cell    trn4rfvd3   34  air1   -31  24 -23                          % air around bottom octagonal reflector
+cell    trn4rfvd4   34  air1   -54  52 -16                          % air inside bottom reflector block
+% Top Reflector
+cell    trn4btrfcan 34  alum2  -12  31  18                          % top reflector can
+cell    trn4sqgrtop 34  graph1 -21  15 -22  55  56                  % top graph refl square end
+cell    trn4octfrtp 34  graph1 -24  22  55  56                      % top octagonal reflector
+cell    trn4vctbgr  34  graph1 -56  57                              % graphite above evacuation tube ??????
+cell    trn4rfvd5   34  air1   -17  21 -18  15                      % air inside top thick wall
+cell    trn4rfvd6   34  air1   -31  21 -22  18                      % air around top square refl
+cell    trn4rfvd7   34  air1   -31  24  22                          % air around top octagonal reflector
+cell    trn4rfvd8   34  air1   -55  52  15                          % air inside top reflector block
+cell    trn4rfvd9   34  air1   -56  66  15 -57                      % air around evacuation tube ??????
+cell    trn4rfvd10  34  air1   -66  64 -57                          % air above evacuation tube ??????
+
+% Compensation Rods
+
+% Compensation Rod #1 (Northeast)
+cell    cmp1grp1    101 ss304    -201  213 -211                     % grapple
+cell    cmp1grpvd1  101 air1      201  213 -211                     % air around grapple
+cell    cmp1grpvd2  101 air1      211                               % air above grapple
+cell    cmp1poistb1 101 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    cmp1poistb2 101 csteel1  -203  202 -213  219                % steel poison tube
+cell    cmp1poison  101 b4c      -202 -215  217                     % poison
+cell    cmp1poistb3 101 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    cmp1refltb1 101 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    cmp1refltb2 101 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    cmp1refl    101 graph1   -202 -221  223                     % reflector
+cell    cmp1refltb3 101 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    cmp1uftb1   101 csteel1  -203 -225  227                     % upper follower steel top
+cell    cmp1uftb2   101 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    cmp1ufgraph 101 graph1   -202 -227  229                     % upper follower graphite
+cell    cmp1uftb3   101 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    cmp1lftb1   101 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    cmp1lftb2   101 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    cmp1lfgraph 101 graph1   -202 -233  235                     % lower follower graphite
+cell    cmp1lftb3   101 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    cmp1air     101 air1      203 -213  237                     % air around control rod
+
+% Compensation Rod #2 (Southeast)
+cell    cmp2grp1    102 ss304    -201  213 -211                     % grapple
+cell    cmp2grpvd1  102 air1      201  213 -211                     % air around grapple
+cell    cmp2grpvd2  102 air1      211                               % air above grapple
+cell    cmp2poistb1 102 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    cmp2poistb2 102 csteel1  -203  202 -213  219                % steel poison tube
+cell    cmp2poison  102 b4c      -202 -215  217                     % poison
+cell    cmp2poistb3 102 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    cmp2refltb1 102 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    cmp2refltb2 102 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    cmp2refl    102 graph1   -202 -221  223                     % reflector
+cell    cmp2refltb3 102 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    cmp2uftb1   102 csteel1  -203 -225  227                     % upper follower steel top
+cell    cmp2uftb2   102 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    cmp2ufgraph 102 graph1   -202 -227  229                     % upper follower graphite
+cell    cmp2uftb3   102 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    cmp2lftb1   102 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    cmp2lftb2   102 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    cmp2lfgraph 102 graph1   -202 -233  235                     % lower follower graphite
+cell    cmp2lftb3   102 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    cmp2air     102 air1      203 -213  237                     % air around control rod
+
+% Compensation Rod #3 (Southwest)
+cell    cmp3grp1    103 ss304    -201  213 -211                     % grapple
+cell    cmp3grpvd1  103 air1      201  213 -211                     % air around grapple
+cell    cmp3grpvd2  103 air1      211                               % air above grapple
+cell    cmp3poistb1 103 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    cmp3poistb2 103 csteel1  -203  202 -213  219                % steel poison tube
+cell    cmp3poison  103 b4c      -202 -215  217                     % poison
+cell    cmp3poistb3 103 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    cmp3refltb1 103 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    cmp3refltb2 103 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    cmp3refl    103 graph1   -202 -221  223                     % reflector
+cell    cmp3refltb3 103 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    cmp3uftb1   103 csteel1  -203 -225  227                     % upper follower steel top
+cell    cmp3uftb2   103 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    cmp3ufgraph 103 graph1   -202 -227  229                     % upper follower graphite
+cell    cmp3uftb3   103 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    cmp3lftb1   103 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    cmp3lftb2   103 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    cmp3lfgraph 103 graph1   -202 -233  235                     % lower follower graphite
+cell    cmp3lftb3   103 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    cmp3air     103 air1      203 -213  237                     % air around control rod
+
+% Compensation Rod #4 (Northwest)
+cell    cmp4grp1    104 ss304    -201  213 -211                     % grapple
+cell    cmp4grpvd1  104 air1      201  213 -211                     % air around grapple
+cell    cmp4grpvd2  104 air1      211                               % air above grapple
+cell    cmp4poistb1 104 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    cmp4poistb2 104 csteel1  -203  202 -213  219                % steel poison tube
+cell    cmp4poison  104 b4c      -202 -215  217                     % poison
+cell    cmp4poistb3 104 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    cmp4refltb1 104 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    cmp4refltb2 104 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    cmp4refl    104 graph1   -202 -221  223                     % reflector
+cell    cmp4refltb3 104 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    cmp4uftb1   104 csteel1  -203 -225  227                     % upper follower steel top
+cell    cmp4uftb2   104 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    cmp4ufgraph 104 graph1   -202 -227  229                     % upper follower graphite
+cell    cmp4uftb3   104 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    cmp4lftb1   104 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    cmp4lftb2   104 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    cmp4lfgraph 104 graph1   -202 -233  235                     % lower follower graphite
+cell    cmp4lftb3   104 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    cmp4air     104 air1      203 -213  237                     % air around control rod
+
+% Control Rods
+
+% Control Rod #1 (Northeast)
+cell    ctr1grp1    111 ss304    -201  213 -211                     % grapple
+cell    ctr1grpvd1  111 air1      201  213 -211                     % air around grapple
+cell    ctr1grpvd2  111 air1      211                               % air above grapple
+cell    ctr1poistb1 111 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    ctr1poistb2 111 csteel1  -203  202 -213  219                % steel poison tube
+cell    ctr1poison  111 b4c      -202 -215  217                     % poison
+cell    ctr1poistb3 111 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    ctr1refltb1 111 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    ctr1refltb2 111 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    ctr1refl    111 graph1   -202 -221  223                     % reflector
+cell    ctr1refltb3 111 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    ctr1uftb1   111 csteel1  -203 -225  227                     % upper follower steel top
+cell    ctr1uftb2   111 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    ctr1ufgraph 111 graph1   -202 -227  229                     % upper follower graphite
+cell    ctr1uftb3   111 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    ctr1lftb1   111 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    ctr1lftb2   111 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    ctr1lfgraph 111 graph1   -202 -233  235                     % lower follower graphite
+cell    ctr1lftb3   111 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    ctr1air     111 air1      203 -213  237                     % air around control rod
+
+% Control Rod #2 (Southeast)
+cell    ctr2grp1    112 ss304    -201  213 -211                     % grapple
+cell    ctr2grpvd1  112 air1      201  213 -211                     % air around grapple
+cell    ctr2grpvd2  112 air1      211                               % air above grapple
+cell    ctr2poistb1 112 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    ctr2poistb2 112 csteel1  -203  202 -213  219                % steel poison tube
+cell    ctr2poison  112 b4c      -202 -215  217                     % poison
+cell    ctr2poistb3 112 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    ctr2refltb1 112 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    ctr2refltb2 112 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    ctr2refl    112 graph1   -202 -221  223                     % reflector
+cell    ctr2refltb3 112 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    ctr2uftb1   112 csteel1  -203 -225  227                     % upper follower steel top
+cell    ctr2uftb2   112 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    ctr2ufgraph 112 graph1   -202 -227  229                     % upper follower graphite
+cell    ctr2uftb3   112 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    ctr2lftb1   112 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    ctr2lftb2   112 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    ctr2lfgraph 112 graph1   -202 -233  235                     % lower follower graphite
+cell    ctr2lftb3   112 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    ctr2air     112 air1      203 -213  237                     % air around control rod
+
+% Control Rod #3 (Southwest)
+cell    ctr3grp1    113 ss304    -201  213 -211                     % grapple
+cell    ctr3grpvd1  113 air1      201  213 -211                     % air around grapple
+cell    ctr3grpvd2  113 air1      211                               % air above grapple
+cell    ctr3poistb1 113 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    ctr3poistb2 113 csteel1  -203  202 -213  219                % steel poison tube
+cell    ctr3poison  113 b4c      -202 -215  217                     % poison
+cell    ctr3poistb3 113 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    ctr3refltb1 113 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    ctr3refltb2 113 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    ctr3refl    113 graph1   -202 -221  223                     % reflector
+cell    ctr3refltb3 113 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    ctr3uftb1   113 csteel1  -203 -225  227                     % upper follower steel top
+cell    ctr3uftb2   113 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    ctr3ufgraph 113 graph1   -202 -227  229                     % upper follower graphite
+cell    ctr3uftb3   113 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    ctr3lftb1   113 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    ctr3lftb2   113 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    ctr3lfgraph 113 graph1   -202 -233  235                     % lower follower graphite
+cell    ctr3lftb3   113 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    ctr3air     113 air1      203 -213  237                     % air around control rod
+
+% Control Rod #4 (Northwest)
+cell    ctr4grp1    114 ss304    -201  213 -211                     % grapple
+cell    ctr4grpvd1  114 air1      201  213 -211                     % air around grapple
+cell    ctr4grpvd2  114 air1      211                               % air above grapple
+cell    ctr4poistb1 114 csteel1  -202 -213  215                     % poison tube top steel plug
+cell    ctr4poistb2 114 csteel1  -203  202 -213  219                % steel poison tube
+cell    ctr4poison  114 b4c      -202 -215  217                     % poison
+cell    ctr4poistb3 114 csteel1  -202 -217  219                     % poison tube bottom steel plug
+cell    ctr4refltb1 114 csteel1  -202 -219  221                     % reflector tube top steel? plug
+cell    ctr4refltb2 114 zr3      -203  202 -219  225                % Zr3 reflector tube
+cell    ctr4refl    114 graph1   -202 -221  223                     % reflector
+cell    ctr4refltb3 114 csteel1  -202 -223  225                     % reflector tube bottom steel? plug
+cell    ctr4uftb1   114 csteel1  -203 -225  227                     % upper follower steel top
+cell    ctr4uftb2   114 csteel1  -203  202 -227  231                % upper follower steel tube
+cell    ctr4ufgraph 114 graph1   -202 -227  229                     % upper follower graphite
+cell    ctr4uftb3   114 csteel1  -202 -229  231                     % upper follower bottom steel plug
+cell    ctr4lftb1   114 csteel1  -202 -231  233                     % lower follower top steel plug
+cell    ctr4lftb2   114 csteel1  -203  202 -231  237                % lower follower steel tube
+cell    ctr4lfgraph 114 graph1   -202 -233  235                     % lower follower graphite
+cell    ctr4lftb3   114 csteel1  -202 -235  237                     % lower follower bottom steel plug
+cell    ctr4air     114 air1      203 -213  237                     % air around control rod
+
+% Transient Rods
+
+% Transient Rod #1 (Northeast)
+cell    trn1grp1    121 ss304    -201  243 -241                     % grapple
+cell    trn1grpvd1  121 air1      201  243 -241                     % air around grapple
+cell    trn1grpvd2  121 air1      241                               % air above grapple
+cell    trn1poistb1 121 csteel1  -202 -243  245                     % poison tube top steel plug
+cell    trn1poistb2 121 csteel1  -203  202 -243  249                % steel poison tube
+cell    trn1poison  121 b4c      -202 -245  247                     % poison
+cell    trn1poistb3 121 csteel1  -202 -247  249                     % poison tube bottom steel plug
+cell    trn1refltb1 121 csteel1  -202 -249  251                     % reflector tube top steel? plug
+cell    trn1refltb2 121 zr3      -203  202 -249  255                % Zr3 reflector tube
+cell    trn1refl    121 graph1   -202 -251  253                     % reflector
+cell    trn1refltb3 121 csteel1  -202 -253  255                     % reflector tube bottom steel? plug
+cell    trn1uftb1   121 csteel1  -203 -255  257                     % upper follower steel top
+cell    trn1uftb2   121 csteel1  -203  202 -257  261                % upper follower steel tube
+cell    trn1ufgraph 121 graph1   -202 -257  259                     % upper follower graphite
+cell    trn1uftb3   121 csteel1  -202 -259  261                     % upper follower bottom steel plug
+cell    trn1lftb1   121 csteel1  -202 -261  263                     % lower follower top steel plug
+cell    trn1lftb2   121 csteel1  -203  202 -261  267                % lower follower steel tube
+cell    trn1lfgraph 121 graph1   -202 -263  265                     % lower follower graphite
+cell    trn1lftb3   121 csteel1  -202 -265  267                     % lower follower bottom steel plug
+cell    trn1air     121 air1      203 -243  267                     % air around control rod
+
+% Transient Rod #2 (Southeast)
+cell    trn2grp1    122 ss304    -201  243 -241                     % grapple
+cell    trn2grpvd1  122 air1      201  243 -241                     % air around grapple
+cell    trn2grpvd2  122 air1      241                               % air above grapple
+cell    trn2poistb1 122 csteel1  -202 -243  245                     % poison tube top steel plug
+cell    trn2poistb2 122 csteel1  -203  202 -243  249                % steel poison tube
+cell    trn2poison  122 b4c      -202 -245  247                     % poison
+cell    trn2poistb3 122 csteel1  -202 -247  249                     % poison tube bottom steel plug
+cell    trn2refltb1 122 csteel1  -202 -249  251                     % reflector tube top steel? plug
+cell    trn2refltb2 122 zr3      -203  202 -249  255                % Zr3 reflector tube
+cell    trn2refl    122 graph1   -202 -251  253                     % reflector
+cell    trn2refltb3 122 csteel1  -202 -253  255                     % reflector tube bottom steel? plug
+cell    trn2uftb1   122 csteel1  -203 -255  257                     % upper follower steel top
+cell    trn2uftb2   122 csteel1  -203  202 -257  261                % upper follower steel tube
+cell    trn2ufgraph 122 graph1   -202 -257  259                     % upper follower graphite
+cell    trn2uftb3   122 csteel1  -202 -259  261                     % upper follower bottom steel plug
+cell    trn2lftb1   122 csteel1  -202 -261  263                     % lower follower top steel plug
+cell    trn2lftb2   122 csteel1  -203  202 -261  267                % lower follower steel tube
+cell    trn2lfgraph 122 graph1   -202 -263  265                     % lower follower graphite
+cell    trn2lftb3   122 csteel1  -202 -265  267                     % lower follower bottom steel plug
+cell    trn2air     122 air1      203 -243  267                     % air around control rod
+
+% Transient Rod #3 (Southwest)
+cell    trn3grp1    123 ss304    -201  243 -241                     % grapple
+cell    trn3grpvd1  123 air1      201  243 -241                     % air around grapple
+cell    trn3grpvd2  123 air1      241                               % air above grapple
+cell    trn3poistb1 123 csteel1  -202 -243  245                     % poison tube top steel plug
+cell    trn3poistb2 123 csteel1  -203  202 -243  249                % steel poison tube
+cell    trn3poison  123 b4c      -202 -245  247                     % poison
+cell    trn3poistb3 123 csteel1  -202 -247  249                     % poison tube bottom steel plug
+cell    trn3refltb1 123 csteel1  -202 -249  251                     % reflector tube top steel? plug
+cell    trn3refltb2 123 zr3      -203  202 -249  255                % Zr3 reflector tube
+cell    trn3refl    123 graph1   -202 -251  253                     % reflector
+cell    trn3refltb3 123 csteel1  -202 -253  255                     % reflector tube bottom steel? plug
+cell    trn3uftb1   123 csteel1  -203 -255  257                     % upper follower steel top
+cell    trn3uftb2   123 csteel1  -203  202 -257  261                % upper follower steel tube
+cell    trn3ufgraph 123 graph1   -202 -257  259                     % upper follower graphite
+cell    trn3uftb3   123 csteel1  -202 -259  261                     % upper follower bottom steel plug
+cell    trn3lftb1   123 csteel1  -202 -261  263                     % lower follower top steel plug
+cell    trn3lftb2   123 csteel1  -203  202 -261  267                % lower follower steel tube
+cell    trn3lfgraph 123 graph1   -202 -263  265                     % lower follower graphite
+cell    trn3lftb3   123 csteel1  -202 -265  267                     % lower follower bottom steel plug
+cell    trn3air     123 air1      203 -243  267                     % air around control rod
+
+% Transient Rod #4 (Northwest)
+cell    trn4grp1    124 ss304    -201  243 -241                     % grapple
+cell    trn4grpvd1  124 air1      201  243 -241                     % air around grapple
+cell    trn4grpvd2  124 air1      241                               % air above grapple
+cell    trn4poistb1 124 csteel1  -202 -243  245                     % poison tube top steel plug
+cell    trn4poistb2 124 csteel1  -203  202 -243  249                % steel poison tube
+cell    trn4poison  124 b4c      -202 -245  247                     % poison
+cell    trn4poistb3 124 csteel1  -202 -247  249                     % poison tube bottom steel plug
+cell    trn4refltb1 124 csteel1  -202 -249  251                     % reflector tube top steel? plug
+cell    trn4refltb2 124 zr3      -203  202 -249  255                % Zr3 reflector tube
+cell    trn4refl    124 graph1   -202 -251  253                     % reflector
+cell    trn4refltb3 124 csteel1  -202 -253  255                     % reflector tube bottom steel? plug
+cell    trn4uftb1   124 csteel1  -203 -255  257                     % upper follower steel top
+cell    trn4uftb2   124 csteel1  -203  202 -257  261                % upper follower steel tube
+cell    trn4ufgraph 124 graph1   -202 -257  259                     % upper follower graphite
+cell    trn4uftb3   124 csteel1  -202 -259  261                     % upper follower bottom steel plug
+cell    trn4lftb1   124 csteel1  -202 -261  263                     % lower follower top steel plug
+cell    trn4lftb2   124 csteel1  -203  202 -261  267                % lower follower steel tube
+cell    trn4lfgraph 124 graph1   -202 -263  265                     % lower follower graphite
+cell    trn4lftb3   124 csteel1  -202 -265  267                     % lower follower bottom steel plug
+cell    trn4air     124 air1      203 -243  267                     % air around control rod
+
+% Bioshield (Inner)
+cell    biocorit1    51 cncrt     9055  9056  9057  9058            % inner bioshield concrete
+cell    icorit1      51 air1     -9051                              % air in NE-SW corner 6-inch diameter top instrument thimble
+cell    icorit2      51 csteel1   9051 -9055                        % NE-SW corner 6-inch diameter top instrument thimble
+cell    icorit3      51 air1     -9052                              % air in NW-SE corner 6-inch diameter top instrument thimble
+cell    icorit4      51 csteel1   9052 -9056                        % NW-SE corner 6-inch diameter top instrument thimble
+cell    icorit5      51 air1     -9053                              % air in NE-SW corner 6-inch diameter bottom instrument thimble
+cell    icorit6      51 csteel1   9053 -9057                        % NE-SW corner 6-inch diameter bottom instrument thimble
+cell    icorit7      51 air1     -9054                              % air in NW-SE corner 6-inch diameter bottom instrument thimble
+cell    icorit8      51 csteel1   9054 -9058                        % NW-SE corner 6-inch diameter bottom instrument thimble
+
+% Bioshield (Outer)
+cell    biocorit2    52 cncrt     9065  9066  9067  9068            % outer bioshield concrete
+cell    ocorit1      52 air1     -9061                              % air in NE-SW corner 8-inch diameter top instrument thimble
+cell    ocorit2      52 csteel1   9061 -9065                        % NE-SW corner 8-inch diameter top instrument thimble
+cell    ocorit3      52 air1     -9062                              % air in NW-SE corner 8-inch diameter top instrument thimble
+cell    ocorit4      52 csteel1   9062 -9066                        % NW-SE corner 8-inch diameter top instrument thimble
+cell    ocorit5      52 air1     -9063                              % air in NE-SW corner 8-inch diameter bottom instrument thimble
+cell    ocorit6      52 csteel1   9063 -9067                        % NE-SW corner 8-inch diameter bottom instrument thimble
+cell    ocorit7      52 air1     -9064                              % air in NW-SE corner 8-inch diameter bottom instrument thimble
+cell    ocorit8      52 csteel1   9064 -9068                        % NW-SE corner 8-inch diameter bottom instrument thimble
+
+% Inner Thimbles on Face
+cell    sinthua       0 air1     -9071                              % air in south upper thimble
+cell    sinthus       0 csteel1   9071 -9081                        % south upper thimble
+cell    sinthla       0 air1     -9072                              % air in south lower thimble
+cell    sinthls       0 csteel1   9072 -9082                        % south lower thimble
+cell    ninthua       0 air1     -9073                              % air in north upper thimble
+cell    ninthus       0 csteel1   9073 -9083                        % north upper thimble
+cell    ninthla       0 air1     -9074                              % air in north lower thimble
+cell    ninthls       0 csteel1   9074 -9084                        % north lower thimble
+cell    winthua       0 air1     -9075                              % air in west upper thimble
+cell    winthus       0 csteel1   9075 -9085                        % west upper thimble
+cell    winthla       0 air1     -9076                              % air in west lower thimble
+cell    winthls       0 csteel1   9076 -9086                        % west lower thimble
+
+% Outer Thimbles on Face
+cell    sonthua       0 air1     -9091                              % air in south upper thimble
+cell    sonthus       0 csteel1   9091 -9101                        % south upper thimble
+cell    sonthla       0 air1     -9092                              % air in south lower thimble
+cell    sonthls       0 csteel1   9092 -9102                        % south lower thimble
+cell    nonthua       0 air1     -9093                              % air in north upper thimble
+cell    nonthus       0 csteel1   9093 -9103                        % north upper thimble
+cell    nonthla       0 air1     -9094                              % air in north lower thimble
+cell    nonthls       0 csteel1   9094 -9104                        % north lower thimble
+cell    wonthua       0 air1     -9095                              % air in west upper thimble
+cell    wonthus       0 csteel1   9095 -9105                        % west upper thimble
+cell    wonthla       0 air1     -9096                              % air in west lower thimble
+cell    wonthls       0 csteel1   9096 -9106                        % west lower thimble
+
+% Thermal Column
+cell    inthcol       0 graph1   -9111                              % inner thermal column
+cell    outthcol      0 graph1   -9112                              % outer thermal column
+
+% South Side Verticle Pipes
+cell    wpipea        0 air1     -9121       -9044                  % air in west pipe
+cell    wpipe         0 csteel1   9121 -9122 -9044                  % west pipe
+cell    epipea        0 air1     -9123       -9044                  % air in east pipe
+cell    epipe         0 csteel1   9123 -9124 -9044                  % east pipe
+
+% Array
+cell    9000    0   fill    2001  -9000                             % filled experiment location
+cell    9001    0   fill    1001  -9001  9000                       % Array
+cell    9002    0   air1    9001  -9002                             % air around array
+
+% Permanent Reflector
+cell    9003    0   alum2   9002  -9003                             % perm reflector Al cover
+cell    9004    0   graph1  9003  -9004  9005  9006  9007           % permanent graphite reflector
+                                         9008  9009  9010  9011
+                                         9012  9013
+                                         9021  9022  9023  9024
+                                         9025  9026
+cell    9005    0   air1   -9005                                    % north hodoscope outer slot
+cell    9006    0   air1   -9006                                    % north hodoscope middle slot
+cell    9007    0   air1   -9007                                    % north hodoscope inner slot
+cell    9008    0   air1   -9008                                    % south hodoscope outer slot
+cell    9012    0   graph1 -9012                                    % south hodoscope middle slot
+cell    9009    0   graph1 -9009                                    % south hodoscope inner slot
+cell    9010    0   air1   -9010                                    % west radiography outer slot
+cell    9013    0   air1   -9013                                    % west radiography middle slot
+cell    9011    0   air1   -9011                                    % west radiography inner slot
+cell    9021    0   air1   -9021                                    % south instrument thimble
+cell    9022    0   air1   -9022                                    % south instrument thimble
+cell    9023    0   air1   -9023                                    % north instrument thimble
+cell    9024    0   air1   -9024                                    % north instrument thimble
+cell    9025    0   air1   -9025                                    % west instrument thimble
+cell    9026    0   air1   -9026                                    % west instrument thimble
+cell    9031    0   stllnr -9031  9004  9032                        % reflector steel liner
+                            9005  9008  9010
+                            9021  9022  9023  9024
+                            9025  9026
+cell    9032    0   air1   -9032                                    % air in steel liner thermal column opening
+cell    9041    0   air1   -9041  9031                              % air inside biological shield
+cell    9042    0   fill      51 -9042  9041 -9044                  % inner section biological shield
+                            9081  9082  9083  9084  9085  9086
+                            9111  9122  9124
+cell    9043    0   fill      52 -9043  9042 -9044                  % outer section biological shield
+                            9101  9102  9103  9104  9105  9106
+                            9112
+cell    9044    0   air1   -9044  9043                              % air outside biological shield
+% Oustide
+cell    9997    0   outside  9044                                   % outside
+
+% M8Cal Experiment
+
+% Outer Can
+cell    m8can1  2001    ss304   1011 -1012  1001                    % north side of secondary can
+cell    m8can2  2001    ss304   1013 -1014 -1002                    % south side of secondary can
+cell    m8can3  2001    ss304   1003 -1005 -1001 1002               % east side of secondary can
+cell    m8can4  2001    ss304   1006 -1004 -1001 1002               % west side of secondary can
+cell    m8air1  2001    air1    1012  1001                          % north air outside secondary can
+cell    m8air2  2001    air1    1014 -1002                          % south air outside secondary can
+cell    m8air3  2001    air1    1005 -1001 1002                     % east air outside secondary can
+cell    m8air4  2001    air1   -1006 -1001 1002                     % west air outside secondary can
+
+% Cal-Loop Hardware
+% Test Section Module
+cell    tsmod1  2001    fill    2002 -1020                          % test inside test module
+cell    tsmod2  2001    ss304   1020 -1021                          % test section module wall (should be ss316)
+cell    tsmoda  2001    air1    1021 -1022 -1051  1059              % air inside aluminum
+cell    tsmod3  2001    alum2   1022 -1023 -1051  1059              % aluminum half shell (should be 6061)
+cell    tsmod4  2001    ss304   1023 -1024 -1051  1059              % ss304 half shell
+cell    tsmod5  2001    ss304   1025 -1026 -1051  1059              % dummy heater
+% Spool Piece
+cell    spool1  2001    air1   -1031                                % air inside spool piece
+cell    spool2  2001    ss304   1031 -1032                          % spool piece
+
+% Dysprosium Shaping Collar
+cell    dytp20  2001    dysp    1024 -1025 -1051  1052              % top Dy 20 mil filter
+cell    dytp17  2001    dysp    1024 -1042 -1052  1053              % top Dy 17 mil filter
+cell    dytp17s 2001    ss304   1042 -1025 -1052  1053              % top Dy 17 mil shim
+cell    dytp2   2001    dysp    1024 -1041 -1053  1054              % top Dy 2 mil filter
+cell    dytp2s  2001    ss304   1041 -1025 -1053  1054              % top Dy 2 mil shim
+cell    colshm  2001    ss304   1024 -1025 -1054  1055              % Dy filter center ss shim
+cell    dybt2   2001    dysp    1024 -1041 -1055  1056              % bottom Dy 2 mil filter
+cell    dybt2s  2001    ss304   1041 -1025 -1055  1056              % bottom Dy 2 mil shim
+cell    dybt17  2001    dysp    1024 -1042 -1056  1057              % bottom Dy 17 mil filter
+cell    dybt17s 2001    ss304   1042 -1025 -1056  1057              % bottom Dy 17 mil shim
+cell    dybt20  2001    dysp    1024 -1025 -1057  1058              % bottom Dy 20 mil filter
+cell    dystshm 2001    ss304   1024 -1025 -1058  1059              % bottom shim
+
+cell    m8iair1 2001    air1   -1011  1001  1026                    % north air inside secondary can
+cell    m8iair2 2001    air1   -1013 -1002  1032                    % south air inside secondary can
+cell    m8iair3 2001    air1   -1003  1004 -1001 1002  1032  1026   % middle inside can
+cell    m8iair4 2001    air1    1021 -1026  1051                    % air above filter assembly
+cell    m8iair5 2001    air1    1021 -1026 -1059                    % air below filter assembly
+
+% Calibration Test Train
+cell    cttiair 2002    air1   -1101                                % air inside calibration test train
+cell    cttpb   2002    ss304   1101 -1102                          % calibration test train pressure boundary
+cell    cttoair 2002    air1    1102                                % air outside calibration test train
+
+% Henri Facility 
+cell    HENRIHe3       53  He3Top  -5001  -2 3
+cell    HENRIZr        53  zr3   -5002 5001 -2 3
+cell    HENRIair       53  void   5002 -5000 -2 3
+cell    HENRIfuel      53  fuel1  5000 -1  -2  3                       % fuel meat
+cell    He3void1       53  void    1 -11  -2  3                        % vacuum gap
+cell    He3can1        53  zr3    11 -12 -13 14                        % Zr can
+cell    He3air2        53  air1   12                                   % cooling channel air
+cell    He3Bspace1     53  zr3  -141                                   % bottom spacer 1
+cell    He3Bspace2     53  zr3  -142                                   % bottom spacer 2
+cell    He3Bspace3     53  zr3  -143                                   % bottom spacer 3
+cell    He3Bspace4     53  zr3  -144                                   % bottom spacer 4
+cell    He3Bvoid       53  void  -11 -3  141  142  143  144  14        % bottom void
+cell    He3canbot      53  zr3   -12 -14  16                           % Zr can bottom
+cell    He3thkbot      53  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    He3Tspace1     53  zr3  -145                                   % top spacer 1
+cell    He3Tspace2     53  zr3  -146                                   % top spacer 2
+cell    He3Tspace3     53  zr3  -147                                   % top spacer 3
+cell    He3Tspace4     53  zr3  -148                                   % top spacer 4
+cell    He3Tvoid       53  void  -11  2  145  146  147  148 -13        % top void
+cell    He3cantop      53  zr3   -12  13 -15  63                       % Zr can top
+cell    He3thktop      53  zr3   -12  17  15 -18                       % top endcap wall
+cell    He3evactb      53  zr3   -63  62  13 -61                       % evacuation tube
+cell    He3evactbvd    53  void  -62  13 -61                           % void in evacuation tube
+% Bottom Reflector
+cell    He3tprfcan     53  alum2  -12  31 -19                          % bottom reflector can
+cell    He3sqgrbot     53  graph1 -21  23 -16                          % bottom graph refl square end
+cell    He3octfrbot    53  graph1 -24 -23                              % bottom octagonal reflector
+cell    He3rfvd1       53  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    He3rfvd2       53  air1   -31  21 -19  23                      % air around bottom square refl
+cell    He3rfvd3       53  air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    He3btrfcan     53  alum2  -12  31  18                          % top reflector can
+cell    He3sqgrtop     53  graph1 -21  15 -22  25                      % top graph refl square end
+cell    He3loctrftop   53  graph1 -24  22  25 -26                      % top octagonal reflector
+cell    He3octrftop    53  graph1 -24  26                              % top octagonal reflector
+cell    He3rfvd4       53  air1   -17  21 -18  15                      % air inside top thick wall
+cell    He3rfvd5       53  air1   -31  21 -22  18                      % air around top square refl
+cell    He3rfvd6       53  air1   -31  24  22                          % air around top octagonal reflector
+cell    He3rfvd7       53  air1   -25  15 -26  63                      % air in square reflector vacuum tube region
+cell    He3rfvd8       53  air1   -63  61 -26                          % air in octagon reflector vacuum tube region
+
+% Henri Facility #2
+cell    2HENRIHe3       54  He3Bot   -5001  -2 3
+cell    2HENRIZr        54  zr3   -5002 5001 -2 3
+cell    2HENRIair       54  void   5002 -5000 -2 3
+cell    2HENRIfuel      54  fuel1  5000 -1  -2  3                       % fuel meat
+cell    2He3void1       54  void    1 -11  -2  3                        % vacuum gap
+cell    2He3can1        54  zr3    11 -12 -13 14                        % Zr can
+cell    2He3air2        54  air1   12                                   % cooling channel air
+cell    2He3Bspace1     54  zr3  -141                                   % bottom spacer 1
+cell    2He3Bspace2     54  zr3  -142                                   % bottom spacer 2
+cell    2He3Bspace3     54  zr3  -143                                   % bottom spacer 3
+cell    2He3Bspace4     54  zr3  -144                                   % bottom spacer 4
+cell    2He3Bvoid       54  void  -11 -3  141  142  143  144  14        % bottom void
+cell    2He3canbot      54  zr3   -12 -14  16                           % Zr can bottom
+cell    2He3thkbot      54  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    2He3Tspace1     54  zr3  -145                                   % top spacer 1
+cell    2He3Tspace2     54  zr3  -146                                   % top spacer 2
+cell    2He3Tspace3     54  zr3  -147                                   % top spacer 3
+cell    2He3Tspace4     54  zr3  -148                                   % top spacer 4
+cell    2He3Tvoid       54  void  -11  2  145  146  147  148 -13        % top void
+cell    2He3cantop      54  zr3   -12  13 -15  63                       % Zr can top
+cell    2He3thktop      54  zr3   -12  17  15 -18                       % top endcap wall
+cell    2He3evactb      54  zr3   -63  62  13 -61                       % evacuation tube
+cell    2He3evactbvd    54  void  -62  13 -61                           % void in evacuation tube
+% Bottom Reflector
+cell    2He3tprfcan     54  alum2  -12  31 -19                          % bottom reflector can
+cell    2He3sqgrbot     54  graph1 -21  23 -16                          % bottom graph refl square end
+cell    2He3octfrbot    54  graph1 -24 -23                              % bottom octagonal reflector
+cell    2He3rfvd1       54  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    2He3rfvd2       54  air1   -31  21 -19  23                      % air around bottom square refl
+cell    2He3rfvd3       54  air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    2He3btrfcan     54  alum2  -12  31  18                          % top reflector can
+cell    2He3sqgrtop     54  graph1 -21  15 -22  25                      % top graph refl square end
+cell    2He3loctrftop   54  graph1 -24  22  25 -26                      % top octagonal reflector
+cell    2He3octrftop    54  graph1 -24  26                              % top octagonal reflector
+cell    2He3rfvd4       54  air1   -17  21 -18  15                      % air inside top thick wall
+cell    2He3rfvd5       54  air1   -31  21 -22  18                      % air around top square refl
+cell    2He3rfvd6       54  air1   -31  24  22                          % air around top octagonal reflector
+cell    2He3rfvd7       54  air1   -25  15 -26  63                      % air in square reflector vacuum tube region
+cell    2He3rfvd8       54  air1   -63  61 -26                          % air in octagon reflector vacuum tube region
+
+% Henri Facility #3
+cell    3HENRIHe3       55  He3Bot   -5001  -2 3
+cell    3HENRIZr        55  zr3   -5002 5001 -2 3
+cell    3HENRIair       55  void   5002 -5000 -2 3
+cell    3HENRIfuel      55  fuel1  5000 -1  -2  3                       % fuel meat
+cell    3He3void1       55  void    1 -11  -2  3                        % vacuum gap
+cell    3He3can1        55  zr3    11 -12 -13 14                        % Zr can
+cell    3He3air2        55  air1   12                                   % cooling channel air
+cell    3He3Bspace1     55  zr3  -141                                   % bottom spacer 1
+cell    3He3Bspace2     55  zr3  -142                                   % bottom spacer 2
+cell    3He3Bspace3     55  zr3  -143                                   % bottom spacer 3
+cell    3He3Bspace4     55  zr3  -144                                   % bottom spacer 4
+cell    3He3Bvoid       55  void  -11 -3  141  142  143  144  14        % bottom void
+cell    3He3canbot      55  zr3   -12 -14  16                           % Zr can bottom
+cell    3He3thkbot      55  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    3He3Tspace1     55  zr3  -145                                   % top spacer 1
+cell    3He3Tspace2     55  zr3  -146                                   % top spacer 2
+cell    3He3Tspace3     55  zr3  -147                                   % top spacer 3
+cell    3He3Tspace4     55  zr3  -148                                   % top spacer 4
+cell    3He3Tvoid       55  void  -11  2  145  146  147  148 -13        % top void
+cell    3He3cantop      55  zr3   -12  13 -15  63                       % Zr can top
+cell    3He3thktop      55  zr3   -12  17  15 -18                       % top endcap wall
+cell    3He3evactb      55  zr3   -63  62  13 -61                       % evacuation tube
+cell    3He3evactbvd    55  void  -62  13 -61                           % void in evacuation tube
+% Bottom Reflector
+cell    3He3tprfcan     55  alum2  -12  31 -19                          % bottom reflector can
+cell    3He3sqgrbot     55  graph1 -21  23 -16                          % bottom graph refl square end
+cell    3He3octfrbot    55  graph1 -24 -23                              % bottom octagonal reflector
+cell    3He3rfvd1       55  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    3He3rfvd2       55  air1   -31  21 -19  23                      % air around bottom square refl
+cell    3He3rfvd3       55  air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    3He3btrfcan     55  alum2  -12  31  18                          % top reflector can
+cell    3He3sqgrtop     55  graph1 -21  15 -22  25                      % top graph refl square end
+cell    3He3loctrftop   55  graph1 -24  22  25 -26                      % top octagonal reflector
+cell    3He3octrftop    55  graph1 -24  26                              % top octagonal reflector
+cell    3He3rfvd4       55  air1   -17  21 -18  15                      % air inside top thick wall
+cell    3He3rfvd5       55  air1   -31  21 -22  18                      % air around top square refl
+cell    3He3rfvd6       55  air1   -31  24  22                          % air around top octagonal reflector
+cell    3He3rfvd7       55  air1   -25  15 -26  63                      % air in square reflector vacuum tube region
+cell    3He3rfvd8       55  air1   -63  61 -26                          % air in octagon reflector vacuum tube region
+
+% Henri Facility #2
+cell    4HENRIHe3       56  He3Top   -5001  -2 3
+cell    4HENRIZr        56  zr3   -5002 5001 -2 3
+cell    4HENRIair       56  void   5002 -5000 -2 3
+cell    4HENRIfuel      56  fuel1  5000 -1  -2  3                       % fuel meat
+cell    4He3void1       56  void    1 -11  -2  3                        % vacuum gap
+cell    4He3can1        56  zr3    11 -12 -13 14                        % Zr can
+cell    4He3air2        56  air1   12                                   % cooling channel air
+cell    4He3Bspace1     56  zr3  -141                                   % bottom spacer 1
+cell    4He3Bspace2     56  zr3  -142                                   % bottom spacer 2
+cell    4He3Bspace3     56  zr3  -143                                   % bottom spacer 3
+cell    4He3Bspace4     56  zr3  -144                                   % bottom spacer 4
+cell    4He3Bvoid       56  void  -11 -3  141  142  143  144  14        % bottom void
+cell    4He3canbot      56  zr3   -12 -14  16                           % Zr can bottom
+cell    4He3thkbot      56  zr3   -12  17  19 -16                       % bottom endcap wall
+cell    4He3Tspace1     56  zr3  -145                                   % top spacer 1
+cell    4He3Tspace2     56  zr3  -146                                   % top spacer 2
+cell    4He3Tspace3     56  zr3  -147                                   % top spacer 3
+cell    4He3Tspace4     56  zr3  -148                                   % top spacer 4
+cell    4He3Tvoid       56  void  -11  2  145  146  147  148 -13        % top void
+cell    4He3cantop      56  zr3   -12  13 -15  63                       % Zr can top
+cell    4He3thktop      56  zr3   -12  17  15 -18                       % top endcap wall
+cell    4He3evactb      56  zr3   -63  62  13 -61                       % evacuation tube
+cell    4He3evactbvd    56  void  -62  13 -61                           % void in evacuation tube
+% Bottom Reflector
+cell    4He3tprfcan     56  alum2  -12  31 -19                          % bottom reflector can
+cell    4He3sqgrbot     56  graph1 -21  23 -16                          % bottom graph refl square end
+cell    4He3octfrbot    56  graph1 -24 -23                              % bottom octagonal reflector
+cell    4He3rfvd1       56  air1   -17  21 -16  19                      % air inside bottom thick wall
+cell    4He3rfvd2       56  air1   -31  21 -19  23                      % air around bottom square refl
+cell    4He3rfvd3       56  air1   -31  24 -23                          % air around bottom octagonal reflector
+% Top Reflector
+cell    4He3btrfcan     56  alum2  -12  31  18                          % top reflector can
+cell    4He3sqgrtop     56  graph1 -21  15 -22  25                      % top graph refl square end
+cell    4He3loctrftop   56  graph1 -24  22  25 -26                      % top octagonal reflector
+cell    4He3octrftop    56  graph1 -24  26                              % top octagonal reflector
+cell    4He3rfvd4       56  air1   -17  21 -18  15                      % air inside top thick wall
+cell    4He3rfvd5       56  air1   -31  21 -22  18                      % air around top square refl
+cell    4He3rfvd6       56  air1   -31  24  22                          % air around top octagonal reflector
+cell    4He3rfvd7       56  air1   -25  15 -26  63                      % air in square reflector vacuum tube region
+cell    4He3rfvd8       56  air1   -63  61 -26                          % air in octagon reflector vacuum tube region
+
+
+% *** Array
+% **********************************************************************
+
+lat 1001  1  0.0  0.0  19  19  10.16
+
+% **** South
+%   A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  R  S  T  U
+    2  2  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  2  2     % 19
+    2  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  2     % 18
+    1  1  1  1  1  1  1 23  1  1  1 22  1  1  1  1  1  1  1     % 17
+    1  1  1  1  1 23  1  1  1  1  1  1  1 22  1  1  1  1  1     % 16
+    1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1     % 15
+    1  1  1 33  1  1  1 54  1  1  1  55  1  1  1 32  1  1  1     % 14
+    1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1     % 13
+    1  1 33  1  1 13  1  1  1  1  1  1  1 12  1  1 32  1  1   % 12
+    1  1  1  1  1  1  1  1  1  4  1  1  1  1  1  1  1  1  1     % 11
+    1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1     % 10
+    1  1  1  1  1  1  1  1  1  5  1  1  1  1  1  1  1  1  1     % 9
+    1  1 34  1  1 14  1  1  1  3  1  1  1 11  1  1 31  1  1     % 8
+    1  1  1  1  1  1  1  1  1  3  1  1  1  1  1  1  1  1  1     % 7
+    1  1  1 34  1  1  1 56  1  3  1  53  1  1  1 31  1  1  1     % 6
+    1  1  1  1  1  1  1  1  1  3  1  1  1  1  1  1  1  1  1     % 5
+    1  1  1  1  1 24  1  1  1  3  1  1  1 21  1  1  1  1  1     % 4
+    1  1  1  1  1  1  1 24  1  3  1 21  1  1  1  1  1  1  1     % 3
+    2  1  1  1  1  1  1  1  1  3  1  1  1  1  1  1  1  1  2     % 2
+    2  2  1  1  1  1  1  1  1  3  1  1  1  1  1  1  1  2  2     % 1
+%   A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  R  S  T  U
+% **** North
+
+% **********************************************************************
+% *** Materials
+% **********************************************************************
+% Helium 3 Definitions
+%     name    dens       
+mat    He3Bot    -0.01 
+  2003.03c   1.
+%     name    dens       
+mat    He3Top    -0.01 
+  2003.03c   1.
+% ----- Thermal Scattering Cross Sections S(a,b) -----
+
+% DO NOT use continuous energy scattering cross sections (ACE 2013 and newer ???)
+% until SERPENT has been tested and verified to properly process and utilize them.
+% If used, they may produce erroneous (likely too low ???) eigenvalue results.
+
+therm grph gre7.00t
+% therm graph70   grph.10t                                            % for hpc-common, MCNP5, or MCNP6.1 libraries
+% therm graph71   grph.10t                                            % for hpc-common, MCNP5, or MCNP6.1 libraries
+% therm o2u      "o2/u.10t"                                           % for hpc-common, MCNP5, or MCNP6.1 libraries
+% therm uo2      "u/o2.10t"                                           % for hpc-common, MCNP5, or MCNP6.1 libraries
+% therm fe56      fe56.12t                                            % for hpc-common, MCNP5, or MCNP6.1 libraries
+% therm al27      al27.12t                                            % for hpc-common, MCNP5, or MCNP6.1 libraries
+
+%  ------ Graphite-HEUO2 Fuel from Brittan ------
+mat     fuelbrit       8.62668E-02     moder grph 6000     % fuel meat
+        92235.18c   8.6849E-06
+        92238.18c   6.2967E-07
+         6000.18c   8.6227E-02                                      % 100 percent graphite
+%          6000.18c   5.0874E-02                                      % 59 percent graphite
+%          6002.18c   3.5353E-02                                      % 59 percent grahpite
+        26054.18c   6.5286E-07
+        26056.18c   1.0239E-05
+        26057.18c   2.3659E-07
+        26058.18c   3.1248E-08
+         8016.18c   1.8623E-05
+         5010.18c   1.4532E-07
+         5011.18c   5.8494E-07
+
+%  ------ Graphite-HEUO2 Fuel from BATMAN------
+mat     fuel1     8.6399E-02  % 8.6451E-02                          % fuel meat from BATMAN
+moder grph 6000
+%        moder   graph70    6000
+%        moder   graph71    6000
+%        moder   o2u         8016
+%        moder   uo2        92234
+%        moder   fe56       26056
+%        6000.18c 5.0955E-02   6002.18c 3.5409E-02
+         6000.18c 8.6364E-02
+         5010.18c 1.4440E-07   5011.18c 5.8124E-07
+        26054.18c 2.9114E-07  26056.18c 4.5703E-06
+        26057.18c 1.0555E-07  26058.18c 1.4047E-08
+        23051.18c 1.5339E-09  23051.18c 6.1201E-07
+        16032.18c 6.1726E-06  16033.18c 4.8736E-08  16034.18c 2.7617E-07
+        16034.18c 6.4982E-10   3006.18c 2.8481E-08   3007.18c 3.4676E-07
+         4009.18c 2.8900E-08  11023.18c 4.5317E-07  12024.18c 6.7717E-07
+        12025.18c 8.5729E-08  12026.18c 9.4388E-08  13027.18c 1.1584E-05
+        14028.18c 2.0526E-05  14029.18c 1.0427E-06  14030.18c 6.8818E-07
+        20040.18c 7.5599E-06  20042.18c 5.0456E-08  20043.18c 1.0528E-08
+        20044.18c 1.6268E-07  20046.18c 3.1194E-10  20048.18c 1.4583E-08
+        22046.18c 4.3972E-08  22047.18c 3.9654E-08  22048.18c 3.9292E-07
+        22049.18c 2.8835E-08  22050.18c 2.7609E-08  24050.18c 8.7059E-09
+        24052.18c 1.6788E-07  24053.18c 1.9037E-08  24054.18c 4.7386E-09
+        25055.18c 3.7927E-08  27059.18c 2.6517E-08  28058.18c 1.8126E-07
+        28060.18c 6.9820E-08  28061.18c 3.0350E-09  28062.18c 9.6770E-09
+        28064.18c 2.4644E-09  29063.18c 5.6685E-09  29065.18c 2.5289E-09
+        30064.18c 3.8440E-07  30064.18c 2.2279E-07  30064.18c 3.2668E-08
+        30064.18c 1.5151E-07  30064.18c 5.0252E-09  47107.18c 2.5034E-09
+        47109.18c 2.3258E-09  50112.18c 1.2769E-10  50114.18c 8.6884E-11
+        50115.18c 4.4759E-11  50116.18c 1.9141E-09  50117.18c 1.0110E-09
+        50118.18c 3.1884E-09  50119.18c 1.1308E-09  50120.18c 4.2889E-09
+        50122.18c 6.0951E-10  50124.18c 7.6221E-10  82204.18c 7.0393E-09
+        82206.18c 1.2118E-07  82207.18c 1.1112E-07  82208.18c 2.6347E-07
+         8016.18c 1.9152E-05   8017.18c 7.2807E-09  92234.18c 8.5472E-08
+        92235.18c 8.7202E-06  92236.18c 4.0790E-08  92238.18c 4.9986E-07
+
+%  ------ Graphite-HEUO2 Fuel from MCNP------
+mat     fuelmcnp       8.62658E-02                                  % fuel meat
+moder grph 6000
+%        moder   graph70     6000
+%        moder   o2u         8016
+%        moder   fe56       26056
+        92235.18c   8.6849E-6 92238.18c   6.2967E-7
+         6000.18c   8.6226E-2
+        26054.18c   6.5230E-7 26056.18c   1.0240E-5
+        26057.18c   2.3648E-7 26058.18c   3.1471E-8
+         8016.18c   1.8616E-5  8017.18c   7.0767E-9
+         5010.18c   1.4532E-7  5011.18c   5.8494E-7
+
+mat     zr2         4.27575E-02
+        40000.18c   4.2498E-02
+        50000.18c  4.7529E-05
+        26054.18c  5.3721E-06
+        26056.18c   8.4254E-05
+        26057.18c   1.9468E-06
+        26058.18c   2.5712E-07
+        28058.18c   2.2206E-05
+        28060.18c   8.5527E-06
+        28061.18c   3.7186E-07
+        28062.18c   2.1627E-06
+        28064.18c   3.0336E-07
+        24050.18c   3.6634E-06
+        24052.18c   7.0565E-05
+        24053.18c   8.0005E-06
+        24054.18c   1.9875E-06
+         5010.18c   1.3793E-08
+         5011.18c   5.9187E-08
+        48000.18c   1.0528E-08
+        72000.18c   2.2102E-06
+
+%  ----- Zircaloy-2 from MCNP -----
+mat     zr2mcnp     4.29413E-02
+        40090.18c   2.1865E-2      40091.18c   4.7683E-3
+        40092.18c   7.2884E-3      40094.18c   7.3862E-3
+        40096.18c   1.1899E-3
+        50112.18c   4.6103E-6      50114.18c   3.1369E-6
+        50115.18c   1.6160E-6      50117.18c   3.6502E-5
+        50118.18c   1.1512E-4      50119.18c   4.0827E-5
+        50120.18c   1.5485E-4      50122.18c   2.2006E-5
+        50124.18c   2.7519E-5
+        26054.18c   5.3675E-10     26056.18c   8.4258E-9
+        26057.18c   1.9459E-10     26058.18c   2.5896E-11
+        24050.18c   3.6605E-7      24052.18c   7.0589E-9
+        24053.18c   8.0042E-7      24054.18c   1.9924E-7
+        28058.18c   2.2872E-5      28060.18c   8.8102E-6
+        28061.18c   3.8297E-7      28062.18c   1.2211E-6
+        28064.18c   3.1097E-7
+         5010.18c   1.3793E-8       5011.18c   5.9187E-8
+        48106.18c   1.3160E-10     48108.18c   9.3699E-11
+        48110.18c   1.3149E-9      48111.18c   1.3476E-9
+        48112.18c   2.5404e-9      48113.18c   1.2865E-9
+        48114.18c   3.0248E-9      48116.18c   7.8855E-10
+        72174.18c   3.5363E-9      72176.18c   1.1626E-7
+        72177.18c   4.1110E-7      72178.18c   6.0294E-7
+        72179.18c   3.0103E-7      72180.18c   7.7534E-7
+
+mat     zr3         4.31620E-02
+        40000.18c   4.2865E-02
+        50000.18c  9.2768E-05
+        26054.18c  1.1659E-05
+        26056.18c   1.8286E-04
+        26057.18c   4.2254E-06
+        26058.18c   5.5806E-07
+        28058.18c   2.2139E-07
+        28060.18c   8.5262E-08
+        28061.18c   3.7071E-09
+        28062.18c   2.1560E-08
+        28064.18c   3.0241E-09
+        24050.18c   9.8705E-08
+        24052.18c   1.9013E-06
+        24053.18c   2.1556E-07
+        24054.18c   5.3551E-08
+        48000.18c   6.9974E-09
+        72000.18c   2.2034E-06
+         5010.18c   1.3734E-08
+         5011.18c   5.9006E-08
+
+%  ----- Zircaloy-3 from MCNP -----
+mat     zr3mcnp     4.31618E-02
+        40090.18c   2.2054E-2      40091.18c   4.8095E-3
+        40092.18c   7.3513E-3      40094.18c   7.4499E-3
+        40096.18c   1.2002E-3
+        50112.18c   8.9997E-7      50114.18c   6.1235E-7
+        50115.18c   3.1545E-7      50116.18c   1.3490E-5
+        50117.18c   7.1255E-6      50118.18c   2.2471E-5
+        50119.18c   7.9698E-6      50120.18c   3.0228E-5
+        50122.18c   4.2957E-6      50124.18c   5.3720E-6
+        26054.18c   1.1649E-5      26056.18c   1.8287E-4
+        26057.18c   4.2232E-6      26058.18c   5.6203E-7
+        24050.18c   9.8592E-8      24052.18c   1.9013E-6
+        24053.18c   2.1559E-7      24054.18c   5.3664E-8
+        28058.18c   1.5995E-7      28060.18c   6.1611E-8
+        28061.18c   2.6782E-9      28062.18c   8.5393E-9
+        28064.18c   2.1747E-9
+         5010.18c   1.3751e-8       5011.18c   5.9006E-8
+        48106.18c   8.7468E-11     48108.18c   6.2277e-11
+        48110.18c   8.7398E-10     48111.18c   8.9567E-10
+        48112.18c   1.6885E-9      48113.18c   8.5508E-10
+        48114.18c   2.0104E-9      48116.18c   5.2411E-10
+        72174.18c   3.5254E-9      72176.18c   1.1590E-7
+        72177.18c   4.0983E-7      72178.18c   6.0109E-7
+        72179.18c   3.0010E-7      72180.18c   7.7295E-7
+
+% ------ CP-2 Graphite from Brittan ------
+mat     graphbrit      8.3673E-02     % moder   graph70      6000
+moder grph 6000
+        26054.18c   1.0536E-06
+        26056.18c   1.6524E-05
+        26057.18c   3.8181E-07
+        26058.18c   5.0428E-08
+         5010.18c   3.7027E-08
+         5011.18c   1.4904E-07
+         6000.18c   8.3655E-02
+
+% ------ CP-2 Graphite from BATMAN ------
+% Isotopes not commented out account for 99.99% of the neutron absorptions
+% based on ORIGEN2 calculations. All isotopes seemed to cause memory problems
+% on my computer.
+mat    graph1  8.3719E-02
+moder grph 6000
+%       moder   graph70    6000
+%        moder   graph71    6000
+%       moder   o2u         8016
+%       moder   uo2        92234
+%       moder   fe56       26056
+%       moder   al27       13027
+       1001.18c  2.2327E-05   1002.18c  2.5679E-09
+       3006.18c  7.3682E-09   3007.18c  8.9709E-08
+       5010.18c  6.4792E-09   5011.18c  2.6079E-08
+       8016.18c  1.1161E-05   8017.18c  4.2426E-09   6000.18c  8.3677E-02
+      13027.18c  8.2001E-08
+      14029.18c  1.1743E-07  14030.18c  7.7503E-08
+      16032.18c  1.3407E-06  16033.18c  1.0585E-08  16034.18c  5.9984E-08
+      16036.18c  1.4114E-10
+      17035.18c  9.6708E-09  17037.18c  3.0943E-09
+      20040.18c  3.8921E-06  20042.18c  2.5977E-08  20043.18c  5.4202E-09
+      20044.18c  8.3752E-08  20046.18c  1.6060E-10  20048.18c  7.5079E-09
+      26056.18c  1.0245E-07
+      26057.18c  2.3659E-09  26058.18c  3.1486E-10
+      28058.18c  1.6331E-08  28060.18c  6.2905E-09  28061.18c  2.7344E-10
+      28062.18c  8.7186E-10  28064.18c  2.2204E-10
+      23051.18c  5.9226E-09  23051.18c  2.3631E-06
+      22046.18c  2.0800E-08  22047.18c  1.8758E-08
+      22048.18c  1.8586E-07  22049.18c  1.3640E-08  22050.18c  1.3060E-08
+      38084.18c  7.7131E-11  38086.18c  1.3581E-09  38087.18c  9.6414E-10
+      38088.18c  1.1374E-08  39089.18c  5.6559E-10
+      48108.18c  1.9906E-12
+      48110.18c  2.7936E-11  48111.18c  2.8629E-11  48112.18c  5.3970E-11
+      48113.18c  2.7332E-11  48114.18c  6.4259E-11  48116.18c  1.6752E-11
+      49113.18c  9.3940E-12  49115.18c  2.0958E-10
+      62144.18c  1.0267E-12  62147.18c  5.0131E-12  62148.18c  3.7590E-12
+      62149.18c  4.6218E-12  62150.18c  2.4681E-12  62152.18c  8.9459E-12
+      62154.18c  7.6082E-12
+      63151.18c  1.5820E-11  63153.18c  1.7270E-11
+      64152.18c  6.3955E-14  64154.18c  6.9711E-13  64155.18c  4.7327E-12
+      64156.18c  6.5458E-12  64157.18c  5.0045E-12  64158.18c  7.9432E-12
+      64160.18c  6.9903E-12
+      73181.18c   3.3347E-11  73181.18c  2.7786E-07
+      79197.18c  2.5529E-10
+      92234.18c  5.7039E-15  92235.18c  7.6094E-13
+      92238.18c  1.0486E-10
+      90232.18c  1.0835E-10
+%       24050.18c  2.1010E-10
+%        9019.18c  2.6468E-09  15031.18c  2.1105E-08
+%        4009.18c  2.7898E-09
+%       11023.18c  1.0936E-09  12024.18c  1.9611E-09  12025.18c  2.4827E-10
+%       12026.18c  2.7334E-10  13027.18c  8.2001E-08  14028.18c  2.3116E-06
+%       19039.18c  1.1994E-09  19040.18c  1.5047E-13  19041.18c  8.6557E-11
+%       21045.18c  1.1185E-10
+%       24052.18c  4.0515E-09  24053.18c  4.5941E-10  24054.18c  1.1436E-10
+%       25055.18c  3.6612E-10  26054.18c  6.5261E-09
+%       27059.18c  8.5325E-11
+%       29063.18c  1.6416E-09
+%       29065.18c  7.3236E-10  30064.18c  1.8554E-10  30064.18c  1.0753E-10
+%       30064.18c 1.5767E-11  30064.18c  7.3125E-11  30064.18c  2.4255E-12
+%       31069.18c  4.3350E-11  31071.18c  2.8770E-11  32070.18c  7.0540E-11
+%       32072.18c  9.4526E-11  32073.18c  2.6859E-11  32074.18c  1.2710E-10
+%       32076.18c  2.7101E-11  33075.18c  3.3558E-10  34074.18c  2.8339E-12
+%       34076.18c  2.9836E-11  34077.18c  2.4295E-11  34078.18c  7.5688E-11
+%       34080.18c  1.5797E-10  34082.18c  2.7798E-11  35079.18c  3.1900E-10
+%       35081.18c  3.1031E-10  37085.18c  2.1230E-10  37087.18c  8.1868E-11
+%       40090.18c  1.9285E-09
+%       40091.18c  4.2056E-10  40092.18c  6.4283E-10  40094.18c  6.5145E-10
+%       40096.18c  1.0495E-10  41093.18c  2.7062E-10  42092.18c  3.8707E-11
+%       42094.18c  2.4188E-11  42095.18c  4.1668E-11  42096.18c  4.3712E-11
+%       42097.18c  2.5053E-11  42098.18c  6.3393E-11  42100.18c  2.5341E-11
+%       44096.18c  1.3781E-11  44098.18c  4.6518E-12  44099.18c  3.1742E-11
+%       44100.18c  3.1344E-11  44101.18c  4.2439E-11  44102.18c  7.8484E-11
+%       44104.18c  4.6319E-11  45103.18c  4.8865E-11  46102.18c  2.4098E-12
+%       46104.18c  2.6319E-11  46105.18c  5.2756E-11  46106.18c  6.4569E-11
+%       46108.18c  6.2513E-11  46110.18c  2.7689E-11  47107.18c  1.2083E-10
+%       47109.18c  1.1226E-10  48106.18c  2.7958E-12
+%       50112.18c  2.0544E-12
+%       50114.18c  1.3979E-12  50115.18c  7.2011E-13  50116.18c  3.0795E-11
+%       50117.18c  1.6266E-11  50118.18c  5.1297E-11  50119.18c  1.8193E-11
+%       50120.18c  6.9003E-11  50122.18c  9.8061E-12  50124.18c  1.2263E-11
+%       51121.18c  1.1813E-10  51123.18c  8.8357E-11  52120.18c  1.7734E-13
+%       52122.18c  5.0245E-12  52123.18c  1.7537E-12  52124.18c  9.3397E-12
+%       52125.18c  1.3931E-11  52126.18c  3.7122E-11  52128.18c  6.2540E-11
+%       52130.18c  6.7151E-11  53127.18c  3.9624E-11  55133.18c  1.8917E-10
+%       56130.18c  1.9407E-13  56132.18c  1.8491E-13  56134.18c  4.4251E-12
+%       56135.18c  1.2069E-11  56136.18c  1.4379E-11  56137.18c  2.0564E-11
+%       56138.18c  1.3127E-10  57138.18c  1.6290E-13  57139.18c  1.8084E-10
+%       58136.18c  3.3196E-13  58138.18c  4.5039E-13  58140.18c  1.5871E-10
+%       58142.18c  1.9943E-11  59141.18c  1.7843E-10  60142.18c  4.7411E-11
+%       60143.18c  2.1265E-11  60144.18c  4.1485E-11  60145.18c  1.4467E-11
+%       60146.18c  2.9981E-11  60148.18c  9.9355E-12  60150.18c  9.7611E-12
+%       65159.18c  3.1640E-11  66156.18c  1.7329E-14
+%       66158.18c  2.9397E-14  66160.18c  7.2069E-13  66161.18c  5.8451E-12
+%       66162.18c  7.8831E-12  66163.18c  7.7039E-12  66164.18c  8.7449E-12
+%       67165.18c  3.0488E-11  68162.18c  4.1789E-14  68164.18c  4.8132E-13
+%       68166.18c  1.0072E-11  68167.18c  6.8753E-12  68168.18c  8.1106E-12
+%       68170.18c  4.4825E-12  69169.18c  2.9766E-11  71175.18c  2.7995E-11
+%       71176.18c  7.4435E-13  72174.18c  4.5075E-14  72176.18c  1.4819E-12
+%       72177.18c  5.2400E-12  72178.18c  7.6854E-12  72179.18c  3.8371E-12
+%       72180.18c  9.8828E-12
+%       74180.18c  1.6411E-13  74182.18c  3.6242E-11  74183.18c  1.9571E-11
+%       74184.18c  4.1904E-11  74186.18c  3.8881E-11  75185.18c  1.0100E-11
+%       75187.18c  1.6905E-11  77191.18c  9.7578E-12  77193.18c  1.6403E-11
+%       80196.18c  3.7602E-13  80198.18c  2.4993E-11
+%       80199.18c  4.2290E-11  80200.18c  5.7908E-11  80201.18c  3.3040E-11
+%       80202.18c  7.4854E-11  80204.18c  1.7222E-11  81203.18c  3.6314E-11
+%       81205.18c  8.6701E-11  82204.18c  1.6988E-12  82206.18c  2.9244E-11
+%       82207.18c  2.6817E-11  82208.18c  6.3584E-11  83209.18c  1.2031E-10
+
+%  ------ CP-2 Graphite from MCNP ------
+mat     graphmcnp      8.36732E-02     % moder   graph70      6000
+moder grph 6000
+         6000.18c   8.3655E-2
+        26054.18c   1.0527E-6      26056.18c   1.6525E-5
+        26057.18c   3.8162E-7      26058.18c   5.0788E-8
+         5010.18c   3.5167E-8       5011.18c   1.509E-7
+
+mat     air1        9.66852E-05
+         8016.18c   1.2678E-05
+         7014.18c   8.3688E-05
+         7015.18c   3.1919E-07
+
+%  ----- Air from MCNP -----
+mat     airmcnp     2.50455E-05
+         6000.18c   7.5848E-9
+         7014.18c   1.8946E-5       7015.18c   7.8943E-7
+         8016.18c   5.3005E-6       8017.18c   2.0150E-9
+
+mat     alum2       5.9914E-02
+        13027.18c   5.9477E-02
+        26054.18c  2.5591E-05
+        26056.18c   4.0136E-04
+        26057.18c   9.2739E-06
+        26058.18c   1.2249E-06
+
+%  -----Aluminum Alloy-2 from MCNP -----
+mat     alum2mcnp   5.99144E-02
+        13027.18c   5.9477E-2
+        50112.18c   4.2433E-6      50114.18c   2.8872E-6
+        50115.18c   1.4873E-6      50116.18c   6.3605E-5
+        50117.18c   3.3596E-5      50118.18c   1.0595E-4
+        50119.18c   3.7577E-5      50120.18c   1.4252E-4
+        50122.18c   2.0254E-5      50124.18c   2.5328E-5
+
+mat     csteel1     8.58601E-02
+         6000.18c   1.40000E-03
+        26054.18c  5.08189E-03
+        26056.18c   7.68600E-02
+        26057.18c   1.74474E-03
+        26058.18c   2.26468E-04
+        42000.18c   5.47000E-04
+
+%  ----- Carbon Steel from MCNP -----
+mat     csteelmcnp  5.74177E-02
+        26054.18c   4.8803E-3      26056.18c   4.6611E-2
+        26057.18c   1.7693E-3      26058.18c   2.3546E-4
+
+mat     ss304       8.76286E-02
+         6000.18c   3.18633E-04
+        14000.18c  1.70334E-03
+        15031.18c   6.95028E-05
+        16000.18c   4.47591E-05
+        24050.18c   7.60426E-04
+        24052.18c   1.46474E-02
+        24053.18c   1.66070E-03
+        24054.18c   4.12553E-04
+        25055.18c   1.74157E-03
+        26054.18c  3.38249E-03
+        26056.18c   5.33527E-02
+        26057.18c   1.22049E-03
+        26058.18c   1.62731E-04
+        28058.18c   5.56500E-03
+        28060.18c   2.12753E-03
+        28061.18c   9.21111E-05
+        28062.18c   2.92637E-04
+        28064.18c   7.41781E-05
+
+%  ----- SS-304 from MCNP
+mat     ss304mcnp   8.93622E-02
+         6000.18c   3.1847E-4
+        14028.18c   3.1481E-3      14029.18c   1.5993E-4
+        14030.18c   1.0555E-4
+        15031.18c   1.3449E-4
+        24050.18c   7.5916E-4      24052.18c   1.4640E-2
+        24053.18c   1.6600E-3      24054.18c   4.1321E-4
+        25055.18c   1.7407E-3
+        26054.18c   3.4218E-3      26056.18c   5.3716E-2
+        26057.18c   1.2405E-3      26058.18c   1.6509E-4
+        28058.18c   5.2686E-3      28060.18c   2.0295E-3
+        28061.18c   8.8219E-5      28062.18c   2.8128E-4
+        28064.18c   7.1634E-5
+
+mat     b4cbrit         8.71910E-02    % moder   graph70      6000
+moder grph 6000
+        5010.18c    1.38808E-02
+        5011.18c    5.58720E-02
+        6000.18c    1.74382E-02
+
+% ------ Boron Carbide Powder (1.8 g/cc) ------
+mat     b4c  9.7889E-02
+moder grph 6000
+%       moder   graph70    6000
+%        moder   graph71    6000
+%       moder   al27       13027
+       5010.18c 1.5567E-02   5011.18c 6.2660E-02   6000.18c 1.9557E-02
+      11023.18c 4.7004E-07  13027.18c 4.0050E-05  14028.18c 3.5483E-05
+      14029.18c 1.8026E-06  14030.18c 1.1897E-06  20040.18c 2.6138E-06
+      20042.18c 1.7445E-08  20043.18c 3.6399E-09  20044.18c 5.6244E-08
+      20046.18c 1.0785E-10  20048.18c 5.0420E-09  22046.18c 1.8625E-06
+      22047.18c 1.6796E-06  22048.18c 1.6642E-05  22049.18c 1.2213E-06
+      22050.18c 1.1694E-06  25055.18c 1.9670E-07
+
+%  ----- Boron Carbide Powder from MCNP -----
+mat     b4cmcnp     8.7930E-02
+%        moder   graph70   6000
+moder grph 6000
+         5010.18c   1.3881E-2       5011.18c   5.5875E-2
+         6000.18c   1.7437E-2
+
+mat     lead        3.29881E-02
+        82204.18c   4.61833E-04
+        82206.18c   7.95013E-03
+        82207.18c   7.29037E-03
+        82208.18c   1.72858E-02
+
+%  ----- Lead from MCNP -----
+mat     leadmcnp    3.25461E-02
+        82204.18c   4.6888E-5      82206.18c   7.9930E-3
+        82207.18c   7.2942E-3      82208.18c   1.7212E-2
+
+mat     dysp        3.16894E-02
+        66156.18c   1.90137E-05
+        66158.18c   3.16894E-05
+        66160.18c   7.41533E-04
+        66161.18c   5.99247E-03
+        66162.18c   8.08398E-03
+        66163.18c   7.89067E-03
+        66164.18c   8.93008E-03
+
+%  ----- Dysprosium from MCNP -----
+mat     dyspmcnp    3.18533E-02
+        66156.18c   1.8492E-4     66158.18c   3.0973E-5
+        66160.18c   7.4983E-4     66161.18c   6.0435E-3
+        66162.18c   8.1004E-3     66163.18c   7.8676E-3
+        66164.18c   8.8761E-3
+
+mat     u235        1.0                                             % detector material
+        92235.18c   1.0
+
+% ------ Mild Low Carbon Steel (A38/1018) ------
+mat     stllnr      8.5418E-02
+%       moder   fe56       26056
+       6000.18c  8.6425E-04  25055.18c  7.7296E-04  15031.18c  3.0467E-05
+      16032.18c  3.4944E-05  16033.18c  2.7590E-07  16034.18c  1.5635E-06
+      16036.18c  3.6787E-09  29063.18c  5.1344E-05  29065.18c  2.2906E-05
+      28058.18c  5.4726E-05  28060.18c  2.1081E-05  28061.18c  9.1636E-07
+      28062.18c  2.9217E-06  28064.18c  7.4408E-07  24050.18c  2.9571E-06
+      24052.18c  5.7025E-05  24053.18c  6.4662E-06  24054.18c  1.6096E-06
+      42092.18c  2.1792E-06  42094.18c  1.3618E-06  42095.18c  2.3459E-06
+      42096.18c  2.4610E-06  42097.18c  1.4105E-06  42098.18c  3.5690E-06
+      42100.18c  1.4267E-06  23051.18c  9.2622E-09  23051.18c  3.6956E-06
+      41093.18c  2.0314E-06  22046.18c  1.0165E-07  22047.18c  9.1671E-08
+      22048.18c  9.0834E-07  22049.18c  6.6659E-08  22050.18c  6.3825E-08
+      14028.18c  4.2607E-04  14029.18c  2.1644E-05  14030.18c  1.4285E-05
+      26054.18c  4.8518E-03  26056.18c  7.6163E-02  26057.18c  1.7589E-03
+      26058.18c  2.3408E-04
+
+% ------ Hematite/Magnetite Concrete ------
+mat     cncrt       9.6208E-02
+      20040.18c  2.5914E-03  20042.18c  1.7296E-05  20043.18c  3.6088E-06
+      20044.18c  5.5763E-05  20046.18c  1.0693E-07  20048.18c  4.9989E-06
+      14028.18c  1.5236E-03  14029.18c  7.7399E-05  14030.18c  5.1082E-05
+      13027.18c  1.1921E-03  26054.18c  1.0360E-03  26056.18c  1.6262E-02
+      26057.18c  3.7557E-04  26058.18c  4.9981E-05  12024.18c  9.5284E-04
+      12025.18c  1.2063E-04  12026.18c  1.3281E-04  16032.18c  4.8069E-05
+      16033.18c  3.7953E-07  16034.18c  2.1507E-06  16036.18c  5.0604E-09
+      19039.18c  2.0056E-05  19040.18c  2.5162E-09  19041.18c  1.4474E-06
+      11023.18c  3.2685E-05  25055.18c  2.8557E-05  23051.18c  4.0548E-08
+      23051.18c  1.6178E-05  24050.18c  1.1582E-07  24052.18c  2.2335E-06
+      24053.18c  2.5326E-07  24054.18c  6.3043E-08  22046.18c  5.9935E-05
+      22047.18c  5.4050E-05  22048.18c  5.3556E-04  22049.18c  3.9303E-05
+      22050.18c  3.7632E-05   8016.18c  4.7228E-02   8017.18c  1.7953E-05
+       1001.18c  2.3634E-02   1002.18c  2.7182E-06
+
+%  ----- Hematite/Magnetite Concrete from MCNP -----
+mat     cncrtmcnp   2.18763E-01
+       1001.18c   1.5542E-1
+      11023.18c   8.5034E-4
+      14028.18c   9.7028E-3      14029.18c   4.9291E-4
+      14030.18c   3.2531E-4
+      20040.18c   1.3195E-3      20042.18c   8.8063E-6
+      20043.18c   1.8375E-6      20044.18c   2.8393E-5
+      20046.18c   5.4444E-8      20048.18c   2.5453E-6
+       8016.18c   4.8425E-2       8017.18c   1.8408E-5
+      13027.18c   1.7389E-3
+      19039.18c   3.0642E-4      19040.18c   3.8443E-8
+      19041.18c   2.2113E-5
+      26054.18c   5.8462E-6      26056.18c   9.1772E-5
+      26057.18c   2.1194E-6      26058.18c   2.8206E-7
+
+% **********************************************************************
+% Rod Positioning
+% **********************************************************************
+
+% Compensation Rods Position - Max 58" (147.32 cm) travel (ANL-IFR-232)
+trans   101     0  0 147.32                                         % Compensation rod 1 elevation
+trans   102     0  0 147.32                                         % Compensation rod 2 elevation
+trans   103     0  0 147.32                                         % Compensation rod 3 elevation
+trans   104     0  0 147.32                                         % Compensation rod 4 elevation
+
+% Control Rods Position - Max 58" (147.32 cm) travel (ANL-IFR-232)
+trans   111     0  0  109.72800                                       % Control rod 1 elevation
+trans   112     0  0  109.72800                                       % Control rod 2 elevation
+trans   113     0  0  109.72800                                       % Control rod 3 elevation
+trans   114     0  0  109.72800                                       % Control rod 4 elevation
+
+% Transient Bank Position - Max 40" (101.6 cm) travel (ANL-IFR-232)
+trans   121     0  0 48.768                                         % Control rod 1 elevation
+trans   122     0  0 48.768                                         % Control rod 2 elevation
+trans   123     0  0 48.768                                         % Control rod 3 elevation
+trans   124     0  0 48.768                                         % Control rod 4 elevation
+
+% Bioshield Translation (Rotation)
+trans    51     0  0  0  0  0  45                                   % bioshield rotation to get corner instrument thimbles
+trans    52     0  0  0  0  0  45                                   % bioshield rotation to get corner instrument thimbles
+
+% **********************************************************************
+% *** Libraries
+% **********************************************************************
+
+set acelib "oma.xsdata"                          % cross sections library that includes photon deposition
+% set acelib  "sss_endfb68u.xsdata"                        % cross sections on osX MCNP6.1 libraries
+% set acelib "MCNP6.1.xsdata"                       % cross sections on HCP ASC MCNP6.1 libraries
+% set acelib "/home/chipas/SERPENT/mcnp.xsdata"     % cross sections on HPC hpc-common MCNP5 libraries
+
+% **********************************************************************
+% *** Plots
+% **********************************************************************
+
+% XZ and YZ Plots at Center
+% plot    2  3000 3000 91.44 -163 163 -163 163
+% plot    2  6000 6000 0 -163 163 -163 163
+% plot    1  6000 6000 0 -163 163 -163 163
+% plot    1  1000 1000 0  -15  15  55 85
+% plot    2  1000 1000 1.5  -15  15  55 85
+
+% XZ and YZ Plots at Control Rods
+% plot    2  3000 3000 20.32 -163 163 -163 163
+% plot    2  3000 3000 60.96 -163 163 -163 163
+% plot    1  3000 3000 162.70 -163 163 -163 163
+% plot    2  3000 3000 -162.70 -163 163 -163 163
+% plot    1  3000 3000 -162.70 -163 163 -163 163
+% plot    1  1000 1000 20.32   25  55  55 85
+% plot    2  1000 1000 21.82   25  55  55 85
+% plot    2  1000 1000 23.4631   25  55  55 85
+% plot    2   1000 1000  130   -60 60 -60 60
+% plot    2   1000 1000  160   -60 60 -60 60
+% plot    2   1000 1000 -130   -60 60 -60 60
+% plot    1   1000 1000 -130   -60 60 -60 60
+
+% XZ Plot at Test Position
+% plot    2   1000 1000  5.08  -3 -2
+
+% XY-Plots
+%plot    3  3000 3000 30.48
+%plot    3  3000 3000 -30.48
+% plot    3  6000 6000 0
+%plot    3  6000 6000 0  -100 100  -100 100
+% plot    3  6000 6000 77.24776  -100 100  -100 100
+% plot    3  1000 1000 0  -5.08 5.08  -5.08 5.08
+% plot    3  1000 1000 65  -100 100  -100 100
+% plot    3  5000 5000 0  -50 50 -50 50
+
+% Mesh Plot
+mesh 3 19 19 0 -96.52  96.52 -96.52  96.52 -60.48375 60.48375
+mesh 3 1000 1000 0 -96.52  96.52 -96.52  96.52 -60.48375 60.48375
+mesh 3 5000 5000 0 -96.52  96.52 -96.52  96.52 -60.48375 60.48375
+mesh 3 5000 5000 0
+% *******************************************
+% *** He-3 Meshes
+%**************************************************
+%type    detector          size            xmin  xmax    ymin  ymax   zmin       zmax
+mesh 8 4 FluxT             3 5000 5000 0 10.405 32.31  28.405 52.31   -60.48375 60.48375
+mesh 8 4 FluxB             3 5000 5000 0 10.405 32.31 -52.31 -28.405  -60.48375 60.48375
+mesh 8 4 CapB             3 5000 5000 0 10.405 32.31 -52.31 -28.405  -60.48375 60.48375
+mesh 8 4 CapT             3 5000 5000 0 10.405 32.31 28.405 52.31  -60.48375 60.48375
+mesh 8 4 HeatT             3 5000 5000 0 10.405 32.31  28.405 52.31   -60.48375 60.48375
+mesh 8 4 HeatB             3 5000 5000 0 10.405 32.31 -52.31 -28.405  -60.48375 60.48375
+mesh 8 4 HeatT             2 5000 5000 0 10.405 32.31  28.405 52.31   -60.48375 60.48375
+mesh 8 4 HeatB             2 5000 5000 0 10.405 32.31 -52.31 -28.405  -60.48375 60.48375
+% ***************************************18*****************************
+% *** Detectors
+% **********************************************************************
+
+
+det FluxT n
+dr -2 void dm He3Top
+det FluxB  n
+dr -2 void dm He3Bot
+
+det EnergyDep n
+dr -80 void
+
+det EnergyAssembly n
+dr -80 void
+dx 10.405 42.31 1
+dy 28.405 52.31 10
+dz -60.48375 60.48375 500
+
+det HeatT n
+dr -4 He3Top dm He3Top
+
+det HeatB n
+dr -4 He3Bot dm He3Bot
+
+%Keff
+det absorption
+dr -2 void
+%Keff 
+det totalfission
+dr -6 void
+
+det fissionneutronprod
+dr -7 void
+
+det nxn
+dr -16 void
+
+det leak
+dr -17 void
+
+det RadDepB1 n
+dr -4 void dm He3Bot
+dv 87.822405
+dx 20.405 22.31 1
+dy -40.605 -38.7 5
+dz -60.48375 60.48375 1
+
+det RadTDep1 n
+dr -4 void dm He3Top
+dv 87.822405
+dx 20.405 22.355 1
+dy 40.705 42.75 5
+dz -60.48375 60.48375 1
+
+det RadCapB n
+dr -2 void dm He3Bot
+dv 87.822405
+dx 20.305 22.21 1
+dy -40.605 -38.7 5
+dz -60.48375 60.48375 1
+
+det RadCapT n
+dr -2 void dm He3Top
+dv 87.822405
+dx 20.305 22.21 1
+dy 38.56  40.605 5
+dz -60.48375 60.48375 1
+
+det CapT n
+dr -2 void dm He3Top
+dv 87.822405
+dx 20.405 22.35 1
+dy 40.605 42.65 1
+dz -60.48375 60.48375 1
+
+det CapB n
+dr -2 void dm He3Bot
+dx 20.405 22.35 1
+dy -40.705 -38.66 1
+dz -60.48375 60.48375 1
+
+det DepB n
+dr -80 void dm He3Bot
+dx 10.405 32.31 1
+dy -32.705 -28.7 1
+dz -60.48375 60.48375 1
+
+% Output Joules for that quarter slice (output Y slice to Pass to STAR)
+%Top of Reactor
+det Serpent2STop 
+dr -4 void dm He3Top 
+% Quarter Volume divded by number of detector slices
+dv 0.1169
+dx 20.405 21.35 1
+dy  38.56  40.605  4
+dz -60.48375 60.48375 500
+
+% Output Joules for that quarter slice (output Y slice to Pass to STAR)
+%Bottom of Reactor
+det Serpent2SBot 
+dr -4 void dm He3Bot 
+dv 0.1169
+dx 20.405 21.35 1
+dy -40.605 -38.56 4
+dz -60.48375 60.48375 500
+
+% *** He-3 Plots
+%**************************************************
+% XZ Plot at Test Position
+plot    2   5000 5000  39.0 -160 160 -160 160
+% **********************************************************************
+% *** Source
+% **********************************************************************
+
+% set pop 1000 100 10
+%set pop 1000 320 20
+%set pop 5000 320 20
+%set pop 100000 320 20
+% set pop 15000 350 50
+%set pop 25000 350 50
+%set pop 100000 320 50
+
+% Criticality Source Generation
+%set pop 7000000 200 50 1.0 10
+set bc  1  1  1
+% ***********************************************************************
+%**** Source Inputs
+%************************************************************************
+%set savesrc "./Source" 0.09
+%set cfe 10
+set power 16000000000
+set edepmode 2
+% ***********************************************************************
+%**** Transient Inputs
+%************************************************************************
+% Set time of simulation (4000 timesteps between 0 and 2E-2) (Matches with STAR-CCM+ output of data)
+tme tsim 2 1000 0 5E-3
+% Total Neutron Population, number of batches, and time structure
+set nps  500000000 2500 tsim
+set ccmaxiter 1
