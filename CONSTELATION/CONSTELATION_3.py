@@ -523,10 +523,10 @@ while simulating == 1:
     ##########################################################
     #### Print Data to CSV in format recognized by STAR-CCM+ #
     ##########################################################
-    Np = range(points)
-    nx = range(1,Xpoints+1)
-    ny = range(1,Ypoints+1)
-    nz = range(1,Zpoints+1)
+    Np = list(range(points))
+    nx = list(range(1,Xpoints+1))
+    ny = list(range(1,Ypoints+1))
+    nz = list(range(1,Zpoints+1))
     data_pass = [float(i) for i in data_pass]
     data_passBot = [float(i) for i in data_passBot]
     Xdata = [float(i) for i in Xdata]
