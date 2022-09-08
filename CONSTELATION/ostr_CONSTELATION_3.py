@@ -294,7 +294,7 @@ while simulating == 1:
     # Number of overall points
     points = Zpoints*Ypoints*Xpoints
 
-    def SERPENTExtract(F1, f2):
+    def SERPENTExtract(f1, f2):
         global data
         global data_pass
         global datafuel
@@ -451,7 +451,7 @@ while simulating == 1:
 
      else:
      # Converts Mean Values of MeV/cm^3 to J/m^3-s to pass to STAR-CCM+ 
-         data_pass[point] = (data_pass[point]*1E6)/timestep
+         data_pass[point] = (data_pass[point]*1E6)/timestep       # shouldn't there be a 1.602e-13 in here somewhere? going from MeV to J?
 
     # Converts cm to m
     for xpoint in nx:
