@@ -22,7 +22,7 @@ dustFrac = 0.0              # dust fraction -- not used for this simulation
 npts = 500                  # number of points (using the same as star simulations)
 left_state = (250,250,0)    # pressure, density, velocity left of shock
 right_state = (0.1,0.1,0)   # pressure, density, velocity right of shock
-geometry = (0,0.638,0)      # left, right, shock position in meters
+geometry = (0,0.638,0.01)      # left, right, shock position in meters
 t = 0                       # time in shock progression
 
 
@@ -30,7 +30,7 @@ t = 0                       # time in shock progression
 # solve in loop that waits for serpent done text file before moving onto next time step
 # output csv file of solution in manner that CONSTELATION expects
 
-filename = r'./ExtractedData/He3Data_table_'+str(t)+'.csv'
+filename = r'./ExtractedData/He3Data_table.csv'
 columns = ['Position in Cartesian 1[X] (cm)', 'Density(g/cm^3) (kg/m^3)', 'Temperature (K)']
 
 
@@ -52,22 +52,27 @@ while simulating == 1:
 
     # update values
     t += dt
+    filename = r'./ExtractedData/He3Data_table_'+str(t)+'.csv'
 
     # write done file for current loop
     file_out = open('./STARTopDone.txt','w')
     file_out.write('Done')
     file_out.close
     
-
+    # wait for serpent to finish current time step
     time_to_wait = 1000000
     time_counter = 0
-    # end loop after end time or serpent is finished?
+
     while not os.path.exists('./SerpentDone.txt'):
         time.sleep(1)
         time_counter += 1
         if time_counter > time_to_wait:break
-    if os.path.isfile('./SerpentDone.txt'):
 
+
+
+    # end loop after end time or serpent is finished?
+    if t > t_max:
+        simulating = 0
 
 
 
