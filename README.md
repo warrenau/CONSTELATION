@@ -13,12 +13,16 @@ This document details the inputs and usage for the CONSTELATION coupling script.
 - STAR-CCM+ (version number here)
 
 ## Usage:
-The **CONSTELATION** Python script couples STAR-CCM+ and Serpent 2 by managing the interfacing files and re-formatting data. This document will not discuss the creation of the Serpent 2 and STAR-CCM+ models, but will cover the alterations required to use the models with **CONSTELATION**.
+The **CONSTELATION** Python script couples STAR-CCM+ and Serpent 2 by managing the interfacing files and re-formatting data. This document will not discuss the creation of the Serpent 2 and STAR-CCM+ models. More discussion on how to use STAR-CCM+ and Serpent 2 models can be found in *`Documentation/STAR-model.md`* and *`Documentation/Serpent-model.md`*, respectively.
 
-To use **CONSTELATION**, you will need to have the Serpent 2 and STAR-CCM+ simulations ready to run with the correct file names and paths provided to the **CONSTELATION** script. Separate documentation is provided for setting up the simulations. Run the script with Python on the computer or cluster of your choice and it will begin the simulations.
+To use **CONSTELATION**, you will need to have the Serpent 2 and STAR-CCM+ simulations ready to run with the correct file names and paths provided to the **CONSTELATION** script. Separate documentation is provided for setting up the simulations, found in the *`Documentation/`* folder. Run the script with Python on the computer or cluster of your choice and it will begin the simulations. 
 ```console
 user@cluster:~$ python CONSTELATION_3.py
 ```
+**CONSTELATION** will queue the jobs on the cluster by submitting job scripts. These job scripts will need to be compatible with whatever server or cluster is being used to run this simulation. Examples are included in this package for use on Idaho National Laboratory's (INL) Sawtooth cluster.
+### File Structure
+Below is an example of the required file structure to use **CONSTELATION**.
+![Example File Structure](Documentation/pics/serpent2-files.png)
 
 
 ## Modifications:
@@ -34,4 +38,4 @@ Other file names you may want to change include:
 - Extracted data *.csv* files
 - Serpent detetector files (if you changed the input file name from `'coupledTreat'`)
 
-**CONSTELATION** was originally written to couple two separate STAR-CCM+ simulations. If you wish to couple a different number of simulations, then the script must be modified. The *ostr_CONSTELATION_3.py* file provides an example with only one STAR-CCM+ simulation.
+**CONSTELATION** was originally written to couple two separate STAR-CCM+ simulations. If you wish to couple a different number of simulations, then the script must be modified. The *`ostr_CONSTELATION_3.py`* file provides an example with only one STAR-CCM+ simulation.
