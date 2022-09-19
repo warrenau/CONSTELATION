@@ -13,7 +13,9 @@ This document details the inputs and usage for the CONSTELATION coupling script.
 - STAR-CCM+ (version number here)
 
 ## Usage:
-The **CONSTELATION** Python script couples STAR-CCM+ and Serpent 2 by managing the interfacing files and re-formatting data. This document will not discuss the creation of the Serpent 2 and STAR-CCM+ models. More discussion on how to use STAR-CCM+ and Serpent 2 models can be found in *`Documentation/STAR-model.md`* and *`Documentation/Serpent-model.md`*, respectively.
+The **CONSTELATION** Python script couples STAR-CCM+ and Serpent 2 by managing the interfacing files and re-formatting data. This document will not discuss the creation of the Serpent 2 and STAR-CCM+ models. More discussion on how to use STAR-CCM+ and Serpent 2 models can be found in *`Documentation/STAR-model.md`* and *`Documentation/Serpent-model.md`*, respectively. Below is a flow chart showing the algorithm of **CONSTELATION**.
+
+![**CONSTELATION** Algorithm](Documentation/pics/constelation-algorithm.pdf)
 
 To use **CONSTELATION**, you will need to have the Serpent 2 and STAR-CCM+ simulations ready to run with the correct file names and paths provided to the **CONSTELATION** script. Separate documentation is provided for setting up the simulations, found in the *`Documentation/`* folder. Run the script with Python on the computer or cluster of your choice and it will begin the simulations. 
 ```console
