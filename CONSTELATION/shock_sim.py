@@ -44,11 +44,11 @@ while simulating == 1:
     positions, regions, values = shock.solve(left_state=left_state, right_state=right_state,geometry=geometry,t=t,gamma=spec_heat_ratio,npts=npts, dustFrac=dustFrac)
 
     # write data out to file
-    with open(filename) as csvfile:
+    with open(filename,'w') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(columns)
-        for i in range(int(len(values['x'])/2,len(values['x']))):
-            writer.writerow(values['x'][i],values['rho'][i],values['p'][i])
+        for i in range(int(len(values['x'])/2),int(len(values['x']))):
+            writer.writerow([values['x'][i],values['rho'][i],values['p'][i]])
 
     # update values
     t += dt
@@ -60,13 +60,16 @@ while simulating == 1:
     file_out.close
     
     # wait for serpent to finish current time step
-    time_to_wait = 1000000
+    time_to_wait = 100
     time_counter = 0
 
     while not os.path.exists('./SerpentDone.txt'):
         time.sleep(1)
         time_counter += 1
-        if time_counter > time_to_wait:break
+        if time_counter > time_to_wait:
+            simulating = 0
+            break
+            
 
 
 
