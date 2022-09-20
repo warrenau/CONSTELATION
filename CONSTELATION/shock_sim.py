@@ -19,10 +19,10 @@ dt = 5e-6    # serpent time step. star solves with 5e-8 time step, but only send
 
 spec_heat_ratio = 1.67      # ratio of specific heats
 dustFrac = 0.0              # dust fraction -- not used for this simulation
-npts = 500                  # number of points (using the same as star simulations)
-left_state = (250,250,0)    # pressure, density, velocity left of shock
-right_state = (0.1,0.1,0)   # pressure, density, velocity right of shock
-geometry = (0,0.638,0.01)      # left, right, shock position in meters
+npts = 500*2                  # number of points (using the same as star simulations - multiplied by 2 to make up for the part of the shock tube not in the reactor)
+left_state = (1.72e6,2,0)   # pressure, density, velocity left of shock
+right_state = (0.1,0.01,0)  # pressure, density, velocity right of shock
+geometry = (0,1.276,0.638)  # left, right, shock position in meters
 t = 0                       # time in shock progression
 
 
@@ -47,7 +47,7 @@ while simulating == 1:
     with open(filename) as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(columns)
-        for i in range(len(values['x'])):
+        for i in range(int(len(values['x'])/2,len(values['x']))):
             writer.writerow(values['x'][i],values['rho'][i],values['p'][i])
 
     # update values
