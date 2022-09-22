@@ -36,7 +36,7 @@ columns = ['Position in Cartesian 1[X] (cm)', 'Density(g/cm^3) (kg/m^3)', 'Tempe
 
 
 
-t_max = 5e-3
+t_max = 2e-5
 simulating = 1
 
 while simulating == 1:
