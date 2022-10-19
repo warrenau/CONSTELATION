@@ -16,3 +16,12 @@ Help from *NieDesign* on [YouTube](https://www.youtube.com/channel/UCMN7B3Im9NFi
     - right click on `faces`
     - `Split by patch`
     - select faces and name surfaces
+3. Mesh and Regions
+    - prepare surfaces for meshing `Surface Preparation`
+    - `Boolean` if needed
+    - `Mesh`
+        - Automatic Surface Repair
+        - Select volume mesher
+            - polyhedral mesh for volume mesher
+            - prism layer mesher for boundary layer
+    - Fluid region
