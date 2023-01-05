@@ -36,3 +36,20 @@
 
 
 - going to try replacing *bot* file with *top* because the *bot* file is taking so long to run
+    - looks like the Serpent sim did not continue after the 6th time step from STAR. not sure why as the STAR done files are both present. the callback from the cli was at line 719 in CONSTELATION, which is waiting for the data from STAR. After checking where Serpent is looking, there are no new files. This must be due to replacing the STAR sim. I will need to edit the sims after I can use STAR licenses again.
+
+    |    |  Bot  |  Top  |
+    |:---: | :---: | :---: |
+    |  Start  |   09:12:04 Jan 05    |  09:12:03 Jan 05  |
+    |  Time Step |  600   | 600 |
+    | Stop  | 10:46:58 Jan 05  | 10:46:40 Jan 05 |
+
+
+    |  08:59:15 Jan 05    |  Batch 1  |  Batch 500  |
+    |:---: | :---: | :---: |
+    | Time 1 | 0:01:59 | 0:02:33 |
+    | Time 2 | 0:16:51 | 0:17:40 |
+    | Time 3 | 0:23:05 | 0:23:52 |
+    | Time 4 | 0:28:49 | 0:29:36 |
+    | Time 5 | 0:35:22 | 0:36:11 |
+    | Time 6 | 0:41:55 | 0:42:44 |
