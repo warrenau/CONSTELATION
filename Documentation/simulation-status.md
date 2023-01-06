@@ -53,3 +53,6 @@
     | Time 4 | 0:28:49 | 0:29:36 |
     | Time 5 | 0:35:22 | 0:36:11 |
     | Time 6 | 0:41:55 | 0:42:44 |
+
+
+- Tried to change the output of the new *bot* file but could not on pc, so I found and removed the saving of images every iteration from the original *bot* file.
