@@ -56,3 +56,8 @@
 
 
 - Tried to change the output of the new *bot* file but could not on pc, so I found and removed the saving of images every iteration from the original *bot* file.
+    - this worked. will compare results to Cole's results to make sure it is working properly.
+
+- Attempting to run 250 psi initial pressure coupled sim
+    - had to reset directory for *bot* sim to save to. created a folder of the correct name in the sim directory and was able to change the location in STAR
+    - everything else kept the same for the coupled sim, just changing the names of the STAR sim in the job scripts.
