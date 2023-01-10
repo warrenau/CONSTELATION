@@ -22,6 +22,8 @@ To use **CONSTELATION**, you will need to have the Serpent 2 and STAR-CCM+ simul
 user@cluster:~$ python CONSTELATION_3.py
 ```
 **CONSTELATION** will queue the jobs on the cluster by submitting job scripts. These job scripts will need to be compatible with whatever server or cluster is being used to run this simulation. Examples are included in this package for use on Idaho National Laboratory's (INL) Sawtooth cluster.
+
+
 ### File Structure
 Below is an example of the required file structure to use **CONSTELATION**.
 ![Example File Structure](Documentation/pics/serpent2-files.png)
@@ -41,3 +43,5 @@ Other file names you may want to change include:
 - Serpent detetector files (if you changed the input file name from `'coupledTreat'`)
 
 **CONSTELATION** was originally written to couple two separate STAR-CCM+ simulations. If you wish to couple a different number of simulations, then the script must be modified. The *`ostr_CONSTELATION_3.py`* file provides an example with only one STAR-CCM+ simulation.
+
+Due to the way **CONSTELATION** is written, the two parts of the simulation need to finish their respective time steps close together in time. Specifically, the user wants the STAR-CCM+ simulation(s) to be waiting for the Serpent 2 simulation to finish (This is because the *`SerpentDone.txt`* file is deleted after 1 minute). It may take some trial and error to determine the best allocation of resources for the users needs.
