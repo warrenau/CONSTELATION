@@ -61,3 +61,8 @@
 - Attempting to run 250 psi initial pressure coupled sim
     - had to reset directory for *bot* sim to save to. created a folder of the correct name in the sim directory and was able to change the location in STAR
     - everything else kept the same for the coupled sim, just changing the names of the STAR sim in the job scripts.
+    - error in line 264 in CONSTELATION: `if int(line) != -1:` ValueError: invalid literal for int() with base 10: ''
+    - *`com.in`* file had -1 and *`com.out`* file had 10
+    - STAR-CCM+ sim made it to over 1ms, but Serpent 2 sim got to 4.24E-4 to 4.26E-4 time step
+
+- Retrying with no change to see if results are repeated
