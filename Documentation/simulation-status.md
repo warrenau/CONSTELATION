@@ -66,3 +66,29 @@
     - STAR-CCM+ sim made it to over 1ms, but Serpent 2 sim got to 4.24E-4 to 4.26E-4 time step
 
 - Retrying with no change to see if results are repeated
+    - same error in line 264
+    - STAR-CCM+ sims ran to 0.0045 seconds, iteration 92000
+    - Serpent on Time interval 921/2500 from 1.84E-03 to 1.842E-03 s
+    - *`com.in`* file had -1 and *`com.out`* file had 10
+
+
+    |       |  Time Step | Iteration | Calc Time | Reported Time |
+    | :---: | :---:      |  :---:    |  :---:    |  :---:        |
+    | Serpent| 2E-6      | 921       | 1.842E-3  | 1.842E-3      |
+    | STAR-CCM+ | 5E-8   | 92000     | 4.6E-3    | 4.6E-3        |
+
+- After talking with Cole:
+    - STAR-CCM+ writes out every 40 iterations, but stops every 100
+    - Every iteration, Serpent reads the files that are written by STAR at the appropiate 40 STAR iteration
+    - The Serpent time step is determined by the simulation resolution, as the STAR time step is determined by its simulation. Then the STAR output frequency is determined by making the two match.
+
+- Going to change *`load_dataBot.java`* and *`loadk_dataTop.java`* line 60 from 100 to 40
+    ```java
+    // Changes the number of time steps that one initalization of the STEP command performs
+        simulation_0.getSimulationIterator().setNumberOfSteps(100);
+    ```
+
+    ```java
+    // Changes the number of time steps that one initalization of the STEP command performs
+        simulation_0.getSimulationIterator().setNumberOfSteps(40);
+    ```
