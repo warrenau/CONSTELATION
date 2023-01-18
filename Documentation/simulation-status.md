@@ -83,6 +83,7 @@
     - The Serpent time step is determined by the simulation resolution, as the STAR time step is determined by its simulation. Then the STAR output frequency is determined by making the two match.
 
 - Going to change *`load_dataBot.java`* and *`loadk_dataTop.java`* line 60 from 100 to 40
+
     ```java
     // Changes the number of time steps that one initalization of the STEP command performs
         simulation_0.getSimulationIterator().setNumberOfSteps(100);
@@ -92,3 +93,5 @@
     // Changes the number of time steps that one initalization of the STEP command performs
         simulation_0.getSimulationIterator().setNumberOfSteps(40);
     ```
+
+- Trying coupled sim with updated java files
