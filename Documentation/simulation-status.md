@@ -3,7 +3,7 @@
 
 ## Cole's OG sim
 
-- getting *`Done file not found, pausing ...`* error, which comes from `SerpentDone.txt` file not being found by the STAR-CCM+ simulation (this error is occurring for both simulations). Possible causes:
+- getting `Done file not found, pausing ...` error, which comes from *`SerpentDone.txt`* file not being found by the STAR-CCM+ simulation (this error is occurring for both simulations). Possible causes:
 
     - done file is deleted before STAR-CCM+ simulations can read it
     - STAR-CCM+ simulations run much faster than Serpent and are waiting for the done file to be written
@@ -21,7 +21,7 @@
     | Batch 1 | 20:04:34 Dec 29 | 1:29:29 run time |
     | Batch 500 | 0:02:33 run time | 1:30:13 run time |
 
-- going to try using *`select=1:ncpus=48:mpiprocs=48`* for STAR-CCM+ job scripts, which is what Cole orginally used. I had mine at 3 nodes for speed on just cfd sims.
+- going to try using `select=1:ncpus=48:mpiprocs=48` for STAR-CCM+ job scripts, which is what Cole orginally used. I had mine at 3 nodes for speed on just cfd sims.
 
     |    |  Bot  |  Top  |
     |:---: | :---: | :---: |
@@ -82,7 +82,7 @@
     - Every iteration, Serpent reads the files that are written by STAR at the appropiate 40 STAR iteration
     - The Serpent time step is determined by the simulation resolution, as the STAR time step is determined by its simulation. Then the STAR output frequency is determined by making the two match.
 
-- Going to change *`load_dataBot.java`* and *`loadk_dataTop.java`* line 60 from 100 to 40
+- Going to change *`load_dataBot.java`* and *`load_dataTop.java`* line 60 from 100 to 40
 
     ```java
     // Changes the number of time steps that one initalization of the STEP command performs
