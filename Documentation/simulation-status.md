@@ -101,3 +101,11 @@
 - Trying coupled sim with updated java files
     - ended with error on line 264 in CONSTELATION
     - Serpent got through time step 85 / 2500 1.68E-4 to 1.70E-4 seconds
+
+- creating new 250 psi sim files from 500psi files that worked
+    - copied *`06.14.2021_STARTop.sim`* to *`06.14.2021_STARTop_250.sim`*
+        - changed the field function to have 1.72E6 Pa as the initial driver pressure and re-initialized the solution
+        - changed the monitors for Continuity, X-momentum, Y-momentum, Energy, TKE, and SDR to output every time step instead of every iteration
+    - copied *`06.14.2021_STARBot3.sim`* to *`06.14.2021_STARBot3_250.sim`*
+        - changed the field function to have 1.72E6 Pa as the initial driver pressure and re-initialized the solution
+        - changed the monitors for Continuity, X-momentum, Y-momentum, Energy, TKE, and SDR to output every time step instead of every iteration
