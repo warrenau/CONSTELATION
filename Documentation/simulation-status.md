@@ -1,7 +1,7 @@
 # Simulation Status
 
 
-## Cole's OG sim
+## Cole's OG sim (500 psi initial pressure)
 
 - getting `Done file not found, pausing ...` error, which comes from *`SerpentDone.txt`* file not being found by the STAR-CCM+ simulation (this error is occurring for both simulations). Possible causes:
 
@@ -58,6 +58,10 @@
 - Tried to change the output of the new *bot* file but could not on pc, so I found and removed the saving of images every iteration from the original *bot* file.
     - this worked. will compare results to Cole's results to make sure it is working properly.
 
+
+---
+## 250 psi initial pressure
+
 - Attempting to run 250 psi initial pressure coupled sim
     - had to reset directory for *bot* sim to save to. created a folder of the correct name in the sim directory and was able to change the location in STAR
     - everything else kept the same for the coupled sim, just changing the names of the STAR sim in the job scripts.
@@ -95,3 +99,5 @@
     ```
 
 - Trying coupled sim with updated java files
+    - ended with error on line 264 in CONSTELATION
+    - Serpent got through time step 85 / 2500 1.68E-4 to 1.70E-4 seconds
