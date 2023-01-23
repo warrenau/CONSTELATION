@@ -74,7 +74,7 @@ break_again = 0;
  Current_Time = 0;
 while (TotalTimeSteps > Current_Time)
 {
-    simulation_0.getSimulationIterator().step(100);
+    simulation_0.getSimulationIterator().step(40);
     sleep_time = 0;
 // Create file says STAR-CCM+ is done simulating
     try {

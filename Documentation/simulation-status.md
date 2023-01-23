@@ -101,6 +101,7 @@
 - Trying coupled sim with updated java files
     - ended with error on line 264 in CONSTELATION
     - Serpent got through time step 85 / 2500 1.68E-4 to 1.70E-4 seconds
+    - STAR got to time step 8400, simulation time 0.00042 seconds
 
 - creating new 250 psi sim files from 500psi files that worked
     - copied *`06.14.2021_STARTop.sim`* to *`06.14.2021_STARTop_250.sim`*
@@ -109,3 +110,24 @@
     - copied *`06.14.2021_STARBot3.sim`* to *`06.14.2021_STARBot3_250.sim`*
         - changed the field function to have 1.72E6 Pa as the initial driver pressure and re-initialized the solution
         - changed the monitors for Continuity, X-momentum, Y-momentum, Energy, TKE, and SDR to output every time step instead of every iteration
+    - going to run both on their own to make sure they work
+
+- while investigating the java files, I found another line (line 77) that has a time step call to be changed from 100 to 40:
+```java
+// While Loop dicating the refreshing of the Heating Table provided by the wrapping code
+ double Current_Time;
+ Current_Time = 0;
+while (TotalTimeSteps > Current_Time)
+{
+    simulation_0.getSimulationIterator().step(100);
+    sleep_time = 0;
+```
+```java
+// While Loop dicating the refreshing of the Heating Table provided by the wrapping code
+ double Current_Time;
+ Current_Time = 0;
+while (TotalTimeSteps > Current_Time)
+{
+    simulation_0.getSimulationIterator().step(40);
+    sleep_time = 0;
+```
