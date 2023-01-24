@@ -111,6 +111,7 @@
         - changed the field function to have 1.72E6 Pa as the initial driver pressure and re-initialized the solution
         - changed the monitors for Continuity, X-momentum, Y-momentum, Energy, TKE, and SDR to output every time step instead of every iteration
     - going to run both on their own to make sure they work
+        - *`06.14.2021_STARBot3_250.sim`* failed due to license checkout failure. will try again soon
 
 - while investigating the java files, I found another line (line 77) that has a time step call to be changed from 100 to 40:
 ```java
@@ -131,3 +132,8 @@ while (TotalTimeSteps > Current_Time)
     simulation_0.getSimulationIterator().step(40);
     sleep_time = 0;
 ```
+
+
+---
+## Prepping OSTR Serpent Model
+- running *`TRIGA_05tube_D5_void`* on INL HPC 6 nodes, 48 cores each
