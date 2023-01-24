@@ -137,3 +137,20 @@ while (TotalTimeSteps > Current_Time)
 ---
 ## Prepping OSTR Serpent Model
 - running *`TRIGA_05tube_D5_void`* on INL HPC 6 nodes, 48 cores each
+    - $k_{eff}=1.02308$ with 
+
+    | Rod | z-trans |
+    | :---: | :---: |
+    | tr  | 2.0955  |
+    | sa  | 2.0955  |
+    | sh  | -4.953  |
+    | reg | 2.0974  |
+
+- trying putting rods back to default values (fully inserted, I think)
+
+    | Rod | z-trans |
+    | :---: | :---: |
+    | tr  | -19.05  |
+    | sa  | -19.05  |
+    | sh  | -19.05  |
+    | reg | -18.5928  |
