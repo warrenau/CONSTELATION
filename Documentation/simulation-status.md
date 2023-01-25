@@ -112,6 +112,7 @@
         - changed the monitors for Continuity, X-momentum, Y-momentum, Energy, TKE, and SDR to output every time step instead of every iteration
     - going to run both on their own to make sure they work
         - *`06.14.2021_STARBot3_250.sim`* failed due to license checkout failure. will try again soon
+        - looks like the save file for *`06.14.2021_STARTop_250.sim`* got corrupted. it would not download from HPCondemand.
 
 - while investigating the java files, I found another line (line 77) that has a time step call to be changed from 100 to 40:
 ```java
@@ -153,4 +154,6 @@ while (TotalTimeSteps > Current_Time)
     | tr  | -19.05  |
     | sa  | -19.05  |
     | sh  | -19.05  |
-    | reg | -18.5928  |
+    | reg | -18.5928|
+
+    - $k_{eff}=0.97465$
