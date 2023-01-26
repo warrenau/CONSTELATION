@@ -157,3 +157,12 @@ while (TotalTimeSteps > Current_Time)
     | reg | -18.5928|
 
     - $k_{eff}=0.97465$
+
+- trying setting the rods just below the default positions defined in the input file (where the trans cards are 0)
+
+    | Rod | z-trans |
+    | :---: | :---: |
+    | tr  | -2.0955 |
+    | sa  | -2.0955 |
+    | sh  | -4.953  |
+    | reg | -2.0974 |
