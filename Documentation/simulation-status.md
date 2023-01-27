@@ -166,3 +166,14 @@ while (TotalTimeSteps > Current_Time)
     | sa  | -2.0955 |
     | sh  | -4.953  |
     | reg | -2.0974 |
+
+    - $k_{eff}=1.01252$
+
+- lets try moving the rods further down
+
+    | Rod | z-trans |
+    | :---: | :---: |
+    | tr  | -5 |
+    | sa  | -5 |
+    | sh  | -8  |
+    | reg | -5 |
