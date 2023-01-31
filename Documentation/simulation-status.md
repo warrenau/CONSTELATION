@@ -199,3 +199,16 @@ while (TotalTimeSteps > Current_Time)
     | sa  | -5.5 |
     | sh  | -8.5  |
     | reg | -5.5 |
+
+    - $k_{eff}=1.00045$
+
+- lets try moving the shim rod further in just a little bit
+
+    | Rod | z-trans |
+    | :---: | :---: |
+    | tr  | -5.5 |
+    | sa  | -5.5 |
+    | sh  | -9  |
+    | reg | -5.5 |
+
+    
