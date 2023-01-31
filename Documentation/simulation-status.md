@@ -211,4 +211,10 @@ while (TotalTimeSteps > Current_Time)
     | sh  | -9  |
     | reg | -5.5 |
 
-    
+    - $k_{eff}=1.00007$
+
+- Began setting up directory on HPC to run coupled sims:
+    - *`/xs`*: cross section data
+    - *`oma.xsdata`*: references to cross section data
+    - ostr serpent model
+    - still need *`.ifc`* files
