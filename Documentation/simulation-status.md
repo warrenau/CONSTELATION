@@ -134,6 +134,9 @@ while (TotalTimeSteps > Current_Time)
     sleep_time = 0;
 ```
 
+- new 250psi star files ran for 1 week without issue.
+- I turned off the residual printing to the terminal to reduce the cluster output file
+- when I attempted to start the coupled sim, the virtual desktop had a maximum of 168 hour requested time. I have asked HPC support if there is a way around that.
 
 ---
 ## Prepping OSTR Serpent Model
