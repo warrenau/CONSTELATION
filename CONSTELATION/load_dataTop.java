@@ -57,7 +57,7 @@ public class load_dataTop extends StarMacro {
 double startTimelevel = simulation_0.getSimulationIterator().getCurrentTimeLevel();
 
 // Changes the number of time steps that one initalization of the STEP command performs
-    simulation_0.getSimulationIterator().setNumberOfSteps(100);
+    simulation_0.getSimulationIterator().setNumberOfSteps(40);
 // Sets the Max Stopping time to a number so it can be compared to current sim time
 double maxstoppingtime = physicalTimeStoppingCriterion_0.getMaximumTime().getValue();
 double TotalTimeSteps;
@@ -74,7 +74,7 @@ break_again = 0;
  Current_Time = 0;
 while (TotalTimeSteps > Current_Time)
 {
-    simulation_0.getSimulationIterator().step(100);
+    simulation_0.getSimulationIterator().step(40);
     sleep_time = 0;
 // Create file says STAR-CCM+ is done simulating
     try {
