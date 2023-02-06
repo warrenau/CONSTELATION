@@ -2,6 +2,7 @@
 Couples STAR-CCM+ and Serpent 2 for helium-3 injection into TREAT and OSTR
 
 
+
 Originally created by Cole Leingang in 2021. Modified by Austin Warren in 2022.
 
 ## Documentation:
@@ -45,3 +46,4 @@ Other file names you may want to change include:
 **CONSTELATION** was originally written to couple two separate STAR-CCM+ simulations. If you wish to couple a different number of simulations, then the script must be modified. The *`ostr_CONSTELATION_3.py`* file provides an example with only one STAR-CCM+ simulation.
 
 Due to the way **CONSTELATION** is written, the two parts of the simulation need to finish their respective time steps close together in time. Specifically, the user wants the STAR-CCM+ simulation(s) to be waiting for the Serpent 2 simulation to finish (This is because the *`SerpentDone.txt`* file is deleted after 1 minute). It may take some trial and error to determine the best allocation of resources for the users needs.
+
