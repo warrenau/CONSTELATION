@@ -139,8 +139,10 @@ while (TotalTimeSteps > Current_Time)
 - when I attempted to start the coupled sim, the virtual desktop had a maximum of 168 hour requested time. I have asked HPC support if there is a way around that.
     - HPC support fixed the issue
 - started a new coupled run on HPC
-- sim failed bc star couldn't find licenses. retrying.
+    - sim failed bc star couldn't find licenses. retrying.
 - Failed again
     - line 264 CONSTELATION error again, not sure why
     - in STAR top output: `corrections limited on 1 cells in 3.29.2019_Benchmark_1in` and `minimum absolute pressure limited to 1 on 1 cells in 3.29.2019_Benchmark_1in`
     - server time out on STAR sim: `Could not find done file pausing...`
+    - from troubleshooting: determined that the *`com.out`* file was empty for some reason while **CONSTELATION** was trying to read it. one fix from Cole is to add more wait time before looking for the file. a better fix might be to add a check to make sure there is something in the file before it is read by **CONSTELATION**.
+    - going to add check and maybe more wait time.

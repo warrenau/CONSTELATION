@@ -17,8 +17,11 @@ import numpy as np
 import re
 from shutil import copyfile
 # timestep used for simulation
-timestep = 5E-6
-
+timestep = 2E-6
+# The number of time steps that STAR will simulate before checking for SERPENT completion and then export Data
+STAR_STEP = 40
+# Second variables used to stay constant in loop
+step_length = 40
 #######################################################
 # Create the Serpent input-file for this run          #
 # (process id or communication file must be appended) #
@@ -65,10 +68,6 @@ file_out.write('ifc fuel.ifc\n\n')
 # Close new input file
 
 file_out.close()
-# The number of time steps that STAR will simulate before checking for SERPENT completion and then export Data
-STAR_STEP = 100
-# Second variables used to stay constant in loop
-step_length = 100
 
 ##############################################
 # Write the initial He3 interface file for 1st Star Run                      #
@@ -201,6 +200,8 @@ file_out.write('1 -200 200 1 -200 200 10 -60.48375 60.48375\n')
 
 for i in range(10):
     file_out.write('-1.72 300.0\n')
+    if i == 7:
+        file_out.write('-1.72 330.0\n')
 
 # Close interface file
 
@@ -333,7 +334,7 @@ while simulating == 1:
     Second_pattern = re.compile(r"DETSerpent2STopZ(.*)$")
     # Second_pattern =  re.compile(r"DETSerpent2SBotZ(.*)$")
     # Number of Z points
-    Zpoints = 500
+    Zpoints = 100
     # Number of Fuel points
     Fpoints = 10
     # Finds Heat Production Detector X values
@@ -625,6 +626,14 @@ while simulating == 1:
         run_STAR2 = "qsub STARBot_Job.sh"
         os.system(run_STAR1)
         os.system(run_STAR2)
+    if curtime > 0:
+        # Write SERPENTDone.txt file indicating that the current loop has been completed and data extracted
+        file_out = open('./SerpentDone.txt','w')
+        file_out.write('Done')
+        file_out.close
+        time.sleep(60)
+        os.remove('SerpentDone.txt')
+
     # check to see if STAR is done executing
     STARBot = r'./STARBotDone.txt'
     STARTop = r'./STARTopDone.txt'
@@ -638,11 +647,6 @@ while simulating == 1:
         time.sleep(1)
         time_counter += 1
         if time_counter > time_to_wait:break
-    if curtime > 0:
-        # Write SERPENTDone.txt file indicating that the current loop has been completed and data extracted
-        file_out = open('./SerpentDone.txt','w')
-        file_out.write('Done')
-        file_out.close
     ###########################
     # Update Top interface        #
     ###########################
@@ -826,11 +830,8 @@ while simulating == 1:
     if curtime >= 2:
         copyfile('coupledTreat_res.m','Archive/coupledTreat_res'+str(curtime)+'.m')
     # Delete Files that are not needed between iterations
-    time.sleep(60)
     os.remove(STARTop)
     os.remove(STARBot)
-    if curtime > 0:
-        os.remove('SerpentDone.txt')
     os.remove(textfile)
     # Increment time step
     curtime += 1
@@ -845,7 +846,7 @@ while simulating == 1:
     if (simulating == 0):
            break
 
-    time.sleep(30)
+    time.sleep(5)
     file_out = open('com.in','w')
     file_out.write(str(signal.SIGUSR2))
     file_out.close()
