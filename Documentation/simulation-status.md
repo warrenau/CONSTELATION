@@ -146,3 +146,5 @@ while (TotalTimeSteps > Current_Time)
     - server time out on STAR sim: `Could not find done file pausing...`
     - from troubleshooting: determined that the *`com.out`* file was empty for some reason while **CONSTELATION** was trying to read it. one fix from Cole is to add more wait time before looking for the file. a better fix might be to add a check to make sure there is something in the file before it is read by **CONSTELATION**.
     - going to add check and maybe more wait time.
+- added check for integer in *`com.out`* file. will retry simulation with fix.
+
