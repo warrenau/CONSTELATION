@@ -253,27 +253,42 @@ while simulating == 1:
     while sleeping == 1:
         # Sleep for two seconds
         time.sleep(5)
-        # Open file to check if we got a signal
-        fin = open('com.out', 'r')
-        # Read line
-        line = fin.readline()
-        # Close file
-        fin.close()
+        # check to see if file has stuff written in it. This is to prevent the script from reading the file while Serpent 2 is writing to it.
+        f = 'com.out'
+        f_size = os.path.getsize(f)
+        if f_size > 0:
+            # Open file to check if we got a signal
+            fin = open(f, 'r')
+            # Read line
+            line = fin.readline()
+            # Close file
+            fin.close()
+            # create variable that is the integer of the read in string
+            line_int = int(line)
+        elif f_size == 0:
+            line_int = 42
+        else:
+            print('The com.out file is negative size!')
+
         # Check signal
-        
-        if int(line) != -1:
-            if int(line) == signal.SIGUSR1:
+        if line_int != -1:
+            if line_int == signal.SIGUSR1:
                 # Got the signal to resume
                 print(signal.SIGUSR1)
                 print("Resume Current Iteration")
                 sleeping = 0
-            elif int(line) == signal.SIGUSR2:
+            elif line_int == 42:
+                # Got the signal to resume
+                print(42)
+                print("Resume Current Iteration")
+                sleeping = 0
+            elif line_int == signal.SIGUSR2:
                 # Got the signal to move to next time point
                 print(signal.SIGUSR2)
                 print('Move to Next Time Step')
                 iterating = 0
                 sleeping = 0
-            elif int(line) == signal.SIGTERM:
+            elif line_int == signal.SIGTERM:
                 # Got the signal to end the calculation
                 print(signal.SIGTERM)
                 print('END The Simulation')
