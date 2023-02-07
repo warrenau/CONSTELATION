@@ -253,22 +253,25 @@ while simulating == 1:
     while sleeping == 1:
         # Sleep for two seconds
         time.sleep(5)
-        # check to see if file has stuff written in it. This is to prevent the script from reading the file while Serpent 2 is writing to it.
+        # When the com.out file is 'empty' it actually has a new line, so testing for file size does not work. Instead, we will test if the contents of the file contains digits, after stripping the negative signs and new line hidden characters.
         f = 'com.out'
-        f_size = os.path.getsize(f)
-        if f_size > 0:
-            # Open file to check if we got a signal
-            fin = open(f, 'r')
-            # Read line
-            line = fin.readline()
-            # Close file
-            fin.close()
+        # Open file to check if we got a signal
+        fin = open(f, 'r')
+        # Read line
+        line = fin.readline()
+        # Close file
+        fin.close()
+        # check if string can be turned into an integer
+        f_digit = line.strip('-\n\r').isdigit
+        if f_digit:
             # create variable that is the integer of the read in string
             line_int = int(line)
-        elif f_size == 0:
+        elif not f_digit:
+            # print identifying number different from other signals so user can tell how often this error occurs
             line_int = 42
         else:
-            print('The com.out file is negative size!')
+            # print error message
+            print('The com.out file contains neither digits nor not digits!')
 
         # Check signal
         if line_int != -1:
