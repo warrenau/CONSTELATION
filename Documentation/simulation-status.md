@@ -147,4 +147,18 @@ while (TotalTimeSteps > Current_Time)
     - from troubleshooting: determined that the *`com.out`* file was empty for some reason while **CONSTELATION** was trying to read it. one fix from Cole is to add more wait time before looking for the file. a better fix might be to add a check to make sure there is something in the file before it is read by **CONSTELATION**.
     - going to add check and maybe more wait time.
 - added check for integer in *`com.out`* file. will retry simulation with fix.
-
+    - still failed, but it failed in the check. It is passing the check for digits, but failing when trying to convert to int
+    Error message:
+    ```
+    Traceback (most recent call last):
+      File "CONSTELATION.py", line 268, in <module>
+        line_int = int(line)
+    ValueError: invalid literal for int() with base 10: ''
+    ```
+    - Lines 265-268 of *`CONSTELATION.py`*:
+    ```python
+    f_digit = line.strip('-\n\r').isdigit()
+    if f_digit:
+        # create variable that is the integer of the read in string
+        line_int = int(line)
+    ```
