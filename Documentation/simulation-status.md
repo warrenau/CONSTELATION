@@ -157,8 +157,11 @@ while (TotalTimeSteps > Current_Time)
     ```
     - Lines 265-268 of *`CONSTELATION.py`*:
     ```python
-    f_digit = line.strip('-\n\r').isdigit()
+    f_digit = line.strip('-\n\r').isdigit
     if f_digit:
         # create variable that is the integer of the read in string
         line_int = int(line)
     ```
+    - forgot parentheses on end of `isdigit`? yes, and it makes a difference. fixed in code. trying again.
+    - sim got to 2.18200E-03 s (Bot) and 43640 iterations (Top) / time interval 1092/2500 from 2.182000E-03 to 2.184000E-03 s batch 500/500 (Serpent)
+- Fixed typo. retrying.

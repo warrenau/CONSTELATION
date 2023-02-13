@@ -262,7 +262,7 @@ while simulating == 1:
         # Close file
         fin.close()
         # check if string can be turned into an integer
-        f_digit = line.strip('-\n\r').isdigit
+        f_digit = line.strip('-\n\r').isdigit()
         if f_digit:
             # create variable that is the integer of the read in string
             line_int = int(line)
