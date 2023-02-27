@@ -167,4 +167,9 @@ while (TotalTimeSteps > Current_Time)
 - Fixed typo. retrying.
     - STAR sims could not get licenses to run
 - Retrying with fresh virtual desktop
+    - it worked!!!!
+    - ran for 1 week, then died at 4.6ms
+    - realized looking at the results that the input is in guage pressure, so the absolute pressure starts at 264.7 psi in the driver tanks
+
+- Changed intial pressure in driver tanks in both CFD simulations to be 1622053.706 Pa, which is 235.259 psig. Running again.
 
