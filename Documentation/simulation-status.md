@@ -172,4 +172,5 @@ while (TotalTimeSteps > Current_Time)
     - realized looking at the results that the input is in guage pressure, so the absolute pressure starts at 264.7 psi in the driver tanks
 
 - Changed intial pressure in driver tanks in both CFD simulations to be 1622053.706 Pa, which is 235.259 psig. Running again.
+    - got to 3.22E-4 s then was stopped? the Serpent sim is queued, but it looks like the STAR sims timed out? not sure what happened, maybe a server issue. trying again, I guess
 
