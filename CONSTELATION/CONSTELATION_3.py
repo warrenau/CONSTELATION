@@ -27,11 +27,11 @@ Serpent_file = 'Treat'
 
 # Time steps need to match up between STAR-CCM+ and Serpent 2 so the information passed between them is happening at the same time. This does not define the time steps for the respective codes.
 # timestep used for simulation
-timestep = 5E-6
+timestep = 2E-6
 # The number of time steps that STAR will simulate before checking for SERPENT completion and then export Data
-STAR_STEP = 100
+STAR_STEP = 40
 # Second variable used to stay constant in loop
-step_length = 100
+step_length = 40
 
 # constants and conversions
 cm3_to_m3 = 1E-6    # convert cubic centimeters to cubic meters
@@ -45,28 +45,35 @@ comin_name = 'com.in'
 comout_name = 'com.out'
 
 # mesh data (NX XMIN XMAX NY YMIN YMAX NZ ZMIN ZMAX)
-helium_mesh = '1 -100 100 1 0 100 500 -33.02 32.3675\n'
+helium_mesh_top = '1 -100 100 1 0 100 500 -60.48375 60.48375\n'
+helium_mesh_bot = '1 -100 100 1 -100 0 500 -60.48375 60.48375\n'
 #fuel_mesh = '1 -500 500 1 -500 500 10 -33.02 30.78\n'
 
 # convert position data from Serpent to STAR, both units and reference frame
-reference_conversion = [-11.7653, 2.2225, 67.0111]   # difference in reference frames in cm
+reference_conversion = [20.405, 40.605, 226.7903]   # difference in reference frames in cm
 unit_conversion = [0, -1/100, -1/100]             # multiplication factor for unit conversion
 
 # STAR csv file for passing heating to STAR from Serpent
 Heat_csv_outfile = 'STAR_HeatTop.csv'
 Heat_csv_Title = ['X(m)', 'Y(m)', 'Z(m)', 'VolumetricHeat(W/m^3)']
-Heat_csv = STAR_csv(Heat_csv_outfile,Heat_csv_Title)
+Heat_csv_top = STAR_csv(Heat_csv_outfile,Heat_csv_Title)
+
+Heat_csv_outfile_bot = 'STAR_HeatBot.csv'
+Heat_csv_bot = STAR_csv(Heat_csv_outfile_bot,Heat_csv_Title)
 
 # define the initial Serpent_ifc object (name,header,mesh type, mesh)
 Serpent_ifc_top = Serpent_ifc('HE3.ifc','2 helium3 0\n','1\n',helium_mesh)
+Serpent_ifc_bot = Serpent_ifc('HE3BOT.ifc','2 He3Bot 0\n','1\n',helium_mesh_bot)
 
 # define the initial STAR_csv object with file name and header
 STARHeat_table = './ExtractedData/He3Data_table.csv'
 columns = ['Position[X] (m)', 'Density (kg/m^3)', 'Temperature (K)']
 STAR_csv_top = STAR_csv(STARHeat_table,columns)
+STAR_csv_bot = STAR_csv(STARHeat_table,columns)
 
 # detectors
-Serpent_det_heat = 'D5Heat'
+Serpent_det_heat_top = 'Serpent2STop'
+Serpent_det_heat_bot = 'Serpent2SBot'
 #Serpent_det_fuel = 'FuelDeposition'
 
 # results file
@@ -120,6 +127,7 @@ file_out.write('set comfile com.in com.out\n')
 file_out.write('\n')
 file_out.write('ifc '+Serpent_ifc_top.name+'\n\n')
 file_out.write('\n')
+file_out.write('ifc '+Serpent_ifc_bot.name+'\n\n')
 #file_out.write('ifc fuel.ifc\n\n')  # not sure that I will use the fuel ifc, but will leave in for now
 
 # Close new input file
@@ -141,7 +149,7 @@ wait_for_file(STARHeat_table,time_to_wait)
 
 # write the data from the csv file to the ifc file        
 csv_to_ifc(STAR_csv_top,Serpent_ifc_top)
-
+csv_to_ifc(STAR_csv_bot,Serpent_ifc_bot)
 
 ##############################################
 # Write the initial fuel interface           #
@@ -251,7 +259,7 @@ while simulating == 1:
     ##########################################################
     #### Print Data to CSV in format recognized by STAR-CCM+ #
     ##########################################################
-    SerpentHeat_to_Star_csv(DETSerpent_heat,Heat_csv,reference_conversion,unit_conversion)
+    SerpentHeat_to_Star_csv(DETSerpent_heat,Heat_csv,reference_conversion,unit_conversion,timestep)
 
     ##########################################################
     #### Append Keff data from _res.m file to csv file   #####

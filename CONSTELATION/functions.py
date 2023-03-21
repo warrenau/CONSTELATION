@@ -72,7 +72,7 @@ def position_Serpent_to_STAR(data,reference_conversion,unit_conversion):
     return data
 
 # function to write out Serpent heating data to STAR csv
-def SerpentHeat_to_Star_csv(detector,STAR_csv,reference_conversion,unit_conversion):
+def SerpentHeat_to_Star_csv(detector,STAR_csv,reference_conversion,unit_conversion,timestep):
     """ Writes Serpent heating detector data out to csv file for STAR to read.
 
     Parameters
@@ -84,6 +84,7 @@ def SerpentHeat_to_Star_csv(detector,STAR_csv,reference_conversion,unit_conversi
     title : str or list of str
         header to write on first row of csv file
     """
+    cm3_to_m3 = 1E-6    # convert cubic centimeters to cubic meters
     outfile = STAR_csv.name
     title = STAR_csv.header
     row = np.zeros(4)
