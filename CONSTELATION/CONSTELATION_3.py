@@ -247,7 +247,7 @@ while simulating == 1:
     # Import SERPENT2 Data  #
     #########################
     # check to make sure the detector file exists
-    detector_file = 'coupled'+Serpent_file+str(curtime) + '.m'
+    detector_file = 'coupled'+Serpent_file+'_det'+str(curtime) + '.m'
     wait_for_file(detector_file,time_to_wait_default)
 
     # read in detector file using serpentTools reader
