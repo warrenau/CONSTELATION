@@ -96,7 +96,7 @@ def SerpentHeat_to_Star_csv(detector,STAR_csv,reference_conversion,unit_conversi
                 row[0] = position_Serpent_to_STAR(detector.grids['Z'][zpoint,2],reference_conversion[2],unit_conversion[2])
                 row[1] = position_Serpent_to_STAR(detector.grids['Y'][ypoint,2],reference_conversion[1],unit_conversion[1])
                 row[2] = position_Serpent_to_STAR(detector.grids['X'][0,2],reference_conversion[0],unit_conversion[0])
-                row[3] = detector.tallies[zpoint,ypoint]*cm3_to_m3/timestep     # required to match units between the two sims. from J/cm^3 to W/m^3
+                row[3] = detector.tallies[zpoint,ypoint]/cm3_to_m3/timestep     # required to match units between the two sims. from J/cm^3 to W/m^3
                 csv_writer.writerow(row)
 
 # functions for writing data to ifc files
@@ -139,8 +139,9 @@ def read_to_numpy(STAR_csv):
     return data
 
 # function to fix density units from STAR to Serpent 2
+# for TREAT model, the STAR density output is already converted to g/cm^3, so the conversion only needs to be negative 1 for Serpent to know the units
 def density_STAR_to_Serpent(density):
-    density = density / 1000 * -1
+    density = density / 1 * -1
     return density
 
 # function to write data from csv file to ifc file

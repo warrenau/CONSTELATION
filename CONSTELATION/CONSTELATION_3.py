@@ -39,6 +39,7 @@ cm3_to_m3 = 1E-6    # convert cubic centimeters to cubic meters
 # cluster commands
 run_SERP = "qsub SERPENT_job.sh"
 run_STAR1 = "qsub STARTop_Job.sh"
+run_STAR2 = "qsub STARBot_Job.sh"
 
 # com file names
 comin_name = 'com.in'
@@ -50,7 +51,9 @@ helium_mesh_bot = '1 -100 100 1 -100 0 500 -60.48375 60.48375\n'
 #fuel_mesh = '1 -500 500 1 -500 500 10 -33.02 30.78\n'
 
 # convert position data from Serpent to STAR, both units and reference frame
-reference_conversion = [20.405, 40.605, 226.7903]   # difference in reference frames in cm
+reference_conversion_top = [20.405, 40.605, 226.7903]   # difference in reference frames in cm
+# Cole's code mentions that these should be different, but he has them the same, so Im going to leave them the same for comparison to make sure this code gets the same results as Cole's work.
+reference_conversion_bot = [20.405, 40.605, 226.7903]   # difference in reference frames in cm
 unit_conversion = [0, -1/100, -1/100]             # multiplication factor for unit conversion
 
 # STAR csv file for passing heating to STAR from Serpent
@@ -62,12 +65,12 @@ Heat_csv_outfile_bot = 'STAR_HeatBot.csv'
 Heat_csv_bot = STAR_csv(Heat_csv_outfile_bot,Heat_csv_Title)
 
 # define the initial Serpent_ifc object (name,header,mesh type, mesh)
-Serpent_ifc_top = Serpent_ifc('HE3.ifc','2 helium3 0\n','1\n',helium_mesh)
+Serpent_ifc_top = Serpent_ifc('HE3TOP.ifc','2 He3Top 0\n','1\n',helium_mesh_top)
 Serpent_ifc_bot = Serpent_ifc('HE3BOT.ifc','2 He3Bot 0\n','1\n',helium_mesh_bot)
 
 # define the initial STAR_csv object with file name and header
 STARHeat_table = './ExtractedData/He3Data_table.csv'
-columns = ['Position[X] (m)', 'Density (kg/m^3)', 'Temperature (K)']
+columns = ['Position in Cartesian 1[X] (cm)', 'Density(g/cm^3) (kg/m^3)', 'Temperature (K)']
 STAR_csv_top = STAR_csv(STARHeat_table,columns)
 STAR_csv_bot = STAR_csv(STARHeat_table,columns)
 
@@ -87,7 +90,9 @@ time_to_wait_default = 3600  # set default time to wait to an hour. most things 
 # done files
 Serpent_done = './SerpentDone.txt'
 STARTop_Done = './STARTopDone.txt'
-STAR_read = './ReadTop.txt'
+STAR_read_top = './ReadTop.txt'
+STARBot_Done = './STARBotDone.txt'
+STAR_read_bot = './ReadBot.txt'
 
 # value to print if the com.out file does not contain a readable signal
 sig_notdigit = 42
@@ -253,19 +258,22 @@ while simulating == 1:
     # read in detector file using serpentTools reader
     Serpent_data = serpentTools.read(detector_file)
     # use the serpentTools detector objects for the specified detectors
-    DETSerpent_heat = Serpent_data.detectors[Serpent_det_heat]
+    DETSerpent_heat_top = Serpent_data.detectors[Serpent_det_heat_top]
+    DETSerpent_heat_bot = Serpent_data.detectors[Serpent_det_heat_bot]
     #DETSerpent_fuel = Serpent_data.detectors[Serpent_det_fuel]
 
     ##########################################################
     #### Print Data to CSV in format recognized by STAR-CCM+ #
     ##########################################################
-    SerpentHeat_to_Star_csv(DETSerpent_heat,Heat_csv,reference_conversion,unit_conversion,timestep)
+    SerpentHeat_to_Star_csv(DETSerpent_heat_top,Heat_csv_top,reference_conversion_top,unit_conversion,timestep)
+    SerpentHeat_to_Star_csv(DETSerpent_heat_bot,Heat_csv_bot,reference_conversion_bot,unit_conversion,timestep)
 
     ##########################################################
     #### Append Keff data from _res.m file to csv file   #####
     ##########################################################
-    wait_for_file(res_file_name,time_to_wait_default)
-    keff_res_to_csv(res_file_name,keff_csv_filename,curtime*timestep)
+    # this wasn't working for the OSTR sim. will try to fix later
+    #wait_for_file(res_file_name,time_to_wait_default)
+    #keff_res_to_csv(res_file_name,keff_csv_filename,curtime*timestep)
 
     ##############################################
     # Check on STAR-CCM+ Simulation              #
@@ -277,9 +285,12 @@ while simulating == 1:
         ###############################################
         # Simply submits STAR-CCM+ submission script to server
         os.system(run_STAR1)
+        os.system(run_STAR2)
 
     # check to see if STAR is done executing
     wait_for_file(STARTop_Done,time_to_wait_default)
+    wait_for_file(STARBot_Done,time_to_wait_default)
+
 
     if curtime > 0:
         # Write SERPENTDone.txt file indicating that the current loop has been completed and data extracted
@@ -287,21 +298,28 @@ while simulating == 1:
         file_out.write('Done')
         file_out.close
 
+    
+
     ###########################
     # Update Top interface    #
     ###########################
     # begin by removing old ifc file to avoid any issues with writing to an exisiting file
     os.remove(Serpent_ifc_top.name)
+    os.remove(Serpent_ifc_bot.name)
 
     # update csv file name
-    filename = r'./ExtractedData/He3Data_table_'+str(STAR_STEP)+'.csv'
-    STAR_csv_top.name = filename
+    filename_top = r'./ExtractedData/He3Data_table_'+str(STAR_STEP)+'.csv'
+    STAR_csv_top.name = filename_top
+    filename_bot = r'./ExtractedBotData/He3Data_table_'+str(STAR_STEP)+'.csv'
+    STAR_csv_bot.name = filename_bot
     
     # make sure file exists before trying to read it
-    wait_for_file(filename,time_to_wait_default)
-    
+    wait_for_file(filename_top,time_to_wait_default)
+    wait_for_file(filename_bot,time_to_wait_default)
+
     # write from csv to ifc    
     csv_to_ifc(STAR_csv_top,Serpent_ifc_top)
+    csv_to_ifc(STAR_csv_bot,Serpent_ifc_bot)
     
     # Update STAR_STEP by number of steps that STAR takes before updating data
     STAR_STEP += step_length
@@ -329,9 +347,11 @@ while simulating == 1:
     # Archive Files                                      #####
     ##########################################################
     copyfile(Serpent_ifc_top.name,'Archive/'+Serpent_ifc_top.name+str(curtime))
+    copyfile(Serpent_ifc_bot.name,'Archive/'+Serpent_ifc_bot.name+str(curtime))
 
     #copyfile('fuel.ifc', 'Archive/fuel.ifc' + str(curtime))
-    copyfile(Heat_csv.name,'Archive/'+Heat_csv.name+str(curtime)+'.csv')
+    copyfile(Heat_csv_top.name,'Archive/'+Heat_csv_top.name+str(curtime)+'.csv')
+    copyfile(Heat_csv_bot.name,'Archive/'+Heat_csv_bot.name+str(curtime)+'.csv')
 
     if curtime >= 2:
         copyfile('coupled'+Serpent_file+'_res.m','Archive/coupled'+Serpent_file+'_res'+str(curtime)+'.m')
@@ -342,10 +362,13 @@ while simulating == 1:
 
     # make sure STAR has read the SerpentDone file before deleting it
     if curtime > 0:
-        wait_for_file(STAR_read,time_to_wait)
+        wait_for_file(STAR_read_top,time_to_wait)
+        wait_for_file(STAR_read_bot,time_to_wait)
         os.remove(Serpent_done)
         os.remove(STARTop_Done)
-        os.remove(STAR_read)
+        os.remove(STAR_read_top)
+        os.remove(STARBot_Done)
+        os.remove(STAR_read_bot)
 
     # Increment time step
     curtime += 1
