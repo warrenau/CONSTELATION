@@ -47,6 +47,8 @@ public class load_dataBot extends StarMacro {
     volumetricHeatSourceProfile_0.setMethod(XyzTabularScalarProfileMethod.class);
 
     volumetricHeatSourceProfile_0.getMethod(XyzTabularScalarProfileMethod.class).setTable(fileTable_2);
+
+    volumetricHeatSourceProfile_0.getMethod(XyzTabularScalarProfileMethod.class).setData("VolumetricHeat");
  
  // Initializes the simulation   
     solution_0.initializeSolution();
@@ -111,10 +113,16 @@ while (TotalTimeSteps > Current_Time)
         }
     }
 // If it does exist then just reload and continue simulation
-    if (f.exists())
-    {
-    fileTable_2.extract();
+  if (f.exists()) {
+    try {
+        fileTable_2.extract();
+        FileWriter readwriter = new FileWriter("ReadBot.txt");
+        readwriter.write("Read");
+        readwriter.close();
+    } catch (IOException e) {
+            e.printStackTrace();
     }
+  } 
 // Breaks out of execution loop
     if (break_again > 0)
     {
