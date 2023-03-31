@@ -176,4 +176,5 @@ while (TotalTimeSteps > Current_Time)
     - it tried to run and could not get enough STAR-CCM+ licenses. will try again sometime, but I am focusing on the STAR-CCM+ sims for the OSTR experiment for right now.
 
 - Starting new sim using the changes made to **CONSTELATION** and the *`.java`* files in the OSTR-CONSTELATION development. This uses *`CONSTELATION_3.py`*, *`functions.py`*, *`load_dataBot.java`*, and *`load_dataTop.java`*. I cleared the ExtractedData folders, but did not wipe the other folders in the directory (ie Archive, LineProbe, etc).
+- The simulation failed because one of the STAR sims could not get the correct number of licenses. Trying again.
 
