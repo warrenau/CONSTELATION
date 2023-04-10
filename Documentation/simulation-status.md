@@ -178,4 +178,10 @@ while (TotalTimeSteps > Current_Time)
 - Starting new sim using the changes made to **CONSTELATION** and the *`.java`* files in the OSTR-CONSTELATION development. This uses *`CONSTELATION_3.py`*, *`functions.py`*, *`load_dataBot.java`*, and *`load_dataTop.java`*. I cleared the ExtractedData folders, but did not wipe the other folders in the directory (ie Archive, LineProbe, etc).
 - The simulation failed because one of the STAR sims could not get the correct number of licenses. Trying again.
 - sim failed bc STAR_bot couldnt get enough licenses. will try again.
-
+- got error about detector file on line 256 in *`CONSTELTATION_3.py`*:
+```
+ValueError: coupledTreat_det1.m has not been created or could not be read
+```
+    - however, both of the star simulations started and the simulation got the signal to go to the next step before failing. will investigate.
+    - only one step of serpent simulation was completed. it should have continued to the next step after the star simulations both got through their first step.
+    - changed density conversion function to do nothing because Cole's STAR simulations convert the density already

@@ -141,7 +141,7 @@ def read_to_numpy(STAR_csv):
 # function to fix density units from STAR to Serpent 2
 # for TREAT model, the STAR density output is already converted to g/cm^3, so the conversion only needs to be negative 1 for Serpent to know the units
 def density_STAR_to_Serpent(density):
-    density = density / 1 * -1
+    density = density / 1 * 1
     return density
 
 # function to write data from csv file to ifc file
