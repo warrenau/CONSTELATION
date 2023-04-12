@@ -179,9 +179,22 @@ while (TotalTimeSteps > Current_Time)
 - The simulation failed because one of the STAR sims could not get the correct number of licenses. Trying again.
 - sim failed bc STAR_bot couldnt get enough licenses. will try again.
 - got error about detector file on line 256 in *`CONSTELTATION_3.py`*:
+
 ```
 ValueError: coupledTreat_det1.m has not been created or could not be read
 ```
-    - however, both of the star simulations started and the simulation got the signal to go to the next step before failing. will investigate.
-    - only one step of serpent simulation was completed. it should have continued to the next step after the star simulations both got through their first step.
-    - changed density conversion function to do nothing because Cole's STAR simulations convert the density already
+
+- however, both of the star simulations started and the simulation got the signal to go to the next step before failing. will investigate.
+- only one step of serpent simulation was completed. it should have continued to the next step after the star simulations both got through their first step.
+- changed density conversion function to do nothing because Cole's STAR simulations convert the density already
+- Got the same error again as above. Will investigate.
+    - I have concluded that the error is caused by the *`com.in`* file not having the correct signal. It still read -1 when the simulation failed, but it should have read 12 to signal the Serpent simulation to continue. I tried to use the code to write the signal in a separate python script and it did not work, which could be due to some memory problem or a coincidence that Serpent was trying to read at the same time. I changed the code as described below and the signal was written properly. When I tried the original code again, it also worked. I am making the change though to see if the syntax will help avoid the error. If not, I may have to add an arbitrary wait time.
+    - ```python
+      file_out = open('com.in','w')
+      file_out.write(str(signal.SIGUSR2.value))
+      file_out.close()
+      ```
+    - ```python
+      with open('com.in','w') as file_out:
+          file_out.write(str(signal.SIGUSR2.value))
+      ```
