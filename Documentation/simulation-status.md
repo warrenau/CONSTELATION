@@ -198,3 +198,5 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
       with open('com.in','w') as file_out:
           file_out.write(str(signal.SIGUSR2.value))
       ```
+
+- Not enough STAR-CCM+ licenses on INL HPC, trying again.
