@@ -200,3 +200,14 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
       ```
 
 - Not enough STAR-CCM+ licenses on INL HPC, trying again.
+    - error on Line 291 in *`CONSTELATION_3.py`*:
+    ```
+     ValueError: ./STARTopDone.txt has not been created or cannot be read
+    ```
+    - This is because the STAR simulations started about an hour and a half after the Serpent 2 simulation and the default wait time is 1 hour, so the *`STARTopDone.txt`* file had not been created when the wait time ran out.
+
+    |    |  Start time   |  End Time  |
+    | ---|  --- |    ---          |
+    | Serpent | 21:03:45  | 21:06:02  |
+    | STAR Top | 22:25:13  | 23:26:54 |
+    | STAR Bot | 22:25:12  | 23:26:54 |
