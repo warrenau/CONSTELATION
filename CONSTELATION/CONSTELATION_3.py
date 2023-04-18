@@ -292,6 +292,8 @@ while simulating == 1:
         with open(Serpent_done,'w') as file_out:
             file_out.write('Done')
         time_to_wait_STAR = time_to_wait_default    # sets time to wait for STAR done to 1 hour for all time steps after initial
+    else:
+        raise ValueError("curtime is less than zero or cannot be read.")
 
     # check to see if STAR is done executing
     wait_for_file(STARTop_Done,time_to_wait_STAR)
