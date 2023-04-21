@@ -211,3 +211,7 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
     | Serpent | 21:03:45  | 21:06:02  |
     | STAR Top | 22:25:13  | 23:26:54 |
     | STAR Bot | 22:25:12  | 23:26:54 |
+
+
+ April 21, 2023:
+ - I changed the requested time to 48 hours in hope it will get through the queue before the cluster goes down.
