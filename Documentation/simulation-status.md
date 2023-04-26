@@ -215,3 +215,6 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
 
  April 21, 2023:
  - I changed the requested time to 48 hours in hope it will get through the queue before the cluster goes down.
+
+ April 26, 2023:
+ - Started sim with 168 hours requested on all jobs and 336 hours on virtual desktop
