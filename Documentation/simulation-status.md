@@ -218,3 +218,5 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
 
  April 26, 2023:
  - Started sim with 168 hours requested on all jobs and 336 hours on virtual desktop
+- same problem with waiting for *`coupledTREAT_det1.m`* file.
+    - Dr. Howard proposed to move the write command for *`com.out`* to only happen if the contents are 12. such that **CONSTELATION** does not overwrite the file unless we are moving to the next step.

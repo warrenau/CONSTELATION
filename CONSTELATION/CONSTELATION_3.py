@@ -226,6 +226,10 @@ while simulating == 1:
             print('Move to Next Time Step')
             iterating = 0
             sleeping = 0
+            # moved the signal reset to only happen if signal to move to next time step is received to hopefully decrease chances for errors
+            # Reset the signal in the file
+            with open(comout_name,'w') as file_out:
+                file_out.write('-1')
         elif line_int == signal.SIGTERM.value:
             # Got the signal to end the calculation
             print(signal.SIGTERM.value)
@@ -239,10 +243,7 @@ while simulating == 1:
             print(line)
             # Exit
             quit()
-        # Reset the signal in the file
-        file_out = open(comout_name, 'w')
-        file_out.write('-1')
-        file_out.close()
+        
     # Check if simulation has finished and break out of iterating
     # loop
     if simulating == 0:
