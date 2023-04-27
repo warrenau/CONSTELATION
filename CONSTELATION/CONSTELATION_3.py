@@ -44,6 +44,7 @@ run_STAR2 = "qsub STARBot_Job.sh"
 # com file names
 comin_name = 'com.in'
 comout_name = 'com.out'
+comtemp_name = 'com.temp'
 
 # mesh data (NX XMIN XMAX NY YMIN YMAX NZ ZMIN ZMAX)
 helium_mesh_top = '1 -100 100 1 0 100 500 -60.48375 60.48375\n'
@@ -341,8 +342,11 @@ while simulating == 1:
     ##########################################################
     # Tell code to move to next timestep #
     ##########################################################
-    with open(comin_name,'w') as file_out:
+    # write to a temp file, then copy the temp file to the real file
+    # hopefull this avoids race conditions better
+    with open(comtemp_name,'w+') as file_out:  # w+ creates file if it doesnt exist
         file_out.write(str(signal.SIGUSR2.value))
+    copyfile(comtemp_name,comin_name)
 
     ##########################################################
     # Archive Files                                      #####
