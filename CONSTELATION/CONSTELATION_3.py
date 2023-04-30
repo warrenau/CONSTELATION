@@ -222,10 +222,12 @@ while simulating == 1:
                 # Got the signal to resume
                 print(signal.SIGUSR1.value)
                 print("Resume Current Iteration")
+                sleeping = 0
             elif line_int == sig_notdigit:
                 # Could not turn the contents of com.out into an integer. Continue and try again.
                 print(sig_notdigit)
                 print("Resume Current Iteration")
+                sleeping = 0
             elif line_int == signal.SIGUSR2.value:
                 # Got the signal to move to next time point
                 print(signal.SIGUSR2.value)
