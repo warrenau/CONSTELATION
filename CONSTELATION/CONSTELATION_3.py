@@ -191,60 +191,79 @@ wait_for_file(comout_name,SERPENTWait)
 simulating = 1
 
 while simulating == 1:
-    ###################
-    # Wait for signal #
-    ###################
-    sleeping = 1
-    while sleeping == 1:
-        # Sleep for two seconds
-        time.sleep(2)
-        # Open file to check if we got a signal
-        fin = open(comout_name, 'r')
-        # Read line
-        line = fin.readline()
-        # Close file
-        fin.close()
+    iterating = 1
 
-        # check if signal can be read due to problems of empty files in previous simulations
-        line_int = com_check_digit(line,sig_notdigit)
+    ###################
+    # Iterating Loop  #    loops over iterations between time steps if necessary
+    ###################
+    while iterating == 1:
 
-        # Check signal -- only move on if the signal says to go to next time step or to end simulation. keep sleeping if resuming current iteration.
-        if line_int == -1:
-            pass
-        elif line_int == signal.SIGUSR1.value:
-            # Got the signal to resume
-            print(signal.SIGUSR1.value)
-            print("Resume Current Iteration")
-        elif line_int == sig_notdigit:
-            # Could not turn the contents of com.out into an integer. Continue and try again.
-            print(sig_notdigit)
-            print("Resume Current Iteration")
-        elif line_int == signal.SIGUSR2.value:
-            # Got the signal to move to next time point
-            print(signal.SIGUSR2.value)
-            print('Move to Next Time Step')
-            sleeping = 0
-            # moved the signal reset to only happen if signal to move to next time step is received to hopefully decrease chances for errors
-            # Reset the signal in the file
-            with open(comout_name,'w') as file_out:
-                file_out.write('-1')
-        elif line_int == signal.SIGTERM.value:
-            # Got the signal to end the calculation
-            print(signal.SIGTERM.value)
-            print('END The Simulation')
-            sleeping = 0
-            simulating = 0
-        else:
-            # Unknown signal
-            print("\nUnknown signal read from file, exiting\n")
-            print(line)
-            # Exit
-            quit()
+        ###################
+        # Wait for signal #
+        ###################
+        sleeping = 1
+        while sleeping == 1:
+            # Sleep for two seconds
+            time.sleep(2)
+            # Open file to check if we got a signal
+            fin = open(comout_name, 'r')
+            # Read line
+            line = fin.readline()
+            # Close file
+            fin.close()
+
+            # check if signal can be read due to problems of empty files in previous simulations
+            line_int = com_check_digit(line,sig_notdigit)
+
+            # Check signal -- only move on if the signal says to go to next time step or to end simulation. keep sleeping if resuming current iteration.
+            if line_int == -1:
+                pass
+            elif line_int == signal.SIGUSR1.value:
+                # Got the signal to resume
+                print(signal.SIGUSR1.value)
+                print("Resume Current Iteration")
+            elif line_int == sig_notdigit:
+                # Could not turn the contents of com.out into an integer. Continue and try again.
+                print(sig_notdigit)
+                print("Resume Current Iteration")
+            elif line_int == signal.SIGUSR2.value:
+                # Got the signal to move to next time point
+                print(signal.SIGUSR2.value)
+                print('Move to Next Time Step')
+                sleeping = 0
+                iterating = 0
+            elif line_int == signal.SIGTERM.value:
+                # Got the signal to end the calculation
+                print(signal.SIGTERM.value)
+                print('END The Simulation')
+                sleeping = 0
+                iterating = 0
+                simulating = 0
+            else:
+                # Unknown signal
+                print("\nUnknown signal read from file, exiting\n")
+                print(line)
+                # Exit
+                quit()
+            
         
-    # Check if simulation has finished and break out of iterating
-    # loop
-    if simulating == 0:
-        break
+        # Reset the signal in the file so it does not get stuck looping and printing the signal to the terminal over and over
+        with open(comout_name,'w') as file_out:
+            file_out.write('-1')
+
+        ####
+        # write SIGUSR1 to com.in file to tell Serpent to continue
+        ####
+        # write to a temp file, then copy the temp file to the real file
+        # hopefull this avoids race conditions better
+        with open(comtemp_name,'w+') as file_out:  # w+ creates file if it doesnt exist
+            file_out.write(str(signal.SIGUSR1.value))
+        copyfile(comtemp_name,comin_name)
+        
+        # Check if simulation has finished and break out of iterating
+        # loop
+        if simulating == 0:
+            break
 
     #########################
     # Import SERPENT2 Data  #
