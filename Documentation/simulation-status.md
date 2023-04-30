@@ -220,3 +220,47 @@ ValueError: coupledTreat_det1.m has not been created or could not be read
  - Started sim with 168 hours requested on all jobs and 336 hours on virtual desktop
 - same problem with waiting for *`coupledTREAT_det1.m`* file.
     - Dr. Howard proposed to move the write command for *`com.out`* to only happen if the contents are 12. such that **CONSTELATION** does not overwrite the file unless we are moving to the next step.
+
+April 29, 2023:
+- same problem with waiting for *`coupledTREAT_det1.m`* file.
+    - after some investigation, I found that you cannot write to or copy over the *`com.in`* file before Serpent 2 has output the signal to move on to the next time step (at least for `SIGUSR2` signal). I did not try other signals, but they do not matter since **CONSTELATION** does not have to two codes interact between time steps.
+    - I am going to make the following change to not let the script move on until the signal says to go to the next time step.
+    - ```python
+      # Check signal
+        if line_int == -1:
+            pass
+        elif line_int == signal.SIGUSR1.value:
+            # Got the signal to resume
+            print(signal.SIGUSR1.value)
+            print("Resume Current Iteration")
+            sleeping = 0
+        elif line_int == sig_notdigit:
+            # Could not turn the contents of com.out into an integer. Continue and try again.
+            print(sig_notdigit)
+            print("Resume Current Iteration")
+            sleeping = 0
+        elif line_int == signal.SIGUSR2.value:
+            # Got the signal to move to next time point
+            print(signal.SIGUSR2.value)
+            print('Move to Next Time Step')
+            iterating = 0
+            sleeping = 0
+      ```
+    - ```python
+        # Check signal
+        if line_int == -1:
+            pass
+        elif line_int == signal.SIGUSR1.value:
+            # Got the signal to resume
+            print(signal.SIGUSR1.value)
+            print("Resume Current Iteration")
+        elif line_int == sig_notdigit:
+            # Could not turn the contents of com.out into an integer. Continue and try again.
+            print(sig_notdigit)
+            print("Resume Current Iteration")
+        elif line_int == signal.SIGUSR2.value:
+            # Got the signal to move to next time point
+            print(signal.SIGUSR2.value)
+            print('Move to Next Time Step')
+            sleeping = 0
+      ```

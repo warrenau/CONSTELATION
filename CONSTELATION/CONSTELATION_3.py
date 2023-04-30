@@ -208,24 +208,21 @@ while simulating == 1:
         # check if signal can be read due to problems of empty files in previous simulations
         line_int = com_check_digit(line,sig_notdigit)
 
-        # Check signal
+        # Check signal -- only move on if the signal says to go to next time step or to end simulation. keep sleeping if resuming current iteration.
         if line_int == -1:
             pass
         elif line_int == signal.SIGUSR1.value:
             # Got the signal to resume
             print(signal.SIGUSR1.value)
             print("Resume Current Iteration")
-            sleeping = 0
         elif line_int == sig_notdigit:
             # Could not turn the contents of com.out into an integer. Continue and try again.
             print(sig_notdigit)
             print("Resume Current Iteration")
-            sleeping = 0
         elif line_int == signal.SIGUSR2.value:
             # Got the signal to move to next time point
             print(signal.SIGUSR2.value)
             print('Move to Next Time Step')
-            iterating = 0
             sleeping = 0
             # moved the signal reset to only happen if signal to move to next time step is received to hopefully decrease chances for errors
             # Reset the signal in the file
@@ -235,7 +232,6 @@ while simulating == 1:
             # Got the signal to end the calculation
             print(signal.SIGTERM.value)
             print('END The Simulation')
-            iterating = 0
             sleeping = 0
             simulating = 0
         else:
