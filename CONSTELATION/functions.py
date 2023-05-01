@@ -157,17 +157,18 @@ def csv_to_ifc(STAR_csv,Serpent_ifc):
     Serpent_ifc : Serpent_ifc object
         ifc file to write to
     """
-    f = open(Serpent_ifc.name,'w')
-    f.write(Serpent_ifc.header)
-    f.write(Serpent_ifc.mesh_type)
-    f.write(Serpent_ifc.mesh)
+    tempname = Serpent_ifc.name+'.temp'
+    with open(tempname,'w') as f:
+        f.write(Serpent_ifc.header)
+        f.write(Serpent_ifc.mesh_type)
+        f.write(Serpent_ifc.mesh)
 
-    data = read_to_numpy(STAR_csv)
-    data[:,1] = density_STAR_to_Serpent(data[:,1])
-    data = min_temp_fix(data)
-    np.savetxt(f, data[:,[1,2]], fmt="%1.6f")
+        data = read_to_numpy(STAR_csv)
+        data[:,1] = density_STAR_to_Serpent(data[:,1])
+        data = min_temp_fix(data)
+        np.savetxt(f, data[:,[1,2]], fmt="%1.9f")
 
-    f.close()
+    copyfile(tempname,Serpent_ifc.name)  # copy the file to avoid race conditions and errors for the file being deleted or overwritten
 
 # function to pull keff from _res.m file and append it to a csv file
 def keff_res_to_csv(f_in,f_out,time):

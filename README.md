@@ -8,6 +8,8 @@ Originally created by Cole Leingang in 2021. Modified by Austin Warren in 2022.
 ## Documentation:
 This document details the inputs and usage for the CONSTELATION coupling script. In the *Documentation* folder, there are other files which cover the individual inputs and usage for the Serpent 2 and STAR-CCM+ portions.
 
+An example transient coupling script can be found at the Serpent 2 wiki: [MSCS for coupled transients](https://serpent.vtt.fi/mediawiki/index.php/MSCS_for_coupled_transients).
+
 ## Requirements:
 - Python 3 (originally written in 2.7)
 - Serpent 2 (version number here)

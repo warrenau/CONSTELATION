@@ -267,3 +267,5 @@ April 29, 2023:
 
       - this change did not work. the simulation got stuck on printing `Resume Current Iteration`. I found another example script from Serpent for coupled transient sims that includes an additional while loop using `iterating` to control the time steps. It looks like I will need to add another loop to the script and tell Serpent to continue with a signal written to *`com.in`*. The simulation did move to the next step when I manually changed the signal.
       - I ran into a storage issue, which may have been bc of the huge amounts of terminal output caused by the simulation getting stuck in that loop.
+
+      - got an error for the *`.ifc`* file being deleted, which caused the serpent sim to stop. fixed by commenting out the line to delete the file and made the function write to a temp file then copy.

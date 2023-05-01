@@ -324,8 +324,9 @@ while simulating == 1:
     # Update Top interface    #
     ###########################
     # begin by removing old ifc file to avoid any issues with writing to an exisiting file
-    os.remove(Serpent_ifc_top.name)
-    os.remove(Serpent_ifc_bot.name)
+    # commenting out because of error with .ifc files not being found by Serpent and the simulation stopping. changed the csv_to_ifc function to copy a temp file over instead of overwriting.
+    #os.remove(Serpent_ifc_top.name)
+    #os.remove(Serpent_ifc_bot.name)
 
     # update csv file name
     filename_top = r'./ExtractedData/He3Data_table_'+str(STAR_STEP)+'.csv'
