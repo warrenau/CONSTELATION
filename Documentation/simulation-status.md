@@ -269,3 +269,5 @@ April 29, 2023:
       - I ran into a storage issue, which may have been bc of the huge amounts of terminal output caused by the simulation getting stuck in that loop.
 
       - got an error for the *`.ifc`* file being deleted, which caused the serpent sim to stop. fixed by commenting out the line to delete the file and made the function write to a temp file then copy.
+
+      - **CONSTELATION** timed out waiting for STAR sims to be done. STAR sims timed out waiting for Serpent done file. Serpent sim was done, but done file was not written for some reason. maybe it was deleted before the star sims read it? not sure how that wouldve happened. just going to try it again, I think. I was doing some file clean up last night and mightve deleted something on accident.
